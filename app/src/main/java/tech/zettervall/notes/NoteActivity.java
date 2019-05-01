@@ -10,60 +10,43 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.parceler.Parcels;
+
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.viewmodels.NoteViewModel;
 
 public class NoteActivity extends AppCompatActivity {
 
     private static final String TAG = NoteActivity.class.getSimpleName();
     private static final String NOTE_ID = "note_id";
-    private NoteViewModel mNoteViewModel;
     private TextView mHeadline, mText;
     private Integer mNoteID;
+    private Note mNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
-        // Initialize ViewModel
-        mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
-
         // Find Views
         mHeadline = findViewById(R.id.headline_tv);
         mText = findViewById(R.id.text_tv);
 
+        // Set default Note
+        mNote = new Note(Constants.TYPE_PLAIN,null, null);
+
         // Retrieve existing data
         if (getIntent().getExtras() != null) {
             // A already existing Note was clicked and the ID resides in Extras
-            mNoteID = getIntent().getExtras().getInt(Constants.NOTE_ID);
+            mNote = Parcels.unwrap(getIntent().getParcelableExtra(Constants.NOTE_PARCEL));
         } else if (savedInstanceState != null) {
             // Restore newly created Note ID from savedInstanceState
             mNoteID = savedInstanceState.getInt(NOTE_ID);
         }
 
-        if (mNoteID != null) {
-            // Set Note in ViewModel
-            mNoteViewModel.setNote(mNoteID);
-
-            // Subscribe Observers
-            subscribeObservers();
-        }
-    }
-
-    /**
-     * Subscribe Observers so that data survives configuration changes.
-     */
-    private void subscribeObservers() {
-        mNoteViewModel.getNote().observe(this, new Observer<Note>() {
-            @Override
-            public void onChanged(Note note) {
-                // Update Views with data from db
-                mHeadline.setText(note.getHeadline());
-                mText.setText(note.getText());
-            }
-        });
+        // Set Views
+        mHeadline.setText(mNote.getHeadline());
+        mText.setText(mNote.getText());
     }
 
     /**
