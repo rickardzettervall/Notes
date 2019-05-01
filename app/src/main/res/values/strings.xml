@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Simple Notes</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Hints -->
+    <string name="hint_headline">Headline..</string>
+    <string name="hint_text">Your notes..</string>
+
+    <!-- Tools -->
+    <string name="tools_headline">Important stuff</string>
+    <string name="tools_text">This is some text containing very important stuff, this might even span through many lines. Indeed this text is super important and must be quite long, it must be longer than three rows so that the three dots are allowed to appear in the tools.</string>
+    <string name="tools_date">15:00 20/01/2019</string>
+
+</resources>
