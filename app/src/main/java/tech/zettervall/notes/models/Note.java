@@ -4,14 +4,21 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import org.parceler.Parcel;
+
 import tech.zettervall.notes.utils.DateTimeHelper;
 
+@Parcel
 @Entity(tableName = "note")
 public class Note {
 
     @PrimaryKey(autoGenerate = true)
-    private int _id;
-    private String type, headline, text, date;
+    public int _id;
+    public String type, headline, text, date;
+
+    // Empty Constructor for Parcel
+    @Ignore
+    public Note() {}
 
     @Ignore
     public Note(String type, String headline, String text) {

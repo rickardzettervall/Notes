@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onNoteClick(int index) {
         // Start NoteActivity with _id (PrimaryKey) so that it can be retrieved from db
         Intent intent = new Intent(this, NoteActivity.class);
-        intent.putExtra(Constants.NOTE_ID, mNoteAdapter.getNotes().get(index).get_id());
+//        intent.putExtra(Constants.NOTE_ID, mNoteAdapter.getNotes().get(index).get_id());
+        intent.putExtra(Constants.NOTE_PARCEL, Parcels.wrap(mNoteAdapter.getNotes().get(index)));
         startActivity(intent);
     }
 
