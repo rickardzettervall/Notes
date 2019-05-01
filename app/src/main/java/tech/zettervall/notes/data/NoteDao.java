@@ -30,9 +30,8 @@ public interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertNote(Note note);
 
-    // Update Note and return the ID
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    int updateNote(Note note);
+    void updateNote(Note note);
 
     @Delete
     void deleteNote(Note note);
