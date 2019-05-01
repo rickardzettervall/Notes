@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,11 +59,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set Toolbar
         setSupportActionBar(mToolbar);
 
-        // Set Adapter / LayoutManager
+        // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this, new ArrayList<Note>());
         mLayoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                mLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         // Set OnClickListeners
         mFab.setOnClickListener(this);
@@ -102,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onNoteClick(int index) {
         // Start NoteActivity with _id (PrimaryKey) so that it can be retrieved from db
         Intent intent = new Intent(this, NoteActivity.class);
-//        intent.putExtra(Constants.NOTE_ID, mNoteAdapter.getNotes().get(index).get_id());
         intent.putExtra(Constants.NOTE_PARCEL, Parcels.wrap(mNoteAdapter.getNotes().get(index)));
         startActivity(intent);
     }
