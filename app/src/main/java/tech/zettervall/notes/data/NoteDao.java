@@ -19,7 +19,7 @@ import tech.zettervall.notes.models.Note;
 public interface NoteDao {
 
     // Get all Notes
-    @Query("SELECT * FROM note ORDER BY date ASC")
+    @Query("SELECT * FROM note ORDER BY date DESC")
     LiveData<List<Note>> getNotes();
 
     // Get specific Note based on ID
