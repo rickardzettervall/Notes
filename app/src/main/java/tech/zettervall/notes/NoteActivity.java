@@ -14,10 +14,14 @@ import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.repositories.NoteRepository;
+import tech.zettervall.notes.utils.DateTimeHelper;
 
 public class NoteActivity extends AppCompatActivity {
 
     private static final String TAG = NoteActivity.class.getSimpleName();
+    private static final String NOTE_HEADLINE = "note_headline";
+    private static final String NOTE_TEXT = "note_text";
     private static final String NOTE_ID = "note_id";
     private TextView mHeadline, mText;
     private Integer mNoteID;
@@ -33,15 +37,17 @@ public class NoteActivity extends AppCompatActivity {
         mText = findViewById(R.id.text_tv);
 
         // Set default Note
-        mNote = new Note(Constants.TYPE_PLAIN,null, null);
+        mNote = new Note(Constants.TYPE_PLAIN,"", "");
 
         // Retrieve existing data
         if (getIntent().getExtras() != null) {
             // A already existing Note was clicked and the ID resides in Extras
             mNote = Parcels.unwrap(getIntent().getParcelableExtra(Constants.NOTE_PARCEL));
         } else if (savedInstanceState != null) {
-            // Restore newly created Note ID from savedInstanceState
-            mNoteID = savedInstanceState.getInt(NOTE_ID);
+            // Restore newly created Note data from savedInstanceState
+            mNote.set_id(savedInstanceState.getInt(NOTE_ID));
+            mNote.setHeadline(savedInstanceState.getString(NOTE_HEADLINE));
+            mNote.setText(savedInstanceState.getString(NOTE_TEXT));
         }
 
         // Set Views
@@ -57,17 +63,15 @@ public class NoteActivity extends AppCompatActivity {
         super.onPause();
 
         // New Note
-        if (mNoteID == null) {
-            Note note = new Note(Constants.TYPE_PLAIN,
-                    mHeadline.getText().toString(),
-                    mText.getText().toString());
-            mNoteID = (int) mNoteViewModel.insertNote(note);
-        } else {
-            Note note = new Note(mNoteID,
-                    Constants.TYPE_PLAIN,
-                    mHeadline.getText().toString(),
-                    mText.getText().toString());
-            mNoteViewModel.updateNote(note);
+        if (mNote.getText().equals("")) {
+            mNote.setHeadline(mHeadline.getText().toString());
+            mNote.setText(mText.getText().toString());
+            mNoteID = (int) NoteRepository.getInstance(getApplication()).insertNote(mNote);
+        } else { // Update Note
+            mNote.setHeadline(mHeadline.getText().toString());
+            mNote.setText(mText.getText().toString());
+            mNote.setDate(DateTimeHelper.getCurrentDateTime());
+            NoteRepository.getInstance(getApplication()).updateNote(mNote);
         }
     }
 
@@ -75,7 +79,13 @@ public class NoteActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save Note ID
-        outState.putInt(NOTE_ID, mNoteID);
+        if(mNoteID != null) {
+            outState.putInt(NOTE_ID, mNoteID);
+        }
+
+        // Save TextViews
+        outState.putString(NOTE_HEADLINE, mHeadline.getText().toString());
+        outState.putString(NOTE_TEXT, mText.getText().toString());
     }
 
     @Override
