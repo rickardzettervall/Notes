@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayoutManager mLayoutManager;
     private FloatingActionButton mFab;
     private NotesViewModel mNotesViewModel;
-    private Toolbar mToolbar;
     private NoteAdapter mNoteAdapter;
 
     @Override
@@ -52,12 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNotesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
 
         // Find Views
-        mToolbar = findViewById(R.id.toolbar);
         mRecyclerView = findViewById(R.id.notes_list_rv);
         mFab = findViewById(R.id.fab);
-
-        // Set Toolbar
-        setSupportActionBar(mToolbar);
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this, new ArrayList<Note>());
@@ -112,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -120,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

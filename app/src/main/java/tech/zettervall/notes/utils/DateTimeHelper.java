@@ -10,6 +10,6 @@ public abstract class DateTimeHelper {
      * @return Date in a String format
      */
     public static String getCurrentDateTime() {
-        return DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
+        return DateFormat.getDateInstance().format(new Date(System.currentTimeMillis()));
     }
 }
