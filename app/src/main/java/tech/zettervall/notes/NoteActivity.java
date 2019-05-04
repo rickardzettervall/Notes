@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -100,13 +101,13 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         saveNote();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save Note ID
         if(mNoteID != null) {
@@ -127,6 +128,9 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.action_delete:
                 DialogInterface.OnClickListener dialogClickListener =
                         new DialogInterface.OnClickListener() {
@@ -149,9 +153,6 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
                                 finish();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
-                                Toast.makeText(NoteActivity.this,
-                                        "Aborted",
-                                        Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
