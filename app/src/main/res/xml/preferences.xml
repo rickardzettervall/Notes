@@ -14,22 +14,23 @@
   ~ limitations under the License.
   -->
 
-<androidx.preference.PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/theme">
 
         <SwitchPreference
-            app:title="@string/enable_dark_theme"
-            app:key="@string/enable_dark_theme_key"/>
+            app:key="@string/enable_dark_theme_key"
+            app:summary="@string/enable_dark_theme_desc"
+            app:title="@string/enable_dark_theme" />
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/data">
 
         <Preference
-            app:title="@string/delete_all_notes"
-            app:summary="@string/delete_all_notes_desc"/>
+            app:key="@string/delete_all_notes_key"
+            app:summary="@string/delete_all_notes_desc"
+            app:title="@string/delete_all_notes" />
 
     </PreferenceCategory>
 

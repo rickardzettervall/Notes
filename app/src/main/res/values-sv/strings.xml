@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simpla Anteckningar</string>
+    <string name="abort">Avbryt</string>
+    <string name="action_about">Information</string>
+    <string name="action_delete">Radera Anteckning</string>
+    <string name="action_settings">Inställningar</string>
+    <string name="confirm_deletion">Bekräfta radering</string>
+    <string name="cont_new_note">Lägg till ny Anteckning</string>
+    <string name="cont_save_note">Spara Anteckning</string>
+    <string name="data">Data</string>
+    <string name="delete">Radera</string>
+    <string name="delete_all_notes">Radera alla Anteckningar</string>
+    <string name="enable_dark_theme">Aktivera mörkt tema</string>
+    <string name="hint_headline">Överskrift..</string>
+    <string name="hint_text">Dina anteckningar..</string>
+    <string name="note_modify">Modifiera Anteckning</string>
+    <string name="note_new">Ny Anteckning</string>
+    <string name="theme">Tema</string>
+    <string name="title_activity_settings">Inställningar</string>
+    <string name="delete_all_notes_desc">Varning! Detta kommer radera samtliga Anteckningar från databasen.</string>
+    <string name="enable_dark_theme_desc">Starta om Appen för att visa ändringen.</string>
+</resources>
