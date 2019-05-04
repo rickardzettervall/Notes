@@ -79,7 +79,11 @@ public class Note {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        return super.equals(obj);
+        if(obj instanceof Note) {
+            // Because the _id is unique it's the only field in need of comparing
+            return (((Note) obj)._id == this._id);
+        }
+        return false;
     }
 
     @Override
