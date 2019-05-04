@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 
 import java.util.List;
 
@@ -37,11 +38,12 @@ public class NoteRepository {
     }
 
     /**
-     * Get all Note Objects from the db.
+     * Get all Note Objects from the db as DataSource
+     * Object, so that it can be used in PagedList.
      *
-     * @return LiveData Object containing all Notes
+     * @return DataSource containing all Notes
      */
-    public LiveData<List<Note>> getNotes() {
+    public DataSource.Factory<Integer, Note> getNotes() {
         Log.d(TAG, "Retrieving all Notes..");
         return mNoteDao.getNotes();
     }

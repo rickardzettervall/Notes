@@ -1,6 +1,7 @@
 package tech.zettervall.notes.data;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -20,7 +21,8 @@ public interface NoteDao {
 
     // Get all Notes
     @Query("SELECT * FROM note ORDER BY date DESC")
-    LiveData<List<Note>> getNotes();
+    DataSource.Factory<Integer, Note> getNotes();
+//    LiveData<List<Note>> getNotes();
 
     // Get specific Note based on ID
     @Query("SELECT * FROM note WHERE _id IS :id")

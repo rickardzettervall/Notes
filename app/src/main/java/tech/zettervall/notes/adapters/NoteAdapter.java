@@ -6,30 +6,45 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
     private static final String TAG = NoteAdapter.class.getSimpleName();
     private OnNoteClickListener mOnNoteClickListener;
-    private List<Note> mNotes;
 
-    public NoteAdapter(OnNoteClickListener mOnNoteClickListener, List<Note> mNotes) {
-        this.mOnNoteClickListener = mOnNoteClickListener;
-        this.mNotes = mNotes;
+    public NoteAdapter(OnNoteClickListener onNoteClickListener) {
+        super(DIFF_CALLBACK);
+        mOnNoteClickListener = onNoteClickListener;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private static DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Note>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+                    // The ID property identifies when items are the same
+                    return oldItem.get_id() == newItem.get_id();
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
+
+    /**
+     * ViewHolder
+     */
+    class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mHeadlineTv, mTextTv, mDateTv;
 
-        public ViewHolder(@NonNull View itemView) {
+        public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
 
             // Find Views
@@ -56,33 +71,38 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View view = layoutInflater.inflate(R.layout.list_notes, viewGroup, false);
-        return new ViewHolder(view);
+    public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.list_notes, viewGroup, false);
+        return new NoteViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Note note = mNotes.get(position);
-
-        // Set TextView data
-        holder.mHeadlineTv.setText(note.getHeadline());
-        holder.mTextTv.setText(note.getText());
-        holder.mDateTv.setText(note.getDate());
+    public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
+        Note note = getItem(position);
+        if(note != null) {
+            holder.mHeadlineTv.setText(note.getHeadline());
+            holder.mTextTv.setText(note.getText());
+            holder.mDateTv.setText(note.getDate());
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        return mNotes.size();
-    }
+//    @Override
+//    public void submitList(@Nullable PagedList<Note> pagedList) {
+//        super.submitList(pagedList);
+//    }
 
-    public List<Note> getNotes() {
-        return new ArrayList<>(mNotes);
-    }
+    //    @Override
+//    public int getItemCount() {
+//        return mNotes.size();
+//    }
 
-    public void setNotes(List<Note> mNotes) {
-        this.mNotes = mNotes;
-        notifyDataSetChanged();
-    }
+//    public List<Note> getNotes() {
+//        return new ArrayList<>(mNotes);
+//    }
+//
+//    public void setNotes(List<Note> mNotes) {
+//        this.mNotes = mNotes;
+//        notifyDataSetChanged();
+//    }
 }

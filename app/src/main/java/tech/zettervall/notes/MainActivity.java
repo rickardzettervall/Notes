@@ -6,21 +6,21 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.parceler.Parcels;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set Theme
+        setTheme();
+
+        // Set ContentView
         setContentView(R.layout.activity_main);
 
         // Initialize ViewModel
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFab = findViewById(R.id.fab);
 
         // Set Adapter / LayoutManager / Decoration
-        mNoteAdapter = new NoteAdapter(this, new ArrayList<Note>());
+        mNoteAdapter = new NoteAdapter(this);
         mLayoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -68,6 +73,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Subscribe Observers
         subscribeObservers();
+    }
+
+    private void setTheme() {
+        // Get SharedPreferences (Dark Theme?)
+        boolean enableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(getString(R.string.enable_dark_theme_key), false);
+
+        if(enableDarkTheme) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     @Override
@@ -84,11 +101,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Subscribe Observers so that data survives configuration changes.
      */
     private void subscribeObservers() {
-        mNotesViewModel.getNotes().observe(this, new Observer<List<Note>>() {
+        mNotesViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
             @Override
-            public void onChanged(List<Note> notes) {
-                // Update RecyclerView when db changes
-                mNoteAdapter.setNotes(notes);
+            public void onChanged(PagedList<Note> notes) {
+                mNoteAdapter.submitList(notes);
             }
         });
     }
@@ -99,9 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onNoteClick(int index) {
-        // Start NoteActivity with _id (PrimaryKey) so that it can be retrieved from db
+        // Start NoteActivity with clicked Note so that it can be edited
         Intent intent = new Intent(this, NoteActivity.class);
-        intent.putExtra(Constants.NOTE_PARCEL, Parcels.wrap(mNoteAdapter.getNotes().get(index)));
+        intent.putExtra(Constants.NOTE_PARCEL,
+                Parcels.wrap(mNotesViewModel.getNotes().getValue().get(index)));
         startActivity(intent);
     }
 
