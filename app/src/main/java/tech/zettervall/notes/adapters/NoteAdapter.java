@@ -27,7 +27,6 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             new DiffUtil.ItemCallback<Note>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-                    // The ID property identifies when items are the same
                     return oldItem.get_id() == newItem.get_id();
                 }
 
