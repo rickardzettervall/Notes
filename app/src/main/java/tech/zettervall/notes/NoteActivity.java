@@ -80,12 +80,22 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private boolean wasEdited() {
+        if(mNote != null) {
+            if(mNote.getHeadline().equals(mHeadline.getText().toString())
+                    && mNote.getText().equals(mText.getText().toString())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Save Note to db
      */
     private void saveNote() {
         // Check for delete flag and that user actually entered any text
-        if(!delete && (!mHeadline.getText().toString().isEmpty() ||
+        if(!delete && wasEdited() && (!mHeadline.getText().toString().isEmpty() ||
                 !mText.getText().toString().isEmpty())) {
             if (mNote.getText().equals("")) {
                 mNote.setHeadline(mHeadline.getText().toString());
