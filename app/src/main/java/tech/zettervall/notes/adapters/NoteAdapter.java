@@ -79,7 +79,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = getItem(position);
-        if(note != null) {
+        if (note != null) {
             holder.mHeadlineTv.setText(note.getHeadline());
             holder.mTextTv.setText(note.getText());
             holder.mDateTv.setText(note.getDate());
