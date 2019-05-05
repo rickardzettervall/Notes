@@ -1,5 +1,6 @@
 package tech.zettervall.notes.models;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -7,11 +8,13 @@ import androidx.room.PrimaryKey;
 
 import org.parceler.Parcel;
 
+import java.util.Comparator;
+
 import tech.zettervall.notes.utils.DateTimeHelper;
 
 @Parcel
 @Entity(tableName = "note")
-public class Note {
+public class Note implements Comparable<Note> {
 
     @PrimaryKey(autoGenerate = true)
     public int _id;
@@ -77,13 +80,19 @@ public class Note {
         this.date = date;
     }
 
+    /**
+     * Compare contents for diff check in Adapter
+     * @param note
+     * @return
+     */
     @Override
-    public boolean equals(@Nullable Object obj) {
-        if(obj instanceof Note) {
-            // Because the _id is unique it's the only field in need of comparing
-            return (((Note) obj)._id == this._id);
+    public int compareTo(@NonNull Note note) {
+        boolean matchHeadline = this.headline.equals(note.getHeadline()),
+                matchText = this.text.equals(note.getText());
+        if(matchHeadline && matchText) {
+            return 0;
         }
-        return false;
+        return -1;
     }
 
     @Override
