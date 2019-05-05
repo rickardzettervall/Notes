@@ -23,6 +23,9 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
         mOnNoteClickListener = onNoteClickListener;
     }
 
+    /**
+     * Callback to check for difference and decide whether to update the list.
+     */
     private static DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Note>() {
                 @Override
