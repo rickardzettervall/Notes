@@ -32,7 +32,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-                    return oldItem.equals(newItem);
+                    return (oldItem.compareTo(newItem) == 0);
                 }
             };
 
@@ -85,23 +85,4 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             holder.mDateTv.setText(note.getDate());
         }
     }
-
-//    @Override
-//    public void submitList(@Nullable PagedList<Note> pagedList) {
-//        super.submitList(pagedList);
-//    }
-
-    //    @Override
-//    public int getItemCount() {
-//        return mNotes.size();
-//    }
-
-//    public List<Note> getNotes() {
-//        return new ArrayList<>(mNotes);
-//    }
-//
-//    public void setNotes(List<Note> mNotes) {
-//        this.mNotes = mNotes;
-//        notifyDataSetChanged();
-//    }
 }
