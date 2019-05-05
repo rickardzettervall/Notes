@@ -24,7 +24,7 @@ public class NotesViewModel extends AndroidViewModel {
         mNoteRepository = NoteRepository.getInstance(application);
 
         // Create PagedList and load 10 items at a time.
-        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotes(), 1).build();
+        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotes(), 10).build();
     }
 
     public LiveData<PagedList<Note>> getNotes() {
