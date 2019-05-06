@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="tech.zettervall.notes.AboutActivity"
-            android:label="@string/action_about"/>
+            android:label="@string/action_about"
+            android:parentActivityName="tech.zettervall.notes.MainActivity"/>
         <activity
             android:name="tech.zettervall.notes.SettingsActivity"
             android:label="@string/title_activity_settings"
