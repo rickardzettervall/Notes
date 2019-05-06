@@ -20,4 +20,7 @@
     <string name="title_activity_settings">Inställningar</string>
     <string name="delete_all_notes_desc">Varning! Detta kommer radera samtliga Anteckningar från databasen.</string>
     <string name="enable_dark_theme_desc">Starta om Appen för att visa ändringen.</string>
+    <string name="by_line">Av Rickard Zettervall</string>
+    <string name="nav_drawer_close">Stäng navigeringsmeny</string>
+    <string name="nav_drawer_open">Öppna navigeringsmeny</string>
 </resources>
