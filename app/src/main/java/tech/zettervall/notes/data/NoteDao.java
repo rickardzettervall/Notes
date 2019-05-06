@@ -9,8 +9,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.List;
-
 import tech.zettervall.notes.models.Note;
 
 /**
@@ -22,7 +20,6 @@ public interface NoteDao {
     // Get all Notes
     @Query("SELECT * FROM note ORDER BY date DESC")
     DataSource.Factory<Integer, Note> getNotes();
-//    LiveData<List<Note>> getNotes();
 
     // Get specific Note based on ID
     @Query("SELECT * FROM note WHERE _id IS :id")
@@ -32,9 +29,15 @@ public interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertNote(Note note);
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertNotes(Note[] notes);
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateNote(Note note);
 
     @Delete
     void deleteNote(Note note);
+
+    @Query("DELETE FROM note")
+    void deleteAllNotes();
 }

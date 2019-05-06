@@ -9,6 +9,7 @@ import androidx.paging.DataSource;
 import java.util.List;
 
 import tech.zettervall.notes.AppExecutor;
+import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.models.Note;
@@ -76,6 +77,24 @@ public class NoteRepository {
     }
 
     /**
+     * Insert Dummy data into the db for testing.
+     */
+    public void insertDummyData() {
+        final Note[] notes = new Note[50];
+        for (int i = 0; i < 50; i++) {
+            notes[i] = new Note(
+                    Constants.TYPE_PLAIN, "Dummy Headline!", "Dummy Text!");
+        }
+        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Inserting dummy data into db..");
+                mNoteDao.insertNotes(notes);
+            }
+        });
+    }
+
+    /**
      * Update an existing Note.
      *
      * @param note Note Object to update
@@ -101,6 +120,19 @@ public class NoteRepository {
             public void run() {
                 Log.d(TAG, "Deleting Note[id: " + note.get_id() + "]  from db..");
                 mNoteDao.deleteNote(note);
+            }
+        });
+    }
+
+    /**
+     * Delete all Notes.
+     */
+    public void deleteAllNotes() {
+        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Deleting all Notes from db..!");
+                mNoteDao.deleteAllNotes();
             }
         });
     }

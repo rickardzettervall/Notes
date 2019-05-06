@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -124,6 +125,12 @@ public class NoteActivity extends BaseActivity implements View.OnClickListener {
         // Save TextViews
         outState.putString(NOTE_HEADLINE, mHeadline.getText().toString());
         outState.putString(NOTE_TEXT, mText.getText().toString());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_note, menu);
+        return true;
     }
 
     @Override

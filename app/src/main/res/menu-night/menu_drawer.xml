@@ -20,8 +20,8 @@
         <menu>
             <item
                 android:id="@+id/nav_change_theme"
-                android:icon="@drawable/ic_brightness_dark"
-                android:title="@string/action_switch_theme_dark"/>
+                android:icon="@drawable/ic_brightness"
+                android:title="@string/action_switch_theme_light"/>
         </menu>
     </item>
 

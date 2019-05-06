@@ -8,7 +8,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -16,13 +15,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import org.parceler.Parcels;
@@ -49,10 +47,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private Toolbar mToolbar;
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
+    private boolean enableDarkTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Get SharedPreferences (Dark Theme?)
+        enableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(getString(R.string.enable_dark_theme_key), false);
 
         // Set Theme
         setTheme();
@@ -108,10 +111,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void setTheme() {
-        // Get SharedPreferences (Dark Theme?)
-        boolean enableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(getString(R.string.enable_dark_theme_key), false);
-
         if (enableDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
@@ -176,6 +175,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.nav_about:
                 startActivity(new Intent(this, AboutActivity.class));
+                break;
+            case R.id.nav_change_theme:
+                if(enableDarkTheme) {
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit().putBoolean(getString(R.string.enable_dark_theme_key), false)
+                            .apply();
+                } else {
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit().putBoolean(getString(R.string.enable_dark_theme_key), true)
+                            .apply();
+                }
+                setTheme();
+                recreate();
                 break;
         }
         mNavDrawerLayout.closeDrawers();
