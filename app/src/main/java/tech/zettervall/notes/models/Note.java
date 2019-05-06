@@ -22,7 +22,8 @@ public class Note implements Comparable<Note> {
 
     // Empty Constructor for Parcel
     @Ignore
-    public Note() {}
+    public Note() {
+    }
 
     @Ignore
     public Note(String type, String headline, String text) {
@@ -81,15 +82,16 @@ public class Note implements Comparable<Note> {
     }
 
     /**
-     * Compare contents for diff check in Adapter
-     * @param note
-     * @return
+     * Compare contents for diff check in Adapter.
+     *
+     * @param note Note to compare to this
+     * @return 0 when match and otherwise -1
      */
     @Override
     public int compareTo(@NonNull Note note) {
         boolean matchHeadline = this.headline.equals(note.getHeadline()),
                 matchText = this.text.equals(note.getText());
-        if(matchHeadline && matchText) {
+        if (matchHeadline && matchText) {
             return 0;
         }
         return -1;
