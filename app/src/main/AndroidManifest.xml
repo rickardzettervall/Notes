@@ -8,8 +8,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_agenda"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="tech.zettervall.notes.AboutActivity"/>
+        android:theme="@style/AppTheme">
+        <activity android:name="tech.zettervall.notes.AboutActivity"
+            android:label="@string/action_about"/>
         <activity
             android:name="tech.zettervall.notes.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -19,10 +20,12 @@
             android:parentActivityName="tech.zettervall.notes.MainActivity" />
         <activity
             android:name="tech.zettervall.notes.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
