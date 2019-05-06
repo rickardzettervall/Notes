@@ -81,12 +81,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
-        mLayoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        mLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 mLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    mFab.hide();
+                } else {
+                    mFab.show();
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
         // Set Listeners
         mFab.setOnClickListener(this);
@@ -101,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean enableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(getString(R.string.enable_dark_theme_key), false);
 
-        if(enableDarkTheme) {
+        if (enableDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -113,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.fab:
                 // Start NoteActivity
-                startActivity(new Intent(getBaseContext(), NoteActivity.class));
+                startActivity(new Intent(this, NoteActivity.class));
                 break;
         }
     }
@@ -132,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * OnClickListener for Notes RecyclerView.
+     *
      * @param index Index of clicked item
      */
     @Override
@@ -165,7 +177,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-
+            case R.id.nav_create_new_note:
+                startActivity(new Intent(this, NoteActivity.class));
+                break;
+            case R.id.nav_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.nav_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
         }
         mNavDrawerLayout.closeDrawers();
         return true;
