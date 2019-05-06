@@ -1,14 +1,11 @@
 package tech.zettervall.notes.models;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import org.parceler.Parcel;
-
-import java.util.Comparator;
 
 import tech.zettervall.notes.utils.DateTimeHelper;
 
