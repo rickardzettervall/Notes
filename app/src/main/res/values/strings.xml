@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Simple Notes</string>
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="by_line">By Rickard Zettervall</string>
 
     <!-- Confirm Deletion Alert -->
     <string name="confirm_deletion">Confirm deletion</string>

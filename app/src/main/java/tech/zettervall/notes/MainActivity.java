@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
@@ -15,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +38,7 @@ import tech.zettervall.notes.viewmodels.NotesViewModel;
  * 3. allow user to set notification reminder for a note
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        NoteAdapter.OnNoteClickListener {
+        NoteAdapter.OnNoteClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
@@ -41,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton mFab;
     private NotesViewModel mNotesViewModel;
     private NoteAdapter mNoteAdapter;
+    private Toolbar mToolbar;
+    private DrawerLayout mNavDrawerLayout;
+    private NavigationView mNavView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Find Views
         mRecyclerView = findViewById(R.id.notes_list_rv);
         mFab = findViewById(R.id.fab);
+        mToolbar = findViewById(R.id.toolbar);
+        mNavDrawerLayout = findViewById(R.id.drawer_layout);
+        mNavView = findViewById(R.id.nav_view);
+
+        // Set ToolBar
+        setSupportActionBar(mToolbar);
+
+        // Set Drawer
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
+                this, mNavDrawerLayout, mToolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
+        mNavDrawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
@@ -68,8 +88,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        // Set OnClickListeners
+        // Set Listeners
         mFab.setOnClickListener(this);
+        mNavView.setNavigationItemSelectedListener(this);
 
         // Subscribe Observers
         subscribeObservers();
@@ -131,10 +152,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                mNavDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+
+        }
+        mNavDrawerLayout.closeDrawers();
+        return true;
     }
 }
