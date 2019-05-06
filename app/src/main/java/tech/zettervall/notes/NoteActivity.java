@@ -2,12 +2,9 @@ package tech.zettervall.notes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -22,7 +19,7 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.utils.DateTimeHelper;
 
-public class NoteActivity extends AppCompatActivity implements View.OnClickListener {
+public class NoteActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = NoteActivity.class.getSimpleName();
     private static final String NOTE_HEADLINE = "note_headline";
@@ -130,17 +127,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_note, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
             case R.id.action_delete:
                 DialogInterface.OnClickListener dialogClickListener =
                         new DialogInterface.OnClickListener() {
@@ -171,9 +159,6 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
                 builder.setMessage(getString(R.string.confirm_deletion))
                         .setPositiveButton(getString(R.string.delete), dialogClickListener)
                         .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
-                return true;
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

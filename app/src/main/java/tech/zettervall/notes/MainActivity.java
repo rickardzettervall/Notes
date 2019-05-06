@@ -37,7 +37,7 @@ import tech.zettervall.notes.viewmodels.NotesViewModel;
  * 2. allow settings to be changed, theme
  * 3. allow user to set notification reminder for a note
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+public class MainActivity extends BaseActivity implements View.OnClickListener,
         NoteAdapter.OnNoteClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -156,19 +156,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mNavDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);
