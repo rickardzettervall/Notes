@@ -2,8 +2,12 @@ package tech.zettervall.notes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -169,5 +173,24 @@ public class NoteActivity extends BaseActivity implements View.OnClickListener {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Bullet EditText for creating lists.
+     */
+    public static class BulletEditText extends AppCompatEditText {
+
+        private Paint paint = new Paint();
+
+        public BulletEditText(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            canvas.drawCircle(0,0,16, paint);
+
+            super.onDraw(canvas);
+        }
     }
 }
