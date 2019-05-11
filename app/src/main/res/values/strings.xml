@@ -8,6 +8,8 @@
     <string name="confirm_deletion">Confirm deletion</string>
     <string name="delete">Delete</string>
     <string name="abort">Abort</string>
+    <string name="all_notes_deleted">All Notes deleted</string>
+    <string name="dummy_data_inserted">Dummy data inserted</string>
 
     <!-- Titles -->
     <string name="note_new">New Note</string>
@@ -44,7 +46,7 @@
     <string name="enable_dark_theme_desc">Restart App to apply this change.</string>
     <string name="insert_dummy_data">Insert dummy data</string>
     <string name="insert_dummy_data_key">insert_dummy_data</string>
-    <string name="insert_dummy_data_desc">Adds 50 Notes to the database for testing purposes.</string>
+    <string name="insert_dummy_data_desc">Adds 10 Notes to the database for testing purposes.</string>
     <string name="delete_all_notes">Delete all notes</string>
     <string name="delete_all_notes_key" translatable="false">delete_all_notes</string>
     <string name="delete_all_notes_desc">Warning! This will completely remove all your saved notes from the database.</string>

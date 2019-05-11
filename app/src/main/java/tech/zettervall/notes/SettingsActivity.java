@@ -54,7 +54,9 @@ public class SettingsActivity extends AppCompatActivity {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         NoteRepository.getInstance(getActivity().getApplication())
                                                 .deleteAllNotes();
-                                        Toast.makeText(getActivity(), "All Notes were deleted", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(),
+                                                getString(R.string.all_notes_deleted),
+                                                Toast.LENGTH_SHORT).show();
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;
@@ -68,7 +70,9 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             } else if (preference == findPreference(getString(R.string.insert_dummy_data_key))) {
                 NoteRepository.getInstance(getActivity().getApplication()).insertDummyData();
-                Toast.makeText(getActivity(), "Dummy data inserted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),
+                        getString(R.string.dummy_data_inserted),
+                        Toast.LENGTH_SHORT).show();
             }
             return false;
         }

@@ -80,8 +80,8 @@ public class NoteRepository {
      * Insert Dummy data into the db for testing.
      */
     public void insertDummyData() {
-        final Note[] notes = new Note[50];
-        for (int i = 0; i < 50; i++) {
+        final Note[] notes = new Note[10];
+        for (int i = 0; i < 10; i++) {
             notes[i] = new Note(
                     Constants.TYPE_PLAIN, "Dummy Headline!", "Dummy Text!");
         }
