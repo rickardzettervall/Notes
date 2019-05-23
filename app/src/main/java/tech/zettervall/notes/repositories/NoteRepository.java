@@ -6,8 +6,6 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
-import java.util.List;
-
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
