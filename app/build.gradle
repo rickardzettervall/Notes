@@ -29,7 +29,6 @@ dependencies {
     def room = '2.0.0'
     def parceler = '1.1.12'
     def mockito = '2.19.0'
-    def powerMockito = '1.6.5'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
