@@ -7,13 +7,11 @@ package tech.zettervall.notes.models;
 public class Library {
 
     private String title, description, url;
-    private int iconId;
 
-    public Library(String title, String description, String url, int iconId) {
+    public Library(String title, String description, String url) {
         this.title = title;
         this.description = description;
         this.url = url;
-        this.iconId = iconId;
     }
 
     public String getTitle() {
@@ -28,17 +26,12 @@ public class Library {
         return url;
     }
 
-    public int getIconId() {
-        return iconId;
-    }
-
     @Override
     public String toString() {
         return "Library{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
-                ", iconId=" + iconId +
                 '}';
     }
 }

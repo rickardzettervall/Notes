@@ -36,6 +36,14 @@
     <string name="cont_save_note">Save note</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Libraries -->
+    <string name="library_parceler" translatable="false">Parceler</string>
+    <string name="library_parceler_desc">A code generation library that generates the Android Parcelable boilerplate source code.</string>
+    <string name="library_parceler_url" translatable="false">https://github.com/johncarl81/parceler</string>
+    <string name="library_mockito" translatable="false">Mockito</string>
+    <string name="library_mockito_desc">Framework which allows the creation of test objects (mock objects) in automated unit tests for the purpose of test-driven development (TDD) or behavior-driven development (BDD).</string>
+    <string name="library_mockito_url" translatable="false">https://site.mockito.org/</string>
+
     <!-- Preference Titles -->
     <string name="theme">Theme</string>
     <string name="data">Data</string>
