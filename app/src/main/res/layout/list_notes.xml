@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_note_item"
-    android:background="@drawable/selector_note"
+    android:background="@drawable/selector_listitem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
