@@ -28,6 +28,7 @@ import org.parceler.Parcels;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.utils.RecyclerViewHelper;
 import tech.zettervall.notes.viewmodels.NotesViewModel;
 
 /**
@@ -84,12 +85,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
-        mLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(this);
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                mLayoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+        RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -177,7 +176,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.nav_change_theme:
-                if(enableDarkTheme) {
+                if (enableDarkTheme) {
                     PreferenceManager.getDefaultSharedPreferences(this)
                             .edit().putBoolean(getString(R.string.enable_dark_theme_key), false)
                             .apply();
