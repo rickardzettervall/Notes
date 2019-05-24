@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="confirm_deletion">
-        <item>@string/delete</item>
-        <item>@string/abort</item>
-    </string-array>
-</resources>
