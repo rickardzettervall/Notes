@@ -57,10 +57,6 @@ public class MainActivity extends BaseActivity implements
                 .getBoolean(getString(R.string.enable_dark_theme_key), false);
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
-        if (mNoteID != null) {
-            Log.d(TAG, "test: " + mNoteID);
-        }
-
         // Set Theme
         setTheme();
 
