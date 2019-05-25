@@ -30,13 +30,4 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:contentDescription="@string/cont_new_note"
-        app:srcCompat="@drawable/ic_add" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

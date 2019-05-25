@@ -3,7 +3,6 @@ package tech.zettervall.notes;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -12,23 +11,15 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
 import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 
-import org.parceler.Parcels;
-
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.adapters.NoteAdapter;
-import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.utils.RecyclerViewHelper;
 import tech.zettervall.notes.viewmodels.NotesViewModel;
 
 /**
@@ -36,30 +27,45 @@ import tech.zettervall.notes.viewmodels.NotesViewModel;
  * 2. allow settings to be changed, theme
  * 3. allow user to set notification reminder for a note
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener,
-        NoteAdapter.OnNoteClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements
+        NoteListFragment.NoteListFragmentClickListener,
+        NoteFragment.NoteFragmentClickListener,
+        NavigationView.OnNavigationItemSelectedListener,
+        View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
-    private FloatingActionButton mFab;
+    private static final String FRAGMENT_NOTELIST = "fragment_notelist";
+    private static final String FRAGMENT_NOTE = "fragment_note";
     private NotesViewModel mNotesViewModel;
-    private NoteAdapter mNoteAdapter;
     private Toolbar mToolbar;
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
-    private boolean enableDarkTheme;
+    private FragmentManager mFragmentManager;
+    private boolean mEnableDarkTheme;
+    private boolean mIsTablet;
+    private Integer mNoteID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get SharedPreferences (Dark Theme?)
-        enableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
+        // Retrieve saved fields
+        if (savedInstanceState != null) {
+            mNoteID = savedInstanceState.getInt(Constants.NOTE_ID);
+        }
+        mEnableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(getString(R.string.enable_dark_theme_key), false);
+        mIsTablet = getResources().getBoolean(R.bool.isTablet);
+
+        if (mNoteID != null) {
+            Log.d(TAG, "test: " + mNoteID);
+        }
 
         // Set Theme
         setTheme();
+
+        // Fragment handling
+        mFragmentManager = getSupportFragmentManager();
 
         // Set ContentView
         setContentView(R.layout.activity_main);
@@ -68,8 +74,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mNotesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
 
         // Find Views
-        mRecyclerView = findViewById(R.id.notes_list_rv);
-        mFab = findViewById(R.id.fab);
         mToolbar = findViewById(R.id.toolbar);
         mNavDrawerLayout = findViewById(R.id.drawer_layout);
         mNavView = findViewById(R.id.nav_view);
@@ -83,38 +87,76 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mNavDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        // Set Adapter / LayoutManager / Decoration
-        mNoteAdapter = new NoteAdapter(this);
-        mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(this);
-        mRecyclerView.setAdapter(mNoteAdapter);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    mFab.hide();
-                } else {
-                    mFab.show();
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
         // Set Listeners
-        mFab.setOnClickListener(this);
         mNavView.setNavigationItemSelectedListener(this);
 
-        // Subscribe Observers
-        subscribeObservers();
+        // Set Fragments
+        if (mIsTablet) {
+            setNoteListFragment(new NoteListFragment());
+            if (mNoteID != null && mNoteID != -1) {
+                setNoteFragment(createNoteFragmentWithBundle(mNoteID));
+            } else {
+                setNoteFragment(new NoteFragment());
+            }
+        }
+    }
+
+    private NoteFragment createNoteFragmentWithBundle(int noteID) {
+        // Set local mNoteID to allow configuration changes
+        mNoteID = noteID;
+
+        // Create Bundle and Fragment
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.NOTE_ID, noteID);
+        NoteFragment noteFragment = new NoteFragment();
+        noteFragment.setArguments(bundle);
+        return noteFragment;
+    }
+
+    private void setNoteListFragment(NoteListFragment noteListFragment) {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.frame_list, noteListFragment, FRAGMENT_NOTELIST)
+                .commit();
+    }
+
+    private void setNoteFragment(NoteFragment noteFragment) {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.frame_note, noteFragment, FRAGMENT_NOTE)
+                .commit();
     }
 
     private void setTheme() {
-        if (enableDarkTheme) {
+        if (mEnableDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    /**
+     * Create Fragment for new Note.
+     */
+    private void newNoteFragment() {
+        mNoteID = -1;
+        setNoteFragment(new NoteFragment());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mNoteID != null) {
+            outState.putInt(Constants.NOTE_ID, mNoteID);
+        }
+    }
+
+    @Override
+    public void onNoteFragmentFabClick() {
+
+    }
+
+    @Override
+    public void onNoteListFragmentFabClick() {
+        newNoteFragment();
     }
 
     @Override
@@ -127,30 +169,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    /**
-     * Subscribe Observers so that data survives configuration changes.
-     */
-    private void subscribeObservers() {
-        mNotesViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mNoteAdapter.submitList(notes);
-            }
-        });
-    }
-
-    /**
-     * OnClickListener for Notes RecyclerView.
-     *
-     * @param index Index of clicked item
-     */
     @Override
-    public void onNoteClick(int index) {
-        // Start NoteActivity with clicked Note so that it can be edited
-        Intent intent = new Intent(this, NoteActivity.class);
-        intent.putExtra(Constants.NOTE_PARCEL,
-                Parcels.wrap(mNotesViewModel.getNotes().getValue().get(index)));
-        startActivity(intent);
+    public void onNoteClick(int _id) {
+        setNoteFragment(createNoteFragmentWithBundle(_id));
     }
 
     @Override
@@ -167,7 +188,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_create_new_note:
-                startActivity(new Intent(this, NoteActivity.class));
+                if (mIsTablet) {
+                    newNoteFragment();
+                } else {
+                    startActivity(new Intent(this, NoteActivity.class));
+                }
                 break;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -176,7 +201,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.nav_change_theme:
-                if (enableDarkTheme) {
+                if (mEnableDarkTheme) {
                     PreferenceManager.getDefaultSharedPreferences(this)
                             .edit().putBoolean(getString(R.string.enable_dark_theme_key), false)
                             .apply();

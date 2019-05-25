@@ -8,7 +8,14 @@
 
     <FrameLayout
         android:id="@+id/frame_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.15"/>
+
+    <FrameLayout
+        android:id="@+id/frame_note"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.85"/>
 
 </LinearLayout>
