@@ -32,6 +32,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
     private NoteAdapter mNoteAdapter;
     private RecyclerView mRecyclerView;
     private FloatingActionButton mFab;
+    private boolean mIsTablet;
 
     @Nullable
     @Override
@@ -41,6 +42,9 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
 
         // Initialize ViewModel
         mNotesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+
+        // Retrieve saved fields
+        mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
@@ -52,17 +56,21 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    mFab.hide();
-                } else {
-                    mFab.show();
+        if(!mIsTablet) { // PHONE
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    if (dy > 0) {
+                        mFab.hide();
+                    } else {
+                        mFab.show();
+                    }
+                    super.onScrolled(recyclerView, dx, dy);
                 }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+            });
+        } else { // TABLET
+            mFab.hide();
+        }
 
         // Set FAB OnClickListener
         mFab.setOnClickListener(new View.OnClickListener() {

@@ -12,15 +12,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 
 import android.util.Log;
-import android.view.View;
 import android.view.MenuItem;
 
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.viewmodels.NotesViewModel;
+import tech.zettervall.notes.data.converters.ArrayTypeConverter;
 
 /**
  * 1. make it possible to add notes and display them in the main recyclerview
@@ -29,18 +27,12 @@ import tech.zettervall.notes.viewmodels.NotesViewModel;
  */
 public class MainActivity extends BaseActivity implements
         NoteListFragment.NoteListFragmentClickListener,
-        NoteFragment.NoteFragmentClickListener,
-        NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener {
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String FRAGMENT_NOTELIST = "fragment_notelist";
-    private static final String FRAGMENT_NOTE = "fragment_note";
-    private NotesViewModel mNotesViewModel;
     private Toolbar mToolbar;
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
-    private FragmentManager mFragmentManager;
     private boolean mEnableDarkTheme;
     private boolean mIsTablet;
     private Integer mNoteID;
@@ -60,14 +52,8 @@ public class MainActivity extends BaseActivity implements
         // Set Theme
         setTheme();
 
-        // Fragment handling
-        mFragmentManager = getSupportFragmentManager();
-
         // Set ContentView
         setContentView(R.layout.activity_main);
-
-        // Initialize ViewModel
-        mNotesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
 
         // Find Views
         mToolbar = findViewById(R.id.toolbar);
@@ -87,40 +73,26 @@ public class MainActivity extends BaseActivity implements
         mNavView.setNavigationItemSelectedListener(this);
 
         // Set Fragments
-        if (mIsTablet) {
-            setNoteListFragment(new NoteListFragment());
+        setNoteListFragment(new NoteListFragment());
+        if (mIsTablet) { // TABLET
             if (mNoteID != null && mNoteID != -1) {
-                setNoteFragment(createNoteFragmentWithBundle(mNoteID));
+                setNoteFragment(getNoteFragmentWithBundle(mNoteID));
             } else {
                 setNoteFragment(new NoteFragment());
             }
         }
     }
 
-    private NoteFragment createNoteFragmentWithBundle(int noteID) {
+    @Override
+    public NoteFragment getNoteFragmentWithBundle(int noteID) {
         // Set local mNoteID to allow configuration changes
         mNoteID = noteID;
-
-        // Create Bundle and Fragment
-        Bundle bundle = new Bundle();
-        bundle.putInt(Constants.NOTE_ID, noteID);
-        NoteFragment noteFragment = new NoteFragment();
-        noteFragment.setArguments(bundle);
-        return noteFragment;
+        return super.getNoteFragmentWithBundle(noteID);
     }
 
-    private void setNoteListFragment(NoteListFragment noteListFragment) {
-        mFragmentManager.beginTransaction()
-                .replace(R.id.frame_list, noteListFragment, FRAGMENT_NOTELIST)
-                .commit();
-    }
-
-    private void setNoteFragment(NoteFragment noteFragment) {
-        mFragmentManager.beginTransaction()
-                .replace(R.id.frame_note, noteFragment, FRAGMENT_NOTE)
-                .commit();
-    }
-
+    /**
+     * Set App theme.
+     */
     private void setTheme() {
         if (mEnableDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -132,9 +104,13 @@ public class MainActivity extends BaseActivity implements
     /**
      * Create Fragment for new Note.
      */
-    private void newNoteFragment() {
+    private void newNote() {
         mNoteID = -1;
-        setNoteFragment(new NoteFragment());
+        if (!mIsTablet) { // PHONE
+            startActivity(new Intent(this, NoteActivity.class));
+        } else { // TABLET
+            setNoteFragment(new NoteFragment());
+        }
     }
 
     @Override
@@ -146,28 +122,19 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onNoteFragmentFabClick() {
-
-    }
-
-    @Override
     public void onNoteListFragmentFabClick() {
-        newNoteFragment();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab:
-                // Start NoteActivity
-                startActivity(new Intent(this, NoteActivity.class));
-                break;
-        }
+        newNote();
     }
 
     @Override
     public void onNoteClick(int _id) {
-        setNoteFragment(createNoteFragmentWithBundle(_id));
+        if (!mIsTablet) { // PHONE
+            Intent intent = new Intent(this, NoteActivity.class);
+            intent.putExtra(Constants.NOTE_ID, _id);
+            startActivity(intent);
+        } else { // TABLET
+            setNoteFragment(getNoteFragmentWithBundle(_id));
+        }
     }
 
     @Override
@@ -184,11 +151,7 @@ public class MainActivity extends BaseActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_create_new_note:
-                if (mIsTablet) {
-                    newNoteFragment();
-                } else {
-                    startActivity(new Intent(this, NoteActivity.class));
-                }
+                newNote();
                 break;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));

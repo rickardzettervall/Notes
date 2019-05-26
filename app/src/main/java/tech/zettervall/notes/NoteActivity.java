@@ -2,39 +2,19 @@ package tech.zettervall.notes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatEditText;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.repositories.NoteRepository;
-import tech.zettervall.notes.utils.DateTimeHelper;
 
-public class NoteActivity extends BaseActivity implements View.OnClickListener {
+public class NoteActivity extends BaseActivity {
 
     private static final String TAG = NoteActivity.class.getSimpleName();
-    private static final String NOTE_HEADLINE = "note_headline";
-    private static final String NOTE_TEXT = "note_text";
-    private static final String NOTE_ID = "note_id";
-    private TextView mHeadline, mText;
-    private FloatingActionButton mFab;
     private Integer mNoteID;
-    private Note mNote;
-    private boolean delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,78 +24,24 @@ public class NoteActivity extends BaseActivity implements View.OnClickListener {
         // Set title
         setTitle(R.string.note_new);
 
-        // Find Views
-        mHeadline = findViewById(R.id.headline_tv);
-        mText = findViewById(R.id.text_tv);
-        mFab = findViewById(R.id.fab);
-
-        // Set default Note
-        mNote = new Note(Constants.TYPE_PLAIN,"", "");
-
         // Retrieve existing data
         if (getIntent().getExtras() != null) {
-            // A already existing Note was clicked and the ID resides in Extras
-            mNote = Parcels.unwrap(getIntent().getParcelableExtra(Constants.NOTE_PARCEL));
+            mNoteID = getIntent().getExtras().getInt(Constants.NOTE_ID);
             // Change title
             setTitle(R.string.note_modify);
-        } else if (savedInstanceState != null) {
-            // Restore newly created Note data from savedInstanceState
-            mNote.set_id(savedInstanceState.getInt(NOTE_ID));
-            mNote.setHeadline(savedInstanceState.getString(NOTE_HEADLINE));
-            mNote.setText(savedInstanceState.getString(NOTE_TEXT));
         }
 
-        // Set Views
-        mHeadline.setText(mNote.getHeadline());
-        mText.setText(mNote.getText());
-
-        // Set OnClickListeners
-        mFab.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab:
-                finish();
-                break;
-        }
-    }
-
-    private boolean wasEdited() {
-        if(mNote != null) {
-            if(mNote.getHeadline().equals(mHeadline.getText().toString())
-                    && mNote.getText().equals(mText.getText().toString())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Save Note to db
-     */
-    private void saveNote() {
-        // Check for delete flag and that user actually entered any text
-        if(!delete && wasEdited() && (!mHeadline.getText().toString().isEmpty() ||
-                !mText.getText().toString().isEmpty())) {
-            if (mNote.getText().equals("")) {
-                mNote.setHeadline(mHeadline.getText().toString());
-                mNote.setText(mText.getText().toString());
-                mNoteID = (int) NoteRepository.getInstance(getApplication()).insertNote(mNote);
-            } else { // Update Note
-                mNote.setHeadline(mHeadline.getText().toString());
-                mNote.setText(mText.getText().toString());
-                mNote.setDate(DateTimeHelper.getCurrentDateTime());
-                NoteRepository.getInstance(getApplication()).updateNote(mNote);
-            }
+        // Fragment handling
+        if(mNoteID != null) {
+            setNoteFragment(getNoteFragmentWithBundle(mNoteID));
+        } else {
+            setNoteFragment(new NoteFragment());
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        saveNote();
+    public NoteFragment getNoteFragmentWithBundle(int noteID) {
+        return super.getNoteFragmentWithBundle(noteID);
     }
 
     @Override
@@ -123,12 +49,8 @@ public class NoteActivity extends BaseActivity implements View.OnClickListener {
         super.onSaveInstanceState(outState);
         // Save Note ID
         if(mNoteID != null) {
-            outState.putInt(NOTE_ID, mNoteID);
+            outState.putInt(Constants.NOTE_ID, mNoteID);
         }
-
-        // Save TextViews
-        outState.putString(NOTE_HEADLINE, mHeadline.getText().toString());
-        outState.putString(NOTE_TEXT, mText.getText().toString());
     }
 
     @Override
@@ -147,18 +69,19 @@ public class NoteActivity extends BaseActivity implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
-                                NoteRepository.getInstance(getApplication()).deleteNote(mNote);
-                                if(mNote.getHeadline() != null && !mNote.getHeadline().isEmpty()) {
-                                    Toast.makeText(NoteActivity.this,
-                                            "Deleted '" + mNote.getHeadline() + "'",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(NoteActivity.this,
-                                            "Deleted Note",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                                // Set delete field to true so that the Note isn't saved in onPause()
-                                delete = true;
+                                // TODO: enable deletion here
+//                                NoteRepository.getInstance(getApplication()).deleteNote(mNote);
+//                                if(mNote.getHeadline() != null && !mNote.getHeadline().isEmpty()) {
+//                                    Toast.makeText(NoteActivity.this,
+//                                            "Deleted '" + mNote.getHeadline() + "'",
+//                                            Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    Toast.makeText(NoteActivity.this,
+//                                            "Deleted Note",
+//                                            Toast.LENGTH_SHORT).show();
+//                                }
+//                                // Set delete field to true so that the Note isn't saved in onPause()
+//                                delete = true;
                                 finish();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -173,24 +96,5 @@ public class NoteActivity extends BaseActivity implements View.OnClickListener {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Bullet EditText for creating lists.
-     */
-    public static class BulletEditText extends AppCompatEditText {
-
-        private Paint paint = new Paint();
-
-        public BulletEditText(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            canvas.drawCircle(0,0,16, paint);
-
-            super.onDraw(canvas);
-        }
     }
 }
