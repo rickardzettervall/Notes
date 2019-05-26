@@ -44,8 +44,8 @@ public class NoteRepositoryTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         noteDb = NoteDb.getInstance(context.getApplicationContext());
-        noteRepository = NoteRepository.getInstance(context.getApplicationContext());
-        note = new Note(Constants.TYPE_PLAIN, "headline", "text");
+//        noteRepository = NoteRepository.getInstance(context.getApplicationContext());
+//        note = new Note(Constants.TYPE_PLAIN, "title", "text");
     }
 
 //    private long insertNote(Note note) {

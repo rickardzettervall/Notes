@@ -11,6 +11,7 @@ import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.utils.DateTimeHelper;
 
 public class NoteRepository {
 
@@ -80,8 +81,8 @@ public class NoteRepository {
     public void insertDummyData() {
         final Note[] notes = new Note[10];
         for (int i = 0; i < 10; i++) {
-            notes[i] = new Note(
-                    Constants.TYPE_PLAIN, "Dummy Headline!", "Dummy Text!");
+            notes[i] = new Note("Dummy text!","Dummy text!", null, DateTimeHelper.getCurrentEpoch(),
+                    DateTimeHelper.getCurrentEpoch(), -1, false, false);
         }
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
@@ -101,7 +102,7 @@ public class NoteRepository {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Updating Note[id: " + note.get_id() + "] in db..");
+                Log.d(TAG, "Updating Note[id: " + note.getId() + "] in db..");
                 mNoteDao.updateNote(note);
             }
         });
@@ -116,7 +117,7 @@ public class NoteRepository {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Deleting Note[id: " + note.get_id() + "]  from db..");
+                Log.d(TAG, "Deleting Note[id: " + note.getId() + "]  from db..");
                 mNoteDao.deleteNote(note);
             }
         });

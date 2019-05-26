@@ -1,5 +1,7 @@
 package tech.zettervall.notes.models;
 
+import androidx.annotation.NonNull;
+
 /**
  * Open source library Object for displaying used libraries
  * in the About Activity in order to give credit to them.
@@ -26,6 +28,7 @@ public class Library {
         return url;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Library{" +

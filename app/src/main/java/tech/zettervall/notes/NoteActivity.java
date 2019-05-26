@@ -71,9 +71,9 @@ public class NoteActivity extends BaseActivity {
                             case DialogInterface.BUTTON_POSITIVE:
                                 // TODO: enable deletion here
 //                                NoteRepository.getInstance(getApplication()).deleteNote(mNote);
-//                                if(mNote.getHeadline() != null && !mNote.getHeadline().isEmpty()) {
+//                                if(mNote.getTitle() != null && !mNote.getTitle().isEmpty()) {
 //                                    Toast.makeText(NoteActivity.this,
-//                                            "Deleted '" + mNote.getHeadline() + "'",
+//                                            "Deleted '" + mNote.getTitle() + "'",
 //                                            Toast.LENGTH_SHORT).show();
 //                                } else {
 //                                    Toast.makeText(NoteActivity.this,

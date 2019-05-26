@@ -23,8 +23,8 @@
     <string name="action_switch_theme_light">Switch to Light Theme</string>
 
     <!-- Hints -->
-    <string name="hint_headline">Headline..</string>
-    <string name="hint_text">Your notes..</string>
+    <string name="hint_title">Title..</string>
+    <string name="hint_text">Notes..</string>
 
     <!-- Tools -->
     <string name="tools_headline" translatable="false">Important stuff</string>

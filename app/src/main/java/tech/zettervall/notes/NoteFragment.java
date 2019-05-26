@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.ArrayList;
+
 import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
 import tech.zettervall.notes.models.Note;
@@ -59,8 +61,8 @@ public class NoteFragment extends Fragment {
             @Override
             public void onChanged(Note note) {
                 if (note != null) {
-                    if (note.getHeadline() != null) {
-                        mDataBinding.headlineTv.setText(note.getHeadline());
+                    if (note.getTitle() != null) {
+                        mDataBinding.titleTv.setText(note.getTitle());
                     }
                     if (note.getText() != null) {
                         mDataBinding.textTv.setText(note.getText());
@@ -76,23 +78,28 @@ public class NoteFragment extends Fragment {
 
     /**
      * Save Note, but only if the user actually entered a
-     * headline or text, or if a previous Note was changed.
+     * title or text, or if a previous Note was changed.
      */
-    private void saveNote() {
-        if (!mDataBinding.headlineTv.getText().toString().isEmpty() ||
+    private void saveNote() { // TODO: set tags, favorite and notification based on user choices
+        if (!mDataBinding.titleTv.getText().toString().isEmpty() ||
                 !mDataBinding.textTv.getText().toString().isEmpty()) {
             if (mNote == null) {
                 // Create new Note
-                mNote = new Note(Constants.TYPE_PLAIN,
-                        mDataBinding.headlineTv.getText().toString(),
-                        mDataBinding.textTv.getText().toString());
+                mNote = new Note(mDataBinding.titleTv.getText().toString(),
+                        mDataBinding.textTv.getText().toString(),
+                        new ArrayList<String>(),
+                        DateTimeHelper.getCurrentEpoch(),
+                        DateTimeHelper.getCurrentEpoch(),
+                        -1,
+                        false,
+                        false);
                 mNoteID = (int) mNoteViewModel.insertNote(mNote);
-            } else if (!mNote.getHeadline().equals(mDataBinding.headlineTv.getText().toString()) ||
+            } else if (!mNote.getTitle().equals(mDataBinding.titleTv.getText().toString()) ||
                     !mNote.getText().equals(mDataBinding.textTv.getText().toString())) {
                 // Update existing Note
-                mNote.setHeadline(mDataBinding.headlineTv.getText().toString());
+                mNote.setTitle(mDataBinding.titleTv.getText().toString());
                 mNote.setText(mDataBinding.textTv.getText().toString());
-                mNote.setDate(DateTimeHelper.getCurrentDateTime());
+                mNote.setModifiedEpoch(DateTimeHelper.getCurrentEpoch());
                 mNoteID = (int) mNoteViewModel.insertNote(mNote);
             }
         }

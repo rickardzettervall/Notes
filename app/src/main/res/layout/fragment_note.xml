@@ -10,14 +10,14 @@
 
         <!-- Headline -->
         <EditText
-            android:id="@+id/headline_tv"
+            android:id="@+id/title_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:hint="@string/hint_headline"
+            android:hint="@string/hint_title"
             android:inputType="textMultiLine"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,9 +37,9 @@
             android:inputType="textMultiLine"
             android:scrollbarAlwaysDrawVerticalTrack="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/headline_tv"
-            app:layout_constraintStart_toStartOf="@+id/headline_tv"
-            app:layout_constraintTop_toBottomOf="@+id/headline_tv"
+            app:layout_constraintEnd_toEndOf="@+id/title_tv"
+            app:layout_constraintStart_toStartOf="@+id/title_tv"
+            app:layout_constraintTop_toBottomOf="@+id/title_tv"
             app:layout_constraintVertical_bias="0.0" />
 
         <!-- FAB -->

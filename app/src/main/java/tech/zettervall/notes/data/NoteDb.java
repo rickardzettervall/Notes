@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 
 import tech.zettervall.notes.models.Note;
 
-@Database(entities = {Note.class}, version = 1, exportSchema = false)
+@Database(entities = {Note.class}, version = 2, exportSchema = false)
 public abstract class NoteDb extends RoomDatabase {
 
     private static final String TAG = NoteDb.class.getSimpleName();

@@ -111,7 +111,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
     public void onNoteClick(int index) {
         try {
             // Get Note ID
-            int id = mNoteAdapter.getCurrentList().get(index).get_id();
+            int id = mNoteAdapter.getCurrentList().get(index).getId();
             // Send index to callback interface
             callback.onNoteClick(id);
         } catch (NullPointerException e) {

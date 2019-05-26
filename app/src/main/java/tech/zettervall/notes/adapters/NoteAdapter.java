@@ -30,7 +30,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             new DiffUtil.ItemCallback<Note>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-                    return oldItem.get_id() == newItem.get_id();
+                    return oldItem.getId() == newItem.getId();
                 }
 
                 @Override
@@ -50,7 +50,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             super(itemView);
 
             // Find Views
-            mHeadlineTv = itemView.findViewById(R.id.headline_tv);
+            mHeadlineTv = itemView.findViewById(R.id.title_tv);
             mTextTv = itemView.findViewById(R.id.text_tv);
             mDateTv = itemView.findViewById(R.id.date_tv);
 
@@ -83,9 +83,9 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = getItem(position);
         if (note != null) {
-            holder.mHeadlineTv.setText(note.getHeadline());
+            holder.mHeadlineTv.setText(note.getTitle());
             holder.mTextTv.setText(note.getText());
-            holder.mDateTv.setText(note.getDate());
+            holder.mDateTv.setText(note.getModifiedString());
         }
     }
 }

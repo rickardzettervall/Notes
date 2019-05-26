@@ -1,81 +1,148 @@
 package tech.zettervall.notes.models;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
-import org.parceler.Parcel;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import tech.zettervall.notes.data.converters.StringListTypeConverter;
 import tech.zettervall.notes.utils.DateTimeHelper;
 
-@Parcel
 @Entity(tableName = "note")
 public class Note implements Comparable<Note> {
 
     @PrimaryKey(autoGenerate = true)
-    public int _id;
-    public String type, headline, text, date;
+    private int _id;
+    private String title, text;
+    @TypeConverters(StringListTypeConverter.class)
+    private List<String> tags;
+    @ColumnInfo(name = "creation_epoch")
+    private long creationEpoch;
+    @ColumnInfo(name = "modified_epoch")
+    private long modifiedEpoch;
+    @ColumnInfo(name = "notification_epoch")
+    private long notificationEpoch;
+    @ColumnInfo(name = "trashed")
+    private boolean isTrash;
+    @ColumnInfo(name = "favorite")
+    private boolean isFavorite;
 
-    // Empty Constructor for Parcel
+    /**
+     * Constructor for new Note Objects.
+     */
     @Ignore
-    public Note() {
-    }
-
-    @Ignore
-    public Note(String type, String headline, String text) {
-        this.type = type;
-        this.headline = headline;
+    public Note(String title, String text, List<String> tags, long creationEpoch, long modifiedEpoch,
+                long notificationEpoch, boolean isTrash, boolean isFavorite) {
+        this.title = title;
         this.text = text;
-        this.date = DateTimeHelper.getCurrentDateTime();
+        this.tags = tags;
+        this.creationEpoch = creationEpoch;
+        this.modifiedEpoch = modifiedEpoch;
+        this.notificationEpoch = notificationEpoch;
+        this.isTrash = isTrash;
+        this.isFavorite = isFavorite;
     }
 
-    public Note(int _id, String type, String headline, String text) {
+    /**
+     * Constructor for Room.
+     */
+    public Note(int _id, String title, String text, @NonNull List<String> tags, long creationEpoch,
+                long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this._id = _id;
-        this.type = type;
-        this.headline = headline;
+        this.title = title;
         this.text = text;
-        this.date = DateTimeHelper.getCurrentDateTime();
+        this.tags = tags;
+        this.creationEpoch = creationEpoch;
+        this.modifiedEpoch = modifiedEpoch;
+        this.notificationEpoch = notificationEpoch;
+        this.isTrash = isTrash;
+        this.isFavorite = isFavorite;
     }
 
-    public int get_id() {
+    public int getId() {
         return _id;
     }
 
-    public String getType() {
-        return type;
+    public void setId(int _id) {
+        this._id = _id;
     }
 
-    public String getHeadline() {
-        return headline;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getText() {
         return text;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void set_id(int _id) {
-        this._id = _id;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setHeadline(String headline) {
-        this.headline = headline;
-    }
-
     public void setText(String text) {
         this.text = text;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public List<String> getTags() {
+        return new ArrayList<>(tags);
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public long getCreationEpoch() {
+        return creationEpoch;
+    }
+
+    public String getCreationString() {
+        return DateTimeHelper.getDateStringFromEpoch(creationEpoch);
+    }
+
+    public void setCreationEpoch(long creationEpoch) {
+        this.creationEpoch = creationEpoch;
+    }
+
+    public long getModifiedEpoch() {
+        return modifiedEpoch;
+    }
+
+    public String getModifiedString() {
+        return DateTimeHelper.getDateStringFromEpoch(modifiedEpoch);
+    }
+
+    public void setModifiedEpoch(long modifiedEpoch) {
+        this.modifiedEpoch = modifiedEpoch;
+    }
+
+    public long getNotificationEpoch() {
+        return notificationEpoch;
+    }
+
+    public void setNotificationEpoch(long notificationEpoch) {
+        this.notificationEpoch = notificationEpoch;
+    }
+
+    public boolean isTrash() {
+        return isTrash;
+    }
+
+    public void setTrash(boolean trash) {
+        isTrash = trash;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     /**
@@ -86,7 +153,7 @@ public class Note implements Comparable<Note> {
      */
     @Override
     public int compareTo(@NonNull Note note) {
-        boolean matchHeadline = this.headline.equals(note.getHeadline()),
+        boolean matchHeadline = this.title.equals(note.getTitle()),
                 matchText = this.text.equals(note.getText());
         if (matchHeadline && matchText) {
             return 0;
@@ -94,14 +161,19 @@ public class Note implements Comparable<Note> {
         return -1;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Note{" +
                 "_id=" + _id +
-                ", type='" + type + '\'' +
-                ", headline='" + headline + '\'' +
+                ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
-                ", date='" + date + '\'' +
+                ", tags=" + tags +
+                ", creationEpoch=" + creationEpoch +
+                ", modifiedEpoch=" + modifiedEpoch +
+                ", notificationEpoch=" + notificationEpoch +
+                ", isTrash=" + isTrash +
+                ", isFavorite=" + isFavorite +
                 '}';
     }
 }

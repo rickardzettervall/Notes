@@ -11,14 +11,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
-import android.util.Log;
 import android.view.MenuItem;
 
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.data.converters.ArrayTypeConverter;
 
 /**
  * 1. make it possible to add notes and display them in the main recyclerview

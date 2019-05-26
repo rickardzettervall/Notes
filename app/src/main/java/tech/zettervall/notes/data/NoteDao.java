@@ -18,7 +18,7 @@ import tech.zettervall.notes.models.Note;
 public interface NoteDao {
 
     // Get all Notes
-    @Query("SELECT * FROM note ORDER BY date DESC")
+    @Query("SELECT * FROM note ORDER BY modified_epoch DESC")
     DataSource.Factory<Integer, Note> getNotes();
 
     // Get specific Note based on ID

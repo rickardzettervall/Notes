@@ -12,7 +12,7 @@
     <string name="delete">Radera</string>
     <string name="delete_all_notes">Radera alla Anteckningar</string>
     <string name="enable_dark_theme">Aktivera mörkt tema</string>
-    <string name="hint_headline">Överskrift..</string>
+    <string name="hint_title">Överskrift..</string>
     <string name="hint_text">Dina anteckningar..</string>
     <string name="note_modify">Modifiera Anteckning</string>
     <string name="note_new">Ny Anteckning</string>
