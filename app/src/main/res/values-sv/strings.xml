@@ -9,7 +9,7 @@
     <string name="cont_new_note">Lägg till ny Anteckning</string>
     <string name="cont_save_note">Spara Anteckning</string>
     <string name="data">Data</string>
-    <string name="delete">Radera</string>
+    <string name="confirm">Radera</string>
     <string name="delete_all_notes">Radera alla Anteckningar</string>
     <string name="enable_dark_theme">Aktivera mörkt tema</string>
     <string name="hint_title">Överskrift..</string>

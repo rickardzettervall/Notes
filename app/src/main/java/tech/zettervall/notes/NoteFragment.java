@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class NoteFragment extends Fragment {
     private NoteViewModel mNoteViewModel;
     private Integer mNoteID;
     private Note mNote;
+    private boolean isFavorite;
 
     @Nullable
     @Override
@@ -67,6 +69,10 @@ public class NoteFragment extends Fragment {
                     if (note.getText() != null) {
                         mDataBinding.textTv.setText(note.getText());
                     }
+                    mDataBinding.createdTv.setText(getString(R.string.creation_date,
+                            DateTimeHelper.getDateStringFromEpoch(note.getCreationEpoch())));
+                    mDataBinding.updatedTv.setText(getString(R.string.modified_date,
+                            DateTimeHelper.getDateStringFromEpoch(note.getModifiedEpoch())));
                 }
 
                 /* Set private Note Object to use for editing and
@@ -108,7 +114,14 @@ public class NoteFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        saveNote();
+        if (!Constants.deleteNote) { // SAVE
+            saveNote();
+        } else if(mNote != null) { // DELETE
+            Constants.deleteNote = false;
+            mNote.setTrash(true);
+            mNoteViewModel.insertNote(mNote);
+            Toast.makeText(getActivity(), "Note deleted", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

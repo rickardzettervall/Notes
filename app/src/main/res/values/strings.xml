@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- VERSION -->
     <string name="version" translatable="false">Version 1.0.1</string>
 
@@ -7,10 +7,17 @@
     <string name="nav_drawer_close">Close navigation drawer</string>
     <string name="by_line">By Rickard Zettervall</string>
 
-    <!-- Confirm Deletion Alert -->
-    <string name="confirm_deletion">Confirm deletion</string>
-    <string name="delete">Delete</string>
+    <!-- Note -->
+    <string name="note">Note</string>
+    <string name="creation_date">Created: <xliff:g example="Jun 1, 2019 10:55" id="date">%s</xliff:g></string>
+    <string name="modified_date">Updated: <xliff:g example="Jun 2, 2019 12:00" id="date">%s</xliff:g></string>
+
+    <!-- Confirm Alert -->
+    <string name="confirm_deletion">Delete note?</string>
+    <string name="confirm">Confirm</string>
     <string name="abort">Abort</string>
+    <string name="confirm_empty_trash">Empty trash?</string>
+    <string name="confirm_restore_trash">Restore all notes?</string>
     <string name="all_notes_deleted">All Notes deleted</string>
     <string name="dummy_data_inserted">Dummy data inserted</string>
 
@@ -29,15 +36,22 @@
     <string name="action_delete">Delete Note</string>
     <string name="action_switch_theme_dark">Switch to Dark Theme</string>
     <string name="action_switch_theme_light">Switch to Light Theme</string>
+    <string name="action_empty_trash">Empty trash</string>
+    <string name="action_restore_trash">Restore all notes</string>
 
     <!-- Hints -->
     <string name="hint_title">Title..</string>
     <string name="hint_text">Notes..</string>
 
+    <!-- Trash -->
+    <string name="trash_is_empty">Trash is empty..</string>
+
     <!-- Tools -->
     <string name="tools_headline" translatable="false">Important stuff</string>
     <string name="tools_text" translatable="false">This is some text containing very important stuff, this might even span through many lines. Indeed this text is super important and must be quite long, it must be longer than three rows so that the three dots are allowed to appear in the tools.</string>
-    <string name="tools_date" translatable="false">May 1, 2019</string>
+    <string name="tools_date" translatable="false">May 1, 2019 11:55</string>
+    <string name="tools_date_created" translatable="false">Created: May 1, 2019 11:55</string>
+    <string name="tools_date_updated" translatable="false">Updated: May 1, 2019 11:55</string>
 
     <!-- Content Descriptions -->
     <string name="cont_new_note">Add new note</string>

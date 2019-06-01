@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
 import tech.zettervall.notes.AppExecutor;
-import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.models.Note;
@@ -49,6 +48,17 @@ public class NoteRepository {
     }
 
     /**
+     * Get all trashed Note Objects from the db as DataSource
+     * Object, so that it can be used in PagedList.
+     *
+     * @return DataSource containing all trashed Notes
+     */
+    public DataSource.Factory<Integer, Note> getTrashedNotes() {
+        Log.d(TAG, "Retrieving all trashed Notes..");
+        return mNoteDao.getTrashedNotes();
+    }
+
+    /**
      * Get single Note based on unique _id.
      *
      * @param _id Db _id
@@ -81,7 +91,7 @@ public class NoteRepository {
     public void insertDummyData() {
         final Note[] notes = new Note[10];
         for (int i = 0; i < 10; i++) {
-            notes[i] = new Note("Dummy text!","Dummy text!", null, DateTimeHelper.getCurrentEpoch(),
+            notes[i] = new Note("Dummy text!", "Dummy text!", null, DateTimeHelper.getCurrentEpoch(),
                     DateTimeHelper.getCurrentEpoch(), -1, false, false);
         }
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
@@ -132,6 +142,16 @@ public class NoteRepository {
             public void run() {
                 Log.d(TAG, "Deleting all Notes from db..!");
                 mNoteDao.deleteAllNotes();
+            }
+        });
+    }
+
+    public void deleteAllTrashedNotes() {
+        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Deleting all trashed Notes from db..!");
+                mNoteDao.deleteAllTrashedNotes();
             }
         });
     }

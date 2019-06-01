@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="tech.zettervall.mNotes.Trash">
+    <item
+        android:id="@+id/action_empty_trash"
+        android:icon="@drawable/ic_clear"
+        android:orderInCategory="90"
+        android:title="@string/action_empty_trash"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_restore_trash"
+        android:icon="@drawable/ic_restore"
+        android:orderInCategory="100"
+        android:title="@string/action_restore_trash"
+        app:showAsAction="never" />
+</menu>

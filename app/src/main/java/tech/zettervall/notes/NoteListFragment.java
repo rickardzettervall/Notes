@@ -21,13 +21,13 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.RecyclerViewHelper;
-import tech.zettervall.notes.viewmodels.NotesViewModel;
+import tech.zettervall.notes.viewmodels.NoteListViewModel;
 
 public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClickListener {
 
     private static final String TAG = NoteListFragment.class.getSimpleName();
     private NoteListFragmentClickListener callback;
-    private NotesViewModel mNotesViewModel;
+    private NoteListViewModel mNoteListViewModel;
     private LinearLayoutManager mLayoutManager;
     private NoteAdapter mNoteAdapter;
     private RecyclerView mRecyclerView;
@@ -41,7 +41,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
         // Initialize ViewModel
-        mNotesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+        mNoteListViewModel = ViewModelProviders.of(this).get(NoteListViewModel.class);
 
         // Retrieve saved fields
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
@@ -90,7 +90,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
      * Subscribe Observers.
      */
     private void subscribeObservers() {
-        mNotesViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
+        mNoteListViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);

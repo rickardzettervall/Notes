@@ -8,10 +8,9 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import tech.zettervall.notes.data.converters.StringListTypeConverter;
+import tech.zettervall.notes.data.typeconverters.StringListTypeConverter;
 import tech.zettervall.notes.utils.DateTimeHelper;
 
 @Entity(tableName = "note")
@@ -28,17 +27,21 @@ public class Note implements Comparable<Note> {
     private long modifiedEpoch;
     @ColumnInfo(name = "notification_epoch")
     private long notificationEpoch;
-    @ColumnInfo(name = "trashed")
+    @ColumnInfo(name = "trash")
     private boolean isTrash;
     @ColumnInfo(name = "favorite")
     private boolean isFavorite;
+    @ColumnInfo(name = "folder_id")
+    private int folderId;
+    @ColumnInfo(name = "color_id")
+    private int colorId;
 
     /**
      * Constructor for new Note Objects.
      */
     @Ignore
-    public Note(String title, String text, List<String> tags, long creationEpoch, long modifiedEpoch,
-                long notificationEpoch, boolean isTrash, boolean isFavorite) {
+    public Note(String title, String text, @NonNull List<String> tags, long creationEpoch,
+                long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this.title = title;
         this.text = text;
         this.tags = tags;
@@ -143,6 +146,22 @@ public class Note implements Comparable<Note> {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public int getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(int folderId) {
+        this.folderId = folderId;
+    }
+
+    public int getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(int colorId) {
+        this.colorId = colorId;
     }
 
     /**

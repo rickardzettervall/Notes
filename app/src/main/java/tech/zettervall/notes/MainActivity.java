@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
+import android.view.Gravity;
 import android.view.MenuItem;
 
 import tech.zettervall.mNotes.R;
@@ -30,8 +31,6 @@ public class MainActivity extends BaseActivity implements
     private Toolbar mToolbar;
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
-    private boolean mEnableDarkTheme;
-    private boolean mIsTablet;
     private Integer mNoteID;
 
     @Override
@@ -42,12 +41,6 @@ public class MainActivity extends BaseActivity implements
         if (savedInstanceState != null) {
             mNoteID = savedInstanceState.getInt(Constants.NOTE_ID);
         }
-        mEnableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(getString(R.string.enable_dark_theme_key), false);
-        mIsTablet = getResources().getBoolean(R.bool.isTablet);
-
-        // Set Theme
-        setTheme();
 
         // Set ContentView
         setContentView(R.layout.activity_main);
@@ -88,17 +81,6 @@ public class MainActivity extends BaseActivity implements
     }
 
     /**
-     * Set App theme.
-     */
-    private void setTheme() {
-        if (mEnableDarkTheme) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
-
-    /**
      * Create Fragment for new Note.
      */
     private void newNote() {
@@ -135,42 +117,30 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mNavDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                mNavDrawerLayout.openDrawer(GravityCompat.START);
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNavDrawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.nav_create_new_note:
-                newNote();
-                break;
-            case R.id.nav_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.nav_about:
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-            case R.id.nav_change_theme:
-                if (mEnableDarkTheme) {
-                    PreferenceManager.getDefaultSharedPreferences(this)
-                            .edit().putBoolean(getString(R.string.enable_dark_theme_key), false)
-                            .apply();
-                } else {
-                    PreferenceManager.getDefaultSharedPreferences(this)
-                            .edit().putBoolean(getString(R.string.enable_dark_theme_key), true)
-                            .apply();
-                }
-                setTheme();
-                recreate();
-                break;
-        }
-        mNavDrawerLayout.closeDrawers();
+        super.onNavigationItemSelected(menuItem);
         return true;
     }
 }

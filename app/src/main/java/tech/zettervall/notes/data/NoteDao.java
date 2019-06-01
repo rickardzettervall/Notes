@@ -18,8 +18,12 @@ import tech.zettervall.notes.models.Note;
 public interface NoteDao {
 
     // Get all Notes
-    @Query("SELECT * FROM note ORDER BY modified_epoch DESC")
+    @Query("SELECT * FROM note WHERE trash = 0 ORDER BY modified_epoch DESC")
     DataSource.Factory<Integer, Note> getNotes();
+
+    // Get all Notes (TRASH)
+    @Query("SELECT * FROM note WHERE trash = 1 ORDER BY modified_epoch DESC")
+    DataSource.Factory<Integer, Note> getTrashedNotes();
 
     // Get specific Note based on ID
     @Query("SELECT * FROM note WHERE _id IS :id")
@@ -40,4 +44,7 @@ public interface NoteDao {
 
     @Query("DELETE FROM note")
     void deleteAllNotes();
+
+    @Query("DELETE FROM note WHERE trash = 1")
+    void deleteAllTrashedNotes();
 }

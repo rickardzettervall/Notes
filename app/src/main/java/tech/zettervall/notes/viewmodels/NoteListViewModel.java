@@ -14,12 +14,12 @@ import tech.zettervall.notes.repositories.NoteRepository;
 /**
  * ViewModel for List (PagedList) of all Notes.
  */
-public class NotesViewModel extends AndroidViewModel {
+public class NoteListViewModel extends AndroidViewModel {
 
     private NoteRepository mNoteRepository;
     private LiveData<PagedList<Note>> mNotes;
 
-    public NotesViewModel(@NonNull Application application) {
+    public NoteListViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
 

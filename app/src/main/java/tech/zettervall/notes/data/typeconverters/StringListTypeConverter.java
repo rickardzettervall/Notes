@@ -1,4 +1,4 @@
-package tech.zettervall.notes.data.converters;
+package tech.zettervall.notes.data.typeconverters;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

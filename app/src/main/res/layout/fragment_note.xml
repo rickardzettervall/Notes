@@ -3,57 +3,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="tech.zettervall.notes.NoteActivity">
+        android:layout_height="match_parent">
 
-        <!-- Headline -->
-        <EditText
-            android:id="@+id/title_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="@string/hint_title"
-            android:inputType="textMultiLine"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <!-- Text -->
-        <EditText
-            android:id="@+id/text_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/hint_text"
-            android:inputType="textMultiLine"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/title_tv"
-            app:layout_constraintStart_toStartOf="@+id/title_tv"
-            app:layout_constraintTop_toBottomOf="@+id/title_tv"
-            app:layout_constraintVertical_bias="0.0" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context="tech.zettervall.notes.NoteActivity">
+
+                <!-- Headline -->
+                <EditText
+                    android:id="@+id/title_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:hint="@string/hint_title"
+                    android:inputType="textMultiLine"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Text -->
+                <EditText
+                    android:id="@+id/text_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:hint="@string/hint_text"
+                    android:inputType="textMultiLine"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    app:layout_constraintEnd_toEndOf="@+id/title_tv"
+                    app:layout_constraintStart_toStartOf="@+id/title_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/title_tv" />
+
+                <!-- Last updated -->
+                <TextView
+                    android:id="@+id/updated_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="@+id/text_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/text_tv"
+                    tools:text="@string/tools_date_updated" />
+
+                <!-- Creation date -->
+                <TextView
+                    android:id="@+id/created_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/updated_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/updated_tv"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:text="@string/tools_date_created" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
         <!-- FAB -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/fab_margin"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/cont_save_note"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_save" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
 </layout>

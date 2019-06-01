@@ -65,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
                         };
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage(getString(R.string.confirm_deletion))
-                        .setPositiveButton(getString(R.string.delete), dialogClickListener)
+                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
                         .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
                 return true;
             } else if (preference == findPreference(getString(R.string.insert_dummy_data_key))) {
