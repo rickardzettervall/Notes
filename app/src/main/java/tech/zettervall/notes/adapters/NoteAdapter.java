@@ -3,6 +3,7 @@ package tech.zettervall.notes.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mHeadlineTv, mTextTv, mDateTv;
+        private ImageView mFavorite;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,6 +55,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             mHeadlineTv = itemView.findViewById(R.id.title_tv);
             mTextTv = itemView.findViewById(R.id.text_tv);
             mDateTv = itemView.findViewById(R.id.date_tv);
+            mFavorite = itemView.findViewById(R.id.favorite_iv);
 
             // Set OnClickListener
             itemView.setOnClickListener(this);
@@ -86,6 +89,9 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             holder.mHeadlineTv.setText(note.getTitle());
             holder.mTextTv.setText(note.getText());
             holder.mDateTv.setText(note.getModifiedString());
+            if(note.isFavorite()) {
+                holder.mFavorite.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

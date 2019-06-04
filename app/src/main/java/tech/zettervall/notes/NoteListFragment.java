@@ -102,7 +102,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
      * Callback interface for sending data back to Activity.
      */
     public interface NoteListFragmentClickListener {
-        void onNoteClick(int _id);
+        void onNoteClick(Note note);
 
         void onNoteListFragmentFabClick();
     }
@@ -110,10 +110,10 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
     @Override
     public void onNoteClick(int index) {
         try {
-            // Get Note ID
-            int id = mNoteAdapter.getCurrentList().get(index).getId();
-            // Send index to callback interface
-            callback.onNoteClick(id);
+            // Get Note
+            Note note = mNoteAdapter.getCurrentList().get(index);
+            // Send Note to callback interface
+            callback.onNoteClick(note);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

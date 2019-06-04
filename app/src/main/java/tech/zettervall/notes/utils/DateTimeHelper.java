@@ -9,13 +9,8 @@ import java.util.TimeZone;
 public abstract class DateTimeHelper {
 
     /**
-     * Gets the current date and time in the format of user system settings.
-     * @return Date in a String format
+     * Get current Unix Epoch timestamp in long.
      */
-    public static String getCurrentDateTime() {
-        return DateFormat.getDateInstance().format(new Date(System.currentTimeMillis()));
-    }
-
     public static long getCurrentEpoch() {
         return new Date().getTime();
     }

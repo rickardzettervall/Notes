@@ -33,8 +33,4 @@ public class NoteViewModel extends AndroidViewModel {
     public long insertNote(Note note) {
         return mNoteRepository.insertNote(note);
     }
-
-    public void deleteNote(Note note) {
-        mNoteRepository.deleteNote(note);
-    }
 }

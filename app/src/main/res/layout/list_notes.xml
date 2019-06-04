@@ -13,13 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textAppearance="?android:textAppearanceMedium"
         android:textStyle="bold"
-        android:maxLines="1"
-        android:ellipsize="end"
-        app:layout_constraintEnd_toStartOf="@+id/date_tv"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/favorite_iv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/tools_headline" />
@@ -35,9 +34,9 @@
         android:textAppearance="?android:textAppearanceSmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/title_tv"
         app:layout_constraintTop_toBottomOf="@+id/title_tv"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="@string/tools_text" />
 
     <TextView
@@ -49,5 +48,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/title_tv"
         tools:text="@string/tools_date" />
+
+    <ImageView
+        android:id="@+id/favorite_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/date_tv"
+        app:layout_constraintTop_toTopOf="@+id/title_tv"
+        app:srcCompat="@drawable/ic_star" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

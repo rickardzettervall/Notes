@@ -15,8 +15,10 @@ import androidx.preference.PreferenceManager;
 
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.models.Note;
 
 /**
  * 1. make it possible to add notes and display them in the main recyclerview
@@ -106,13 +108,14 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onNoteClick(int _id) {
+    public void onNoteClick(Note note) {
         if (!mIsTablet) { // PHONE
             Intent intent = new Intent(this, NoteActivity.class);
-            intent.putExtra(Constants.NOTE_ID, _id);
+            intent.putExtra(Constants.NOTE_ID, note.getId());
+            intent.putExtra(Constants.NOTE_IS_FAVORITE, note.isFavorite());
             startActivity(intent);
         } else { // TABLET
-            setNoteFragment(getNoteFragmentWithBundle(_id));
+            setNoteFragment(getNoteFragmentWithBundle(note.getId()));
         }
     }
 

@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -23,6 +24,7 @@ public class NoteActivity extends BaseActivity {
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
     private Integer mNoteID;
+    private boolean mIsFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class NoteActivity extends BaseActivity {
         // Retrieve existing data
         if (getIntent().getExtras() != null) {
             mNoteID = getIntent().getExtras().getInt(Constants.NOTE_ID);
+            mIsFavorite = getIntent().getExtras().getBoolean(Constants.NOTE_IS_FAVORITE);
         }
 
         // Fragment handling
@@ -88,45 +91,13 @@ public class NoteActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_favoritize:
+                // Implement in Fragment
+                break;
             case R.id.action_delete:
-                DialogInterface.OnClickListener dialogClickListener =
-                        new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                Constants.deleteNote = true;
-//                                Note note = mNoteViewModel.getNote().getValue();
-//                                if(note != null) {
-//                                    note.setTrash(true);
-//                                    Toast.makeText(NoteActivity.this,
-//                                            "Moved '" + note.getTitle() + "' to trash",
-//                                            Toast.LENGTH_SHORT).show();
-//                                }
-//                                // TODO: enable deletion here
-//                                NoteRepository.getInstance(getApplication()).deleteNote(mNote);
-//                                if(mNote.getTitle() != null && !mNote.getTitle().isEmpty()) {
-//                                    Toast.makeText(NoteActivity.this,
-//                                            "Deleted '" + mNote.getTitle() + "'",
-//                                            Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    Toast.makeText(NoteActivity.this,
-//                                            "Deleted Note",
-//                                            Toast.LENGTH_SHORT).show();
-//                                }
-                                finish();
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                break;
-                        }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getString(R.string.confirm_deletion))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
-                return true;
+                // Implement in Fragment
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }

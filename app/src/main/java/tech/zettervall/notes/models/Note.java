@@ -138,6 +138,10 @@ public class Note implements Comparable<Note> {
 
     public void setTrash(boolean trash) {
         isTrash = trash;
+        if(trash) {
+            // Also set isFavorite to false because a trashed Note shouldn't be in favorites
+            isFavorite = false;
+        }
     }
 
     public boolean isFavorite() {
@@ -173,8 +177,9 @@ public class Note implements Comparable<Note> {
     @Override
     public int compareTo(@NonNull Note note) {
         boolean matchHeadline = this.title.equals(note.getTitle()),
-                matchText = this.text.equals(note.getText());
-        if (matchHeadline && matchText) {
+                matchText = this.text.equals(note.getText()),
+                matchFavorite = this.isFavorite == note.isFavorite();
+        if (matchHeadline && matchText && matchFavorite) {
             return 0;
         }
         return -1;

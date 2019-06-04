@@ -78,7 +78,7 @@ public class NoteRepository {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Inserting new Note into db..");
+                Log.d(TAG, "Inserting Note into db..");
                 mNoteID = mNoteDao.insertNote(note);
             }
         });
