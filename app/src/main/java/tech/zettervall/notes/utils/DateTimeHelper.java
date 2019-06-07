@@ -1,19 +1,14 @@
 package tech.zettervall.notes.utils;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public abstract class DateTimeHelper {
 
     private static final String TAG = DateTimeHelper.class.getSimpleName();
-    private static final Locale[] amPmCountries = { Locale.US, Locale.CANADA,
-            Locale.CANADA_FRENCH };
 
     /**
      * Get current Unix Epoch timestamp in long.
@@ -27,6 +22,10 @@ public abstract class DateTimeHelper {
      */
     // TODO: allow for user to change between am/pm and 24h
     public static String getDateStringFromEpoch(long epoch) {
+
+        // Countries with AM/PM clock
+        Locale[] amPmCountries = { Locale.US, Locale.CANADA, Locale.CANADA_FRENCH };
+
         // Set Date Objects
         Date currentDate = new Date();
         currentDate.setTime(getCurrentEpoch());
@@ -62,9 +61,6 @@ public abstract class DateTimeHelper {
         } else { // OTHER YEAR
             dateFormat = new SimpleDateFormat("d MMM YYYY", Locale.getDefault());
             return dateFormat.format(inputDate) + ", " + timeFormat.format(inputDate);
-//            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
-//            dateFormat.setTimeZone(TimeZone.getDefault());
-//            return dateFormat.format(inputDate) + ", " + timeFormat.format(inputDate);
         }
     }
 }
