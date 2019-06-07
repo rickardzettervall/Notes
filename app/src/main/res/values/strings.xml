@@ -67,6 +67,7 @@
     <string name="cont_new_note">Add new note</string>
     <string name="cont_save_note">Save note</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="cont_favorite">Favorite</string>
 
     <!-- Libraries -->
     <string name="library_parceler" translatable="false">Parceler</string>
