@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
@@ -19,8 +20,8 @@ public class TrashViewModel extends AndroidViewModel {
     public TrashViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
-        // Create PagedList and load 10 items at a time.
-        mTrash = new LivePagedListBuilder<>(mNoteRepository.getTrashedNotes(), 10).build();
+        mTrash = new LivePagedListBuilder<>(mNoteRepository.getTrashedNotes(),
+                Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 
     public LiveData<PagedList<Note>> getTrash() {

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
@@ -22,9 +23,8 @@ public class NoteListViewModel extends AndroidViewModel {
     public NoteListViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
-
-        // Create PagedList and load 10 items at a time.
-        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotes(), 10).build();
+        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotes(),
+                Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 
     public LiveData<PagedList<Note>> getNotes() {
