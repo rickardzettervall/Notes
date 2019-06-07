@@ -30,8 +30,4 @@ public class NoteListViewModel extends AndroidViewModel {
     public LiveData<PagedList<Note>> getNotes() {
         return mNotes;
     }
-
-    public void deleteNote(Note note) {
-        mNoteRepository.deleteNote(note);
-    }
 }

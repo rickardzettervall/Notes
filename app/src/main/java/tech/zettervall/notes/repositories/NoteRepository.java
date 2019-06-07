@@ -78,8 +78,8 @@ public class NoteRepository {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Inserting Note into db..");
                 mNoteID = mNoteDao.insertNote(note);
+                Log.d(TAG, "Note[id: " + mNoteID + "] inserted into db..");
             }
         });
         return mNoteID;
@@ -98,7 +98,7 @@ public class NoteRepository {
             @Override
             public void run() {
                 Log.d(TAG, "Inserting dummy data into db..");
-                mNoteDao.insertNotes(notes);
+//                mNoteDao.insertNotes(notes);
             }
         });
     }

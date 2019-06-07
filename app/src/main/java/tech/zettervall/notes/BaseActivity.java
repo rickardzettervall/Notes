@@ -13,11 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.parceler.Parcels;
+
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.viewmodels.NoteViewModel;
 
 /**
  * Base Activity with commonly used methods.
@@ -50,12 +55,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Get NoteFragment bundled with note ID.
+     * Get NoteFragment bundled with Note.
      */
-    public NoteFragment getNoteFragmentWithBundle(int noteID) {
+    public NoteFragment getNoteFragmentWithBundledNote(Note note) {
         // Create Bundle and Fragment
         Bundle bundle = new Bundle();
-        bundle.putInt(Constants.NOTE_ID, noteID);
+        bundle.putParcelable(Constants.NOTE, Parcels.wrap(note));
         NoteFragment noteFragment = new NoteFragment();
         noteFragment.setArguments(bundle);
         return noteFragment;

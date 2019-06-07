@@ -2,6 +2,7 @@ package tech.zettervall.notes;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -32,12 +34,11 @@ import tech.zettervall.notes.viewmodels.NoteViewModel;
 public class NoteFragment extends Fragment {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
+    private static final String FAVORITE_STATUS = "favorite_status";
     private FragmentNoteBinding mDataBinding;
     private NoteViewModel mNoteViewModel;
-    private Integer mNoteID;
     private Note mNote;
-    private MenuItem mFavoritizeMenuItem;
-    private boolean mFavorite, mTrash;
+    private boolean mTrash, mFavoriteStatusChanged, mIsTablet;
 
     @Nullable
     @Override
@@ -48,27 +49,33 @@ public class NoteFragment extends Fragment {
         // Initialize ViewModel
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
-        // Enable Toolbar MenuItems handling
+        // Enable Toolbar MenuItem handling
         setHasOptionsMenu(true);
 
-        // Get Arguments
-        if (getArguments() != null) {
-            mNoteID = getArguments().getInt(Constants.NOTE_ID);
+        // Get Note
+        if (savedInstanceState != null) { // Existing Note but configuration changed
+            mNote = Parcels.unwrap(savedInstanceState.getParcelable(Constants.NOTE));
+        } else if (getArguments() != null) { // Clicked Note
+            mNote = Parcels.unwrap(getArguments().getParcelable(Constants.NOTE));
+        } else { // New Note
+            mNote = new Note(mDataBinding.titleTv.getText().toString(),
+                    mDataBinding.textTv.getText().toString(),
+                    new ArrayList<String>(),
+                    DateTimeHelper.getCurrentEpoch(),
+                    DateTimeHelper.getCurrentEpoch(),
+                    -1,
+                    false,
+                    false);
         }
 
-        // Get SavedState
-        if (savedInstanceState != null) {
-            mFavorite = savedInstanceState.getBoolean(Constants.NOTE_IS_FAVORITE);
-            mNoteID = savedInstanceState.getInt(Constants.NOTE_ID);
-        }
+        // Get Tablet bool
+        mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
-        // TODO: FOR TESTING
-        if(mNoteID != null) Toast.makeText(getActivity(), mNoteID.toString(), Toast.LENGTH_SHORT).show();
-
-        if (mNoteID != null) {
-            mNoteViewModel.setNote(mNoteID);
-            subscribeObservers();
-        }
+        // Set GUI fields
+        mDataBinding.titleTv.setText(mNote.getTitle());
+        mDataBinding.textTv.setText(mNote.getText());
+        mDataBinding.createdTv.setText(mNote.getCreationString());
+        mDataBinding.updatedTv.setText(mNote.getModifiedString());
 
         // Hide / Show FAB depending on device
         if (getResources().getBoolean(R.bool.isTablet)) {
@@ -86,60 +93,25 @@ public class NoteFragment extends Fragment {
         return rootView;
     }
 
-    private void subscribeObservers() {
-        mNoteViewModel.getNote().observe(this, new Observer<Note>() {
-            @Override
-            public void onChanged(Note note) {
-                if (note != null) {
-                    if (note.getTitle() != null) {
-                        mDataBinding.titleTv.setText(note.getTitle());
-                    }
-                    if (note.getText() != null) {
-                        mDataBinding.textTv.setText(note.getText());
-                    }
-                    mDataBinding.createdTv.setText(getString(R.string.creation_date,
-                            DateTimeHelper.getDateStringFromEpoch(note.getCreationEpoch())));
-                    mDataBinding.updatedTv.setText(getString(R.string.modified_date,
-                            DateTimeHelper.getDateStringFromEpoch(note.getModifiedEpoch())));
-
-                    if (note.isFavorite()) {
-                        mFavorite = true;
-                        setFavoritizedIcon(mFavoritizeMenuItem);
-                    }
-                }
-
-                /* Set private Note Object to use for editing and
-                 * saving changes to the db. */
-                mNote = note;
-            }
-        });
-    }
-
     /**
      * Save Note, but only if the user actually entered a
-     * title or text, or if a previous Note was changed.
+     * title/text or change other parameters.
      */
-    private void saveNote() { // TODO: set tags, favorite and notification based on user choices
-        if (!mDataBinding.titleTv.getText().toString().isEmpty() ||
-                !mDataBinding.textTv.getText().toString().isEmpty()) {
-            if (mNote == null) {
-                // Create new Note
-                mNote = new Note(mDataBinding.titleTv.getText().toString(),
-                        mDataBinding.textTv.getText().toString(),
-                        new ArrayList<String>(),
-                        DateTimeHelper.getCurrentEpoch(),
-                        DateTimeHelper.getCurrentEpoch(),
-                        -1,
-                        false,
-                        mFavorite);
-                mNoteID = (int) mNoteViewModel.insertNote(mNote);
-            } else {
-                // Update existing Note
-                mNote.setTitle(mDataBinding.titleTv.getText().toString());
-                mNote.setText(mDataBinding.textTv.getText().toString());
-                mNote.setModifiedEpoch(DateTimeHelper.getCurrentEpoch());
-                mNote.setFavorite(mFavorite);
-                mNoteID = (int) mNoteViewModel.insertNote(mNote);
+    private void saveNote() {
+        if ((!mDataBinding.titleTv.getText().toString().isEmpty() ||
+                !mDataBinding.textTv.getText().toString().isEmpty()) &&
+                !mDataBinding.titleTv.getText().toString().equals(mNote.getTitle()) ||
+                !mDataBinding.textTv.getText().toString().equals(mNote.getText()) ||
+                mFavoriteStatusChanged) {
+            // Change Note values and update modified time stamp
+            mNote.setTitle(mDataBinding.titleTv.getText().toString());
+            mNote.setText(mDataBinding.textTv.getText().toString());
+            mNote.setModifiedEpoch(DateTimeHelper.getCurrentEpoch());
+            if (mNote.getId() > 0) { // Existing Note
+                mNoteViewModel.updateNote(mNote);
+            } else { // New Note
+                int _id = (int) mNoteViewModel.insertNote(mNote);
+                mNote.setId(_id);
             }
         }
     }
@@ -161,7 +133,8 @@ public class NoteFragment extends Fragment {
             saveNote();
         } else if (mNote != null) { // TRASH
             mNote.setTrash(true);
-            mNoteViewModel.insertNote(mNote);
+            mNoteViewModel.updateNote(mNote);
+            // Message to user
             String toastMessage = mNote.getTitle() != null && !mNote.getTitle().isEmpty() ?
                     getString(R.string.note_trashed_detailed, mNote.getTitle()) :
                     getString(R.string.note_trashed);
@@ -171,39 +144,36 @@ public class NoteFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (mNoteID != null) {
-            outState.putInt(Constants.NOTE_ID, mNoteID);
-        }
-        outState.putBoolean(Constants.NOTE_IS_FAVORITE, mFavorite);
+        outState.putParcelable(Constants.NOTE, Parcels.wrap(mNote));
+        outState.putBoolean(FAVORITE_STATUS, mFavoriteStatusChanged);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        mFavoritizeMenuItem = menu.findItem(R.id.action_favoritize);
-        /* Set Note if ID exists.
-         * Subscribe to Observers here instead of in onCreate
-         * because MenuItem must be loaded first for it to be changed
-         * within the Observer. */
-//        if (mNoteID != null) {
-//            mNoteViewModel.setNote(mNoteID);
-//            subscribeObservers();
-//        }
+        if (mNote != null && mNote.isFavorite()) {
+            MenuItem favoritize = menu.findItem(R.id.action_favoritize);
+            setFavoritizedIcon(favoritize);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favoritize:
-                if (mFavorite) { // Note is in favorites
-                    mFavorite = false;
+                if (mNote.isFavorite()) { // Note is in favorites
+                    mNote.setFavorite(false);
                     setUnfavoritizedIcon(item);
-
+                    Toast.makeText(getActivity(), getString(R.string.note_favorites_removed),
+                            Toast.LENGTH_SHORT).show();
                 } else { // Note is not in favorites
-                    mFavorite = true;
+                    mNote.setFavorite(true);
                     setFavoritizedIcon(item);
+                    Toast.makeText(getActivity(), getString(R.string.note_favorites_added),
+                            Toast.LENGTH_SHORT).show();
                 }
+                mFavoriteStatusChanged = true; // Used to determine if to save
                 break;
             case R.id.action_delete:
                 DialogInterface.OnClickListener dialogClickListener =
@@ -213,7 +183,11 @@ public class NoteFragment extends Fragment {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         mTrash = true;
-                                        getActivity().finish();
+                                        if(!mIsTablet) { // PHONE
+                                            getActivity().finish();
+                                        } else { // TABLET
+                                            // TODO: What happens for tablet users?
+                                        }
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;

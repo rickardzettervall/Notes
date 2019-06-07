@@ -7,15 +7,13 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.preference.PreferenceManager;
 
-import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
@@ -68,18 +66,12 @@ public class MainActivity extends BaseActivity implements
         setNoteListFragment(new NoteListFragment());
         if (mIsTablet) { // TABLET
             if (mNoteID != null && mNoteID != -1) {
-                setNoteFragment(getNoteFragmentWithBundle(mNoteID));
+                //TODO: FIX LATER
+//                setNoteFragment(getNoteFragmentWithBundledNote(mNoteID));
             } else {
                 setNoteFragment(new NoteFragment());
             }
         }
-    }
-
-    @Override
-    public NoteFragment getNoteFragmentWithBundle(int noteID) {
-        // Set local mNoteID to allow configuration changes
-        mNoteID = noteID;
-        return super.getNoteFragmentWithBundle(noteID);
     }
 
     /**
@@ -109,13 +101,14 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onNoteClick(Note note) {
+        // Reset Note in ViewModel
         if (!mIsTablet) { // PHONE
             Intent intent = new Intent(this, NoteActivity.class);
-            intent.putExtra(Constants.NOTE_ID, note.getId());
-            intent.putExtra(Constants.NOTE_IS_FAVORITE, note.isFavorite());
+            intent.putExtra(Constants.NOTE, Parcels.wrap(note));
             startActivity(intent);
         } else { // TABLET
-            setNoteFragment(getNoteFragmentWithBundle(note.getId()));
+            //TODO: FIX LATER
+//            setNoteFragment(getNoteFragmentWithBundledNote(note.getId()));
         }
     }
 

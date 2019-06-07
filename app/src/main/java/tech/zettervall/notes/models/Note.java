@@ -7,34 +7,43 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import tech.zettervall.notes.data.typeconverters.StringListTypeConverter;
 import tech.zettervall.notes.utils.DateTimeHelper;
 
+@Parcel
 @Entity(tableName = "note")
 public class Note implements Comparable<Note> {
 
     @PrimaryKey(autoGenerate = true)
-    private int _id;
-    private String title, text;
+    public int _id;
+    public String title, text;
     @TypeConverters(StringListTypeConverter.class)
-    private List<String> tags;
+    public List<String> tags;
     @ColumnInfo(name = "creation_epoch")
-    private long creationEpoch;
+    public long creationEpoch;
     @ColumnInfo(name = "modified_epoch")
-    private long modifiedEpoch;
+    public long modifiedEpoch;
     @ColumnInfo(name = "notification_epoch")
-    private long notificationEpoch;
+    public long notificationEpoch;
     @ColumnInfo(name = "trash")
-    private boolean isTrash;
+    public boolean isTrash;
     @ColumnInfo(name = "favorite")
-    private boolean isFavorite;
+    public boolean isFavorite;
     @ColumnInfo(name = "folder_id")
-    private int folderId;
+    public int folderId;
     @ColumnInfo(name = "color_id")
-    private int colorId;
+    public int colorId;
+
+    /**
+     * Empty Constructor for Parceler.
+     */
+    public Note() {
+    }
 
     /**
      * Constructor for new Note Objects.

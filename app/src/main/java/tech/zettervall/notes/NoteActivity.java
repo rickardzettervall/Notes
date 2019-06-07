@@ -1,30 +1,20 @@
 package tech.zettervall.notes;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.navigation.NavigationView;
+import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.models.Note;
 
 public class NoteActivity extends BaseActivity {
 
     private static final String TAG = NoteActivity.class.getSimpleName();
     private Toolbar mToolbar;
-    private DrawerLayout mNavDrawerLayout;
-    private NavigationView mNavView;
-    private Integer mNoteID;
-    private boolean mIsFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,48 +27,16 @@ public class NoteActivity extends BaseActivity {
         // Set ToolBar
         setSupportActionBar(mToolbar);
 
-        // Find Views
-        mToolbar = findViewById(R.id.toolbar);
-        mNavDrawerLayout = findViewById(R.id.drawer_layout);
-        mNavView = findViewById(R.id.nav_view);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
 
-        // Set ToolBar
-        setSupportActionBar(mToolbar);
-
-        // Set Drawer
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                this, mNavDrawerLayout, mToolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
-        mNavDrawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        // Set Listeners
-        mNavView.setNavigationItemSelectedListener(this);
-
-        // Retrieve existing data
-        if (getIntent().getExtras() != null) {
-            mNoteID = getIntent().getExtras().getInt(Constants.NOTE_ID);
-            mIsFavorite = getIntent().getExtras().getBoolean(Constants.NOTE_IS_FAVORITE);
-        }
-
-        // Fragment handling
-        if(mNoteID != null) {
-            setNoteFragment(getNoteFragmentWithBundle(mNoteID));
-        } else {
-            setNoteFragment(new NoteFragment());
-        }
-    }
-
-    @Override
-    public NoteFragment getNoteFragmentWithBundle(int noteID) {
-        return super.getNoteFragmentWithBundle(noteID);
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save Note ID
-        if(mNoteID != null) {
-            outState.putInt(Constants.NOTE_ID, mNoteID);
+        // Set Fragments
+        if (savedInstanceState == null) {
+            if (getIntent().getExtras() != null) { // Clicked Note
+                Note note = Parcels.unwrap(getIntent().getExtras().getParcelable(Constants.NOTE));
+                setNoteFragment(getNoteFragmentWithBundledNote(note));
+            } else { // New Note
+                setNoteFragment(new NoteFragment());
+            }
         }
     }
 
@@ -91,11 +49,14 @@ public class NoteActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.action_favoritize:
-                // Implement in Fragment
+                // Implemented in Fragment
                 break;
             case R.id.action_delete:
-                // Implement in Fragment
+                // Implemented in Fragment
                 break;
         }
         return false;
