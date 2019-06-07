@@ -42,25 +42,29 @@ public abstract class DateTimeHelper {
 
         // Default HH/MM
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault()),
-                dateFormat = new SimpleDateFormat("d MMM", Locale.getDefault());
+                dateFormat = new SimpleDateFormat("d MMM", Locale.getDefault()),
+                yearFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
 
         // Set AM/PM for countries which use that standard
         for(int i = 0; i < amPmCountries.length; i++) {
             if(Locale.getDefault().getDisplayCountry().equals(amPmCountries[i].getDisplayCountry())) {
                 timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+                dateFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
                 break;
             }
         }
 
+        // Return Strings
         if(currentDayVal - inputDayVal == 0) { // TODAY
             return "Today, " + timeFormat.format(inputDate);
         } else if(currentDayVal - inputDayVal == 1) { // YESTERDAY
             return "Yesterday, " + timeFormat.format(inputDate);
         } else if(currentYearVal == inputYearVal) { // THIS YEAR
             return dateFormat.format(inputDate) + ", " + timeFormat.format(inputDate);
-        } else { // OTHER YEAR
-            dateFormat = new SimpleDateFormat("d MMM YYYY", Locale.getDefault());
-            return dateFormat.format(inputDate) + ", " + timeFormat.format(inputDate);
+        } else { // OLDER YEAR
+            return dateFormat.format(inputDate) + " " +
+                    yearFormat.format(inputDate) +
+                    ", " + timeFormat.format(inputDate);
         }
     }
 }
