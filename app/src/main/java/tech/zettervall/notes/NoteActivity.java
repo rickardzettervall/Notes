@@ -3,6 +3,7 @@ package tech.zettervall.notes;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -14,20 +15,19 @@ import tech.zettervall.notes.models.Note;
 public class NoteActivity extends BaseActivity {
 
     private static final String TAG = NoteActivity.class.getSimpleName();
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
-        // Find Views
-        mToolbar = findViewById(R.id.toolbar);
-
         // Set ToolBar
-        setSupportActionBar(mToolbar);
-
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         // Set Fragments
         if (savedInstanceState == null) {
