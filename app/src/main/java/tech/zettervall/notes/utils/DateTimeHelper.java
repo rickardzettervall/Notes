@@ -1,9 +1,7 @@
 package tech.zettervall.notes.utils;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
@@ -14,8 +12,6 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.Constants;
 
 public abstract class DateTimeHelper {
-
-    private static final String TAG = DateTimeHelper.class.getSimpleName();
 
     /**
      * Get current Unix Epoch timestamp in long.
@@ -48,14 +44,14 @@ public abstract class DateTimeHelper {
         inputDate.setTime(epoch);
 
         // Convert current/input date to integers for comparison
-        SimpleDateFormat dayCheck = new SimpleDateFormat("dd", Locale.US),
+        SimpleDateFormat dayCheck = new SimpleDateFormat("d", Locale.US),
                 yearCheck = new SimpleDateFormat("yyyy", Locale.US);
         int currentDayVal = Integer.valueOf(dayCheck.format(currentDate)),
                 inputDayVal = Integer.valueOf(dayCheck.format(inputDate)),
                 currentYearVal = Integer.valueOf(yearCheck.format(currentDate)),
                 inputYearVal = Integer.valueOf(yearCheck.format(inputDate));
 
-        // Default HH/MM
+        // Default formats
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault()),
                 dateFormat = new SimpleDateFormat("d MMM", Locale.getDefault()),
                 yearFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
@@ -82,7 +78,7 @@ public abstract class DateTimeHelper {
         } else { // OLDER YEAR
             return dateFormat.format(inputDate) + ", " +
                     yearFormat.format(inputDate) +
-                    ", " + timeFormat.format(inputDate);
+                    " " + timeFormat.format(inputDate);
         }
     }
 }
