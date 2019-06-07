@@ -67,7 +67,7 @@ public class TrashActivity extends BaseActivity implements NoteAdapter.OnNoteCli
         drawerToggle.syncState();
 
         // Set Adapter / LayoutManager / Decoration
-        mNoteAdapter = new NoteAdapter(this);
+        mNoteAdapter = new NoteAdapter(this, this);
         mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(this);
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);

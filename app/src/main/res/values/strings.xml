@@ -16,6 +16,10 @@
     <string name="note_favorites_added">Added to favorites</string>
     <string name="note_favorites_removed">Removed from favorites</string>
 
+    <!-- Date -->
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
     <!-- Confirm Alert -->
     <string name="confirm_deletion">Delete note?</string>
     <string name="confirm">Confirm</string>

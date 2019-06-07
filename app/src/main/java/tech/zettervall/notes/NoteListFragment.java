@@ -51,7 +51,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
         mFab = rootView.findViewById(R.id.notes_list_fab);
 
         // Set Adapter / LayoutManager / Decoration
-        mNoteAdapter = new NoteAdapter(this);
+        mNoteAdapter = new NoteAdapter(this, getActivity());
         mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);

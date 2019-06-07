@@ -75,10 +75,10 @@ public class NoteFragment extends Fragment {
         mDataBinding.titleTv.setText(mNote.getTitle());
         mDataBinding.textTv.setText(mNote.getText());
         mDataBinding.createdTv.setText(getString(R.string.creation_date,
-                mNote.getCreationString()));
+                mNote.getCreationString(getActivity())));
         if(mNote.getModifiedEpoch() != -1) {
             mDataBinding.updatedTv.setText(getString(R.string.modified_date,
-                    mNote.getModifiedString()));
+                    mNote.getModifiedString(getActivity())));
         } else {
             mDataBinding.updatedTv.setVisibility(View.GONE);
         }

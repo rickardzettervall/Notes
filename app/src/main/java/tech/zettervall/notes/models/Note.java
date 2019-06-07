@@ -1,5 +1,7 @@
 package tech.zettervall.notes.models;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -113,8 +115,8 @@ public class Note implements Comparable<Note> {
         return creationEpoch;
     }
 
-    public String getCreationString() {
-        return DateTimeHelper.getDateStringFromEpoch(creationEpoch);
+    public String getCreationString(Context context) {
+        return DateTimeHelper.getDateStringFromEpoch(creationEpoch, context);
     }
 
     public void setCreationEpoch(long creationEpoch) {
@@ -125,8 +127,8 @@ public class Note implements Comparable<Note> {
         return modifiedEpoch;
     }
 
-    public String getModifiedString() {
-        return DateTimeHelper.getDateStringFromEpoch(modifiedEpoch);
+    public String getModifiedString(Context context) {
+        return DateTimeHelper.getDateStringFromEpoch(modifiedEpoch, context);
     }
 
     public void setModifiedEpoch(long modifiedEpoch) {

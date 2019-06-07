@@ -1,5 +1,6 @@
 package tech.zettervall.notes.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
 
     private static final String TAG = NoteAdapter.class.getSimpleName();
     private OnNoteClickListener mOnNoteClickListener;
+    private Context context;
 
-    public NoteAdapter(OnNoteClickListener onNoteClickListener) {
+    public NoteAdapter(OnNoteClickListener onNoteClickListener, Context context) {
         super(DIFF_CALLBACK);
         mOnNoteClickListener = onNoteClickListener;
+        this.context = context;
     }
 
     /**
@@ -88,7 +91,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
         if (note != null) {
             holder.mHeadlineTv.setText(note.getTitle());
             holder.mTextTv.setText(note.getText());
-            holder.mDateTv.setText(note.getModifiedString());
+            holder.mDateTv.setText(note.getModifiedString(context));
             if(note.isFavorite()) {
                 holder.mFavorite.setVisibility(View.VISIBLE);
             }

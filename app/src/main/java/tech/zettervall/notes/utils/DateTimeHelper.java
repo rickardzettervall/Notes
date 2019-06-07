@@ -1,10 +1,17 @@
 package tech.zettervall.notes.utils;
 
+import android.content.Context;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.Constants;
 
 public abstract class DateTimeHelper {
 
@@ -19,12 +26,20 @@ public abstract class DateTimeHelper {
 
     /**
      * Get Date String in local timezone from Epoch.
+     *
+     * @param epoch   Unix Epoch to use.
+     * @param context Used for fetching SharedPreferences and translatable Strings.
+     * @return Date String formatted in various ways depending on how old the
+     * Epoch is, e.g. an Epoch from today will return "Today, HH:MM".
      */
-    // TODO: allow for user to change between am/pm and 24h
-    public static String getDateStringFromEpoch(long epoch) {
+    public static String getDateStringFromEpoch(long epoch, Context context) {
+
+        // Get user preferences
+        int timeSelector = PreferenceManager.getDefaultSharedPreferences(context).
+                getInt(Constants.TIME_SELECTOR, 0);
 
         // Countries with AM/PM clock
-        Locale[] amPmCountries = { Locale.US, Locale.CANADA, Locale.CANADA_FRENCH };
+        Locale[] amPmCountries = {Locale.US, Locale.CANADA, Locale.CANADA_FRENCH};
 
         // Set Date Objects
         Date currentDate = new Date();
@@ -46,23 +61,26 @@ public abstract class DateTimeHelper {
                 yearFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
 
         // Set AM/PM for countries which use that standard
-        for(int i = 0; i < amPmCountries.length; i++) {
-            if(Locale.getDefault().getDisplayCountry().equals(amPmCountries[i].getDisplayCountry())) {
-                timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-                dateFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
-                break;
+        if (timeSelector != Constants.TIME_24) {
+            for (Locale i : amPmCountries) {
+                if (timeSelector == Constants.TIME_12 ||
+                        Locale.getDefault().getDisplayCountry().equals(i.getDisplayCountry())) {
+                    timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+                    dateFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
+                    break;
+                }
             }
         }
 
         // Return Strings
-        if(currentDayVal - inputDayVal == 0) { // TODAY
-            return "Today, " + timeFormat.format(inputDate);
-        } else if(currentDayVal - inputDayVal == 1) { // YESTERDAY
-            return "Yesterday, " + timeFormat.format(inputDate);
-        } else if(currentYearVal == inputYearVal) { // THIS YEAR
+        if (currentDayVal - inputDayVal == 0) { // TODAY
+            return context.getString(R.string.today) + ", " + timeFormat.format(inputDate);
+        } else if (currentDayVal - inputDayVal == 1) { // YESTERDAY
+            return context.getString(R.string.yesterday) + ", " + timeFormat.format(inputDate);
+        } else if (currentYearVal == inputYearVal) { // THIS YEAR
             return dateFormat.format(inputDate) + ", " + timeFormat.format(inputDate);
         } else { // OLDER YEAR
-            return dateFormat.format(inputDate) + " " +
+            return dateFormat.format(inputDate) + ", " +
                     yearFormat.format(inputDate) +
                     ", " + timeFormat.format(inputDate);
         }
