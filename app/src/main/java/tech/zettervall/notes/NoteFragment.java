@@ -62,7 +62,7 @@ public class NoteFragment extends Fragment {
                     mDataBinding.textTv.getText().toString(),
                     new ArrayList<String>(),
                     DateTimeHelper.getCurrentEpoch(),
-                    DateTimeHelper.getCurrentEpoch(),
+                    -1,
                     -1,
                     false,
                     false);
@@ -74,11 +74,17 @@ public class NoteFragment extends Fragment {
         // Set GUI fields
         mDataBinding.titleTv.setText(mNote.getTitle());
         mDataBinding.textTv.setText(mNote.getText());
-        mDataBinding.createdTv.setText(mNote.getCreationString());
-        mDataBinding.updatedTv.setText(mNote.getModifiedString());
+        mDataBinding.createdTv.setText(getString(R.string.creation_date,
+                mNote.getCreationString()));
+        if(mNote.getModifiedEpoch() != -1) {
+            mDataBinding.updatedTv.setText(getString(R.string.modified_date,
+                    mNote.getModifiedString()));
+        } else {
+            mDataBinding.updatedTv.setVisibility(View.GONE);
+        }
 
         // Hide / Show FAB depending on device
-        if (getResources().getBoolean(R.bool.isTablet)) {
+        if (mIsTablet) {
             mDataBinding.fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
