@@ -48,6 +48,8 @@
     <string name="action_switch_theme_light">Switch to Light Theme</string>
     <string name="action_empty_trash">Empty trash</string>
     <string name="action_restore_trash">Restore all notes</string>
+    <string name="action_sort">Sort</string>
+    <string name="action_search">Search</string>
 
     <!-- Hints -->
     <string name="hint_title">Title..</string>
