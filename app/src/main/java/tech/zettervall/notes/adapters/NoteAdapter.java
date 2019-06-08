@@ -94,6 +94,8 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             holder.mDateTv.setText(note.getModifiedString(context));
             if(note.isFavorite()) {
                 holder.mFavorite.setVisibility(View.VISIBLE);
+            } else {
+                holder.mFavorite.setVisibility(View.GONE);
             }
         }
     }
