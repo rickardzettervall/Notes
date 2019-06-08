@@ -76,7 +76,7 @@ public class NoteFragment extends Fragment {
         mDataBinding.textTv.setText(mNote.getText());
         mDataBinding.createdTv.setText(getString(R.string.creation_date,
                 mNote.getCreationString(getActivity())));
-        if(mNote.getModifiedEpoch() != -1) {
+        if (mNote.getModifiedEpoch() != -1) {
             mDataBinding.updatedTv.setText(getString(R.string.modified_date,
                     mNote.getModifiedString(getActivity())));
         } else {
@@ -116,8 +116,7 @@ public class NoteFragment extends Fragment {
             if (mNote.getId() > 0) { // Existing Note
                 mNoteViewModel.updateNote(mNote);
             } else { // New Note
-                int _id = (int) mNoteViewModel.insertNote(mNote);
-                mNote.setId(_id);
+                mNote.setId((int) mNoteViewModel.insertNote(mNote));
             }
         }
     }
@@ -189,7 +188,7 @@ public class NoteFragment extends Fragment {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         mTrash = true;
-                                        if(!mIsTablet) { // PHONE
+                                        if (!mIsTablet) { // PHONE
                                             getActivity().finish();
                                         } else { // TABLET
                                             // TODO: What happens for tablet users?

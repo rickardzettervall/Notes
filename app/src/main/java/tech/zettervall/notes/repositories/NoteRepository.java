@@ -6,18 +6,19 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.utils.DateTimeHelper;
 
 public class NoteRepository {
 
     private static final String TAG = NoteRepository.class.getSimpleName();
     private static NoteRepository INSTANCE;
     private NoteDao mNoteDao;
-    private long mNoteID;
 
     private NoteRepository(Application application) {
         NoteDb db = NoteDb.getInstance(application.getApplicationContext());
@@ -73,34 +74,31 @@ public class NoteRepository {
      * Insert a single Note into db.
      *
      * @param note Note Object to be inserted
+     * @return ID of inserted Note
      */
     public long insertNote(final Note note) {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
+        Callable<Long> callable = new Callable<Long>() {
             @Override
-            public void run() {
-                mNoteID = mNoteDao.insertNote(note);
-                Log.d(TAG, "Note[id: " + mNoteID + "] inserted into db..");
+            public Long call() throws Exception {
+                return mNoteDao.insertNote(note);
             }
-        });
-        return mNoteID;
+        };
+        long noteID = 0;
+        Future<Long> future = AppExecutor.getExecutor().executorService().submit(callable);
+        try {
+            // Get the noteID from the db insertion
+            noteID = future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noteID;
     }
 
     /**
      * Insert Dummy data into the db for testing.
      */
     public void insertDummyData() {
-        final Note[] notes = new Note[10];
-        for (int i = 0; i < 10; i++) {
-            notes[i] = new Note("Dummy text!", "Dummy text!", null, DateTimeHelper.getCurrentEpoch(),
-                    DateTimeHelper.getCurrentEpoch(), -1, false, false);
-        }
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Inserting dummy data into db..");
-//                mNoteDao.insertNotes(notes);
-            }
-        });
+        // not used anymore
     }
 
     /**
@@ -127,7 +125,7 @@ public class NoteRepository {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Deleting Note[id: " + note.getId() + "]  from db..");
+                Log.d(TAG, "Deleting Note[id: " + note.getId() + "] from db..");
                 mNoteDao.deleteNote(note);
             }
         });
