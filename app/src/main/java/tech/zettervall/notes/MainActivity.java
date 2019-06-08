@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.view.Menu;
 import android.view.MenuItem;
 
 import org.parceler.Parcels;
@@ -31,16 +32,10 @@ public class MainActivity extends BaseActivity implements
     private Toolbar mToolbar;
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
-    private Integer mNoteID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Retrieve saved fields
-        if (savedInstanceState != null) {
-            mNoteID = savedInstanceState.getInt(Constants.NOTE_ID);
-        }
 
         // Set ContentView
         setContentView(R.layout.activity_main);
@@ -63,12 +58,9 @@ public class MainActivity extends BaseActivity implements
         mNavView.setNavigationItemSelectedListener(this);
 
         // Set Fragments
-        setNoteListFragment(new NoteListFragment());
-        if (mIsTablet) { // TABLET
-            if (mNoteID != null && mNoteID != -1) {
-                //TODO: FIX LATER
-//                setNoteFragment(getNoteFragmentWithBundledNote(mNoteID));
-            } else {
+        if(savedInstanceState == null) {
+            setNoteListFragment(new NoteListFragment());
+            if (mIsTablet) { // TABLET
                 setNoteFragment(new NoteFragment());
             }
         }
@@ -78,19 +70,10 @@ public class MainActivity extends BaseActivity implements
      * Create Fragment for new Note.
      */
     private void newNote() {
-        mNoteID = -1;
         if (!mIsTablet) { // PHONE
             startActivity(new Intent(this, NoteActivity.class));
         } else { // TABLET
             setNoteFragment(new NoteFragment());
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mNoteID != null) {
-            outState.putInt(Constants.NOTE_ID, mNoteID);
         }
     }
 
@@ -101,7 +84,6 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onNoteClick(Note note) {
-        // Reset Note in ViewModel
         if (!mIsTablet) { // PHONE
             Intent intent = new Intent(this, NoteActivity.class);
             intent.putExtra(Constants.NOTE, Parcels.wrap(note));
@@ -118,20 +100,32 @@ public class MainActivity extends BaseActivity implements
         finishAffinity();
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                mNavDrawerLayout.openDrawer(GravityCompat.START);
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     protected void onResume() {
         super.onResume();
         mNavDrawerLayout.closeDrawer(GravityCompat.START, false);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_search:
+                // TODO: search
+                return true;
+            case R.id.action_sort:
+                // TODO: sort
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

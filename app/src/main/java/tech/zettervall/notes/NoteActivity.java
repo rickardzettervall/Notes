@@ -61,4 +61,9 @@ public class NoteActivity extends BaseActivity {
         }
         return false;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
