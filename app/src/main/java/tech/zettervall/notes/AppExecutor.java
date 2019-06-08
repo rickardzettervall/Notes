@@ -18,8 +18,8 @@ public class AppExecutor {
     private static final int NETWORK_THREAD_COUNT = 3;
     private static AppExecutor INSTANCE;
     private final Executor diskIO;
-    private final Executor mainThread;
     private final Executor networkIO;
+    private final Executor mainThread;
     private final ExecutorService executorService;
 
     private AppExecutor(Executor diskIO, Executor networkIO, Executor mainThread,
@@ -48,12 +48,12 @@ public class AppExecutor {
         return diskIO;
     }
 
-    public Executor mainThread() {
-        return mainThread;
-    }
-
     public Executor networkIO() {
         return networkIO;
+    }
+
+    public Executor mainThread() {
+        return mainThread;
     }
 
     public ExecutorService executorService() {
