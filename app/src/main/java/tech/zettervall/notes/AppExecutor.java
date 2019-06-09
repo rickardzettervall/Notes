@@ -20,14 +20,11 @@ public class AppExecutor {
     private final Executor diskIO;
     private final Executor networkIO;
     private final Executor mainThread;
-    private final ExecutorService executorService;
 
-    private AppExecutor(Executor diskIO, Executor networkIO, Executor mainThread,
-                        ExecutorService executorService) {
+    private AppExecutor(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
         this.networkIO = networkIO;
         this.mainThread = mainThread;
-        this.executorService = executorService;
     }
 
     public static AppExecutor getExecutor() {
@@ -36,8 +33,7 @@ public class AppExecutor {
                 if (INSTANCE == null) {
                     INSTANCE = new AppExecutor(Executors.newSingleThreadExecutor(), // DiskIO
                             Executors.newFixedThreadPool(NETWORK_THREAD_COUNT), // NetworkIO
-                            new MainThreadExecutor(), // Main Thread
-                            Executors.newSingleThreadExecutor()); // ExecutorService
+                            new MainThreadExecutor()); // Main Thread
                 }
             }
         }
@@ -54,10 +50,6 @@ public class AppExecutor {
 
     public Executor mainThread() {
         return mainThread;
-    }
-
-    public ExecutorService executorService() {
-        return executorService;
     }
 
     // Executor for Main Thread

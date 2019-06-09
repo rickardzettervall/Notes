@@ -7,7 +7,10 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.data.NoteDao;
@@ -66,7 +69,7 @@ public class NoteRepository {
      * @return LiveData Object containing a Note
      */
     public LiveData<Note> getNote(int _id) {
-        Log.d(TAG, "Retrieving Note[id: " + _id + "]..");
+        Log.d(TAG, "Retrieving Note[id:" + _id + "] from db..");
         return mNoteDao.getNote(_id);
     }
 
@@ -77,25 +80,41 @@ public class NoteRepository {
      * @return ID of inserted Note
      */
     public long insertNote(final Note note) {
+        // Create ExecutorService and Callable for storing new Note and receiving NoteID
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
         Callable<Long> callable = new Callable<Long>() {
             @Override
-            public Long call() throws Exception {
+            public Long call() {
                 return mNoteDao.insertNote(note);
             }
         };
+
+        // Retrieve noteID from Future
+        Future<Long> future = executorService.submit(callable);
         long noteID = 0;
-        Future<Long> future = AppExecutor.getExecutor().executorService().submit(callable);
         try {
-            // Get the noteID from the db insertion
+            // Don't set timeout because noteID is vital to the function of the App
             noteID = future.get();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Shutdown ExecutorService
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+
+        Log.d(TAG, "Inserted Note[id:" + noteID + "] in db..");
         return noteID;
     }
 
     /**
-     * Insert Dummy data into the db for testing.
+     * DEPRECATED
      */
     public void insertDummyData() {
         // not used anymore
@@ -110,7 +129,7 @@ public class NoteRepository {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Updating Note[id: " + note.getId() + "] in db..");
+                Log.d(TAG, "Updating Note[id:" + note.getId() + "] in db..");
                 mNoteDao.updateNote(note);
             }
         });
@@ -125,7 +144,7 @@ public class NoteRepository {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Deleting Note[id: " + note.getId() + "] from db..");
+                Log.d(TAG, "Deleting Note[id:" + note.getId() + "] from db..");
                 mNoteDao.deleteNote(note);
             }
         });
@@ -144,6 +163,9 @@ public class NoteRepository {
         });
     }
 
+    /**
+     * Delete alla trashed Notes.
+     */
     public void deleteAllTrashedNotes() {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
             @Override
