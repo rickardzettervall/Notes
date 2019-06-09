@@ -9,9 +9,8 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
 /**
- * ViewModel for a single Note. Only handles inserting
- * and updating of a note with direct access to the
- * repository.
+ * ViewModel for a single Note.
+ * Handles inserting and updating a note.
  */
 public class NoteViewModel extends AndroidViewModel {
 
