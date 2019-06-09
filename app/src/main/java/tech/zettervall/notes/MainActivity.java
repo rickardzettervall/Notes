@@ -117,15 +117,15 @@ public class MainActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                return true;
+                break;
             case R.id.action_search:
-                // TODO: search
-                return true;
+                // Implemented in Fragment
+                break;
             case R.id.action_sort:
-                // TODO: sort
-                return true;
+                // Implemented in Fragment
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     @Override

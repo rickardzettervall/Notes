@@ -41,8 +41,7 @@ public class NoteRepository {
     }
 
     /**
-     * Get all Note Objects from the db as DataSource
-     * Object, so that it can be used in PagedList.
+     * Get all Note Objects from the db as DataSource.
      *
      * @return DataSource containing all Notes
      */
@@ -52,8 +51,18 @@ public class NoteRepository {
     }
 
     /**
-     * Get all trashed Note Objects from the db as DataSource
-     * Object, so that it can be used in PagedList.
+     * Get all Note Objects from the db as DataSource,
+     * based on query input.
+     *
+     * @return DataSource containing all Notes matching query
+     */
+    public DataSource.Factory<Integer, Note> getNotes(String query) {
+        Log.d(TAG, "Retrieving all Notes matching query..");
+        return mNoteDao.getNotes(query);
+    }
+
+    /**
+     * Get all trashed Note Objects from the db as DataSource.
      *
      * @return DataSource containing all trashed Notes
      */

@@ -23,11 +23,24 @@ public class NoteListViewModel extends AndroidViewModel {
     public NoteListViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
-        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotes(),
-                Constants.NOTE_LIST_PAGE_SIZE).build();
+        setNotes();
     }
 
     public LiveData<PagedList<Note>> getNotes() {
         return mNotes;
+    }
+
+    public void setNotes() {
+        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotes(),
+                Constants.NOTE_LIST_PAGE_SIZE).build();
+    }
+
+    public void setNotesSearch(String query) {
+        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotes(query),
+                Constants.NOTE_LIST_PAGE_SIZE).build();
+    }
+
+    public void setNotesSort(int sortBy, boolean descOrder, boolean favoritesOnTop) {
+
     }
 }

@@ -21,6 +21,11 @@ public interface NoteDao {
     @Query("SELECT * FROM note WHERE trash = 0 ORDER BY modified_epoch DESC")
     DataSource.Factory<Integer, Note> getNotes();
 
+    // Get all Notes (SEARCH)
+    @Query("SELECT * FROM note WHERE trash = 0 AND title LIKE '%' || :query || '%'" +
+            "OR trash = 0 AND text LIKE '%' || :query || '%' ORDER BY modified_epoch DESC")
+    DataSource.Factory<Integer, Note> getNotes(String query);
+
     // Get all Notes (TRASH)
     @Query("SELECT * FROM note WHERE trash = 1 ORDER BY modified_epoch DESC")
     DataSource.Factory<Integer, Note> getTrashedNotes();

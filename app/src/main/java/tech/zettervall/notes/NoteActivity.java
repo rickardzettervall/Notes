@@ -3,7 +3,6 @@ package tech.zettervall.notes;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -60,10 +59,5 @@ public class NoteActivity extends BaseActivity {
                 break;
         }
         return false;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

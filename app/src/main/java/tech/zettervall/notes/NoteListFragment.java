@@ -3,11 +3,15 @@ package tech.zettervall.notes;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -34,6 +38,10 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
     private FloatingActionButton mFab;
     private boolean mIsTablet;
 
+    // Used for SearchView to restore state on configuration changes
+    private boolean mSearchIconified;
+    private String mSearchQuery;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -43,8 +51,15 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
         // Initialize ViewModel
         mNoteListViewModel = ViewModelProviders.of(this).get(NoteListViewModel.class);
 
+        // Enable Toolbar MenuItem handling
+        setHasOptionsMenu(true);
+
         // Retrieve saved fields
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
+        if (savedInstanceState != null) {
+            mSearchQuery = savedInstanceState.getString(Constants.SEARCH_QUERY);
+            mSearchIconified = savedInstanceState.getBoolean(Constants.SEARCH_ICONIFIED);
+        }
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
@@ -56,7 +71,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
-        if(!mIsTablet) { // PHONE
+        if (!mIsTablet) { // PHONE
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -117,6 +132,74 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(Constants.SEARCH_QUERY, mSearchQuery);
+        outState.putBoolean(Constants.SEARCH_ICONIFIED, mSearchIconified);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        // Get SearchView
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        if (mSearchQuery != null && !mSearchIconified) {
+            searchView.setIconified(false);
+            searchView.setQuery(mSearchQuery, false);
+        }
+
+        // Set Query
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            private void setResults(String query) {
+                mSearchQuery = query;
+                mSearchIconified = false;
+                mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
+                mNoteListViewModel.setNotesSearch(query);
+                subscribeObservers();
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                setResults(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                setResults(newText);
+                return false;
+            }
+        });
+
+        // Set Close Behaviour
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mSearchIconified = true;
+                // Restore List to all Notes
+                mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
+                mNoteListViewModel.setNotes();
+                subscribeObservers();
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort:
+                // TODO: sort
+                break;
+        }
+        return false;
     }
 
     @Override

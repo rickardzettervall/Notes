@@ -4,7 +4,6 @@ public abstract class Constants {
 
     // Note
     public static final String NOTE = "note";
-    public static final String NOTE_ID = "note_id";
 
     // Fragment
     public static final String FRAGMENT_NOTELIST = "fragment_notelist";
@@ -17,4 +16,8 @@ public abstract class Constants {
 
     // List
     public static final int NOTE_LIST_PAGE_SIZE = 10;
+
+    // Search
+    public static final String SEARCH_QUERY = "search_query";
+    public static final String SEARCH_ICONIFIED = "search_iconified";
 }
