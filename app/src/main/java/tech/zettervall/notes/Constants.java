@@ -20,4 +20,19 @@ public abstract class Constants {
     // Search
     public static final String SEARCH_QUERY = "search_query";
     public static final String SEARCH_ICONIFIED = "search_iconified";
+
+    // SharedPreferences
+    public static final String SORT_TYPE_KEY = "sort_type_key";
+    public static final int SORT_TYPE_DEFAULT = 2;
+    public static final int SORT_TYPE_ALPHABETICALLY = 0;
+    public static final int SORT_TYPE_CREATION_DATE = 1;
+    public static final int SORT_TYPE_MODIFIED_DATE = 2;
+    public static final String SORT_DIRECTION_KEY = "sort_direction_key";
+    public static final int SORT_DIRECTION_DEFAULT = 1;
+    public static final int SORT_DIRECTION_ASC = 0;
+    public static final int SORT_DIRECTION_DESC = 1;
+    public static final String SORT_FAVORITES_ON_TOP_KEY = "sort_favorites_on_top";
+    public static final boolean SORT_FAVORITES_ON_TOP_DEFAULT = false;
+
+
 }
