@@ -21,29 +21,50 @@ import tech.zettervall.notes.utils.DateTimeHelper;
 @Entity(tableName = "note")
 public class Note implements Comparable<Note> {
 
+    /**
+     * DB column names.
+     */
+    public static final String idColumnName = "_id";
+    public static final String titleColumnName = "title";
+    public static final String textColumnName = "text";
+    public static final String tagsColumnName = "tags";
+    public static final String creationEpochColumnName = "creation_epoch";
+    public static final String modifiedEpochColumnName = "modified_epoch";
+    public static final String notificationEpochColumnName = "notification_epoch";
+    public static final String trashColumnName = "trash";
+    public static final String favoriteColumnName = "favorite";
+    public static final String folderIdColumnName = "folder_id";
+    public static final String colorIdColumnName = "color_id";
+
+    @ColumnInfo(name = idColumnName)
     @PrimaryKey(autoGenerate = true)
     public int _id;
-    public String title, text;
+    @ColumnInfo(name = titleColumnName)
+    public String title;
+    @ColumnInfo(name = textColumnName)
+    public String text;
+    @ColumnInfo(name = tagsColumnName)
     @TypeConverters(StringListTypeConverter.class)
     public List<String> tags;
-    @ColumnInfo(name = "creation_epoch")
+    @ColumnInfo(name = creationEpochColumnName)
     public long creationEpoch;
-    @ColumnInfo(name = "modified_epoch")
+    @ColumnInfo(name = modifiedEpochColumnName)
     public long modifiedEpoch;
-    @ColumnInfo(name = "notification_epoch")
+    @ColumnInfo(name = notificationEpochColumnName)
     public long notificationEpoch;
-    @ColumnInfo(name = "trash")
+    @ColumnInfo(name = trashColumnName)
     public boolean isTrash;
-    @ColumnInfo(name = "favorite")
+    @ColumnInfo(name = favoriteColumnName)
     public boolean isFavorite;
-    @ColumnInfo(name = "folder_id")
+    @ColumnInfo(name = folderIdColumnName)
     public int folderId;
-    @ColumnInfo(name = "color_id")
+    @ColumnInfo(name = colorIdColumnName)
     public int colorId;
 
     /**
      * Empty Constructor for Parceler.
      */
+    @Ignore
     public Note() {
     }
 
@@ -53,8 +74,8 @@ public class Note implements Comparable<Note> {
     @Ignore
     public Note(String title, String text, @NonNull List<String> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
-        this.title = title;
-        this.text = text;
+        this.title = setFirstCharUpperCase(title);
+        this.text = setFirstCharUpperCase(text);
         this.tags = tags;
         this.creationEpoch = creationEpoch;
         this.modifiedEpoch = modifiedEpoch;
@@ -79,6 +100,13 @@ public class Note implements Comparable<Note> {
         this.isFavorite = isFavorite;
     }
 
+    /**
+     * Set first char in a String to uppercase.
+     */
+    private String setFirstCharUpperCase(String str) {
+        return !str.isEmpty() ? str.substring(0, 1).toUpperCase() + str.substring(1) : str;
+    }
+
     public int getId() {
         return _id;
     }
@@ -92,7 +120,7 @@ public class Note implements Comparable<Note> {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = setFirstCharUpperCase(title);
     }
 
     public String getText() {
@@ -100,7 +128,7 @@ public class Note implements Comparable<Note> {
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text = setFirstCharUpperCase(text);
     }
 
     public List<String> getTags() {
@@ -149,7 +177,7 @@ public class Note implements Comparable<Note> {
 
     public void setTrash(boolean trash) {
         isTrash = trash;
-        if(trash) {
+        if (trash) {
             // Also set isFavorite to false because a trashed Note shouldn't be in favorites
             isFavorite = false;
         }
@@ -188,9 +216,8 @@ public class Note implements Comparable<Note> {
     @Override
     public int compareTo(@NonNull Note note) {
         boolean matchHeadline = this.title.equals(note.getTitle()),
-                matchText = this.text.equals(note.getText()),
-                matchFavorite = this.isFavorite == note.isFavorite();
-        if (matchHeadline && matchText && matchFavorite) {
+                matchText = this.text.equals(note.getText());
+        if (matchHeadline && matchText) {
             return 0;
         }
         return -1;
