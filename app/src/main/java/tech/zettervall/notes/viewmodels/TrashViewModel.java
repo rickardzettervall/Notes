@@ -3,6 +3,7 @@ package tech.zettervall.notes.viewmodels;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
@@ -20,12 +21,16 @@ public class TrashViewModel extends AndroidViewModel {
     public TrashViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
-        mTrash = new LivePagedListBuilder<>(mNoteRepository.getTrashedNotes(),
-                Constants.NOTE_LIST_PAGE_SIZE).build();
+        setNotes(null);
     }
 
     public LiveData<PagedList<Note>> getTrash() {
         return mTrash;
+    }
+
+    public void setNotes(@Nullable String query) {
+        mTrash = new LivePagedListBuilder<>(mNoteRepository.getAllTrashedNotes(query),
+                Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 
     public void emptyTrash() {

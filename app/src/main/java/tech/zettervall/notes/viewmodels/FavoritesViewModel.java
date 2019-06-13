@@ -14,25 +14,25 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
 /**
- * ViewModel for List (PagedList) of all Notes.
+ * ViewModel for List (PagedList) of all favoritized Notes.
  */
-public class NoteListViewModel extends AndroidViewModel {
+public class FavoritesViewModel extends AndroidViewModel {
 
     private NoteRepository mNoteRepository;
-    private LiveData<PagedList<Note>> mNotes;
+    private LiveData<PagedList<Note>> mFavorites;
 
-    public NoteListViewModel(@NonNull Application application) {
+    public FavoritesViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
         setNotes(null);
     }
 
-    public LiveData<PagedList<Note>> getNotes() {
-        return mNotes;
+    public LiveData<PagedList<Note>> getFavorites() {
+        return mFavorites;
     }
 
     public void setNotes(@Nullable String query) {
-        mNotes = new LivePagedListBuilder<>(mNoteRepository.getAllNotes(query),
+        mFavorites = new LivePagedListBuilder<>(mNoteRepository.getAllFavoritizedNotes(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 }
