@@ -69,10 +69,9 @@ public class SettingsActivity extends AppCompatActivity {
                         .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
                 return true;
             } else if (preference == findPreference(getString(R.string.insert_dummy_data_key))) {
-                NoteRepository.getInstance(getActivity().getApplication()).insertDummyData();
-                Toast.makeText(getActivity(),
-                        getString(R.string.dummy_data_inserted),
-                        Toast.LENGTH_SHORT).show();
+                // DEPRECATED
+                // DEPRECATED
+                // DEPRECATED
             }
             return false;
         }
