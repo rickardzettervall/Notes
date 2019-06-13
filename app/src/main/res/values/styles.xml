@@ -27,9 +27,15 @@
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
     </style>
 
+    <!-- Informer for when a List is empty -->
     <style name="EmptyInformer">
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- RecyclerView -->
+    <style name="RecyclerView">
+        <item name="android:scrollbars">vertical</item>
     </style>
 
     <!-- Attributes for dark Theme -->
