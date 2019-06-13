@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Deletion confirmation -->
     <string-array name="confirm_deletion">
         <item>@string/confirm</item>
         <item>@string/abort</item>
+    </string-array>
+
+    <!-- Sorting direction -->
+    <string-array name="sort_direction">
+        <item>@string/sort_by_ascending</item>
+        <item>@string/sort_by_descending</item>
     </string-array>
 </resources>

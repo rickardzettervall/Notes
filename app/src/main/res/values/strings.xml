@@ -51,6 +51,15 @@
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
 
+    <!-- Sorting -->
+    <string name="sort_by">Sort notes</string>
+    <string name="sort_by_ascending">Asc</string>
+    <string name="sort_by_descending">Desc</string>
+    <string name="sort_by_alphabetically">Alphabetically (title)</string>
+    <string name="sort_by_date_created">Creation date</string>
+    <string name="sort_by_date_modified">Modified date</string>
+    <string name="sort_by_favorites_top">Favorites on top</string>
+
     <!-- Hints -->
     <string name="hint_title">Title..</string>
     <string name="hint_text">Notes..</string>
