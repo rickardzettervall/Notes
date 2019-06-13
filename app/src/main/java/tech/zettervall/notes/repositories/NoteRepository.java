@@ -1,10 +1,14 @@
 package tech.zettervall.notes.repositories;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -13,6 +17,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import tech.zettervall.notes.AppExecutor;
+import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.models.Note;
@@ -22,10 +27,13 @@ public class NoteRepository {
     private static final String TAG = NoteRepository.class.getSimpleName();
     private static NoteRepository INSTANCE;
     private NoteDao mNoteDao;
+    private SharedPreferences mSharedPreferences;
 
     private NoteRepository(Application application) {
         NoteDb db = NoteDb.getInstance(application.getApplicationContext());
         mNoteDao = db.noteDao();
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(application.getApplicationContext());
     }
 
     public static NoteRepository getInstance(final Application application) {
@@ -41,34 +49,141 @@ public class NoteRepository {
     }
 
     /**
-     * Get all Note Objects from the db as DataSource.
-     *
-     * @return DataSource containing all Notes
+     * Get SortType from SharedPreferences (Used in sorting).
      */
-    public DataSource.Factory<Integer, Note> getNotes() {
-        Log.d(TAG, "Retrieving all Notes..");
-        return mNoteDao.getNotes();
+    private int getSortType() {
+        return mSharedPreferences.getInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_DEFAULT);
     }
 
     /**
-     * Get all Note Objects from the db as DataSource,
-     * based on query input.
+     * Get SortDirection from SharedPreferences (Used in sorting).
+     */
+    private int getSortDirection() {
+        return mSharedPreferences.getInt(Constants.SORT_DIRECTION_KEY,
+                Constants.SORT_DIRECTION_DEFAULT);
+    }
+
+    /**
+     * Get FavoritesOnTop from SharedPreferences (Used in sorting).
+     */
+    private boolean getSortFavoritesOnTop() {
+        return mSharedPreferences.getBoolean(Constants.SORT_FAVORITES_ON_TOP_KEY,
+                Constants.SORT_FAVORITES_ON_TOP_DEFAULT);
+    }
+
+    /**
+     * Builds SQL String query based on variables.
      *
+     * @param sortType       What to sort by, e.g. alphabetically
+     * @param sortDirection  Sorting direction, ASC / DESC
+     * @param trash          Selects only Notes that have been trashed
+     * @param onlyFavorites  Selects only favorites
+     * @param favoritesOnTop Sort with favorites on top
+     * @param searchQuery    Search String input from user, use null for no query
+     * @return Complete SQL query String ready to be used with RawQuery in Room
+     */
+    private String queryBuilder(int sortType, int sortDirection, boolean trash,
+                                boolean onlyFavorites, boolean favoritesOnTop,
+                                @Nullable String searchQuery) {
+        // SQL query
+        StringBuilder query = new StringBuilder("SELECT * FROM note WHERE ");
+
+        // Convert booleans to 1/0 for SQL query
+        int trashVal = trash ? 1 : 0;
+        int favoritesVal = onlyFavorites ? 1 : 0;
+
+        // Query Strings
+        final String favoritesQuery = " AND " + Note.favoriteColumnName + " = " + favoritesVal;
+        final String sortDirectionQuery = sortDirection == Constants.SORT_DIRECTION_ASC ?
+                "ASC" : "DESC";
+
+        // Only show trashed Notes?
+        query.append(Note.trashColumnName).append(" = ").append(trashVal);
+
+        // Only show favoritized Notes?
+        if (onlyFavorites) {
+            query.append(favoritesQuery);
+        }
+
+        // User query
+        if (searchQuery != null) {
+            query.append(" AND ").append(Note.titleColumnName).append(" LIKE '%' || '")
+                    .append(searchQuery).append("' || '%' OR ").append(Note.trashColumnName)
+                    .append(" = ").append(trashVal);
+            if (onlyFavorites) {
+                query.append(favoritesQuery);
+            }
+            query.append(" AND ").append(Note.textColumnName).append(" LIKE '%' || '")
+                    .append(searchQuery).append("' || '%'");
+        }
+
+        // Order by
+        query.append(" ORDER BY ");
+        if (favoritesOnTop) {
+            query.append(Note.favoriteColumnName).append(" DESC, ");
+        }
+        String sortBy = null;
+        switch (sortType) {
+            case Constants.SORT_TYPE_ALPHABETICALLY:
+                sortBy = Note.titleColumnName;
+                break;
+            case Constants.SORT_TYPE_CREATION_DATE:
+                sortBy = Note.creationEpochColumnName;
+                break;
+            case Constants.SORT_TYPE_MODIFIED_DATE:
+                sortBy = Note.modifiedEpochColumnName;
+                break;
+        }
+        query.append(sortBy);
+
+        // ASC / DESC
+        query.append(" ").append(sortDirectionQuery);
+
+        Log.d(TAG, "SQLQuery: " + query.toString());
+
+        return query.toString();
+    }
+
+    /**
+     * Get all Notes from the db as DataSource.
+     *
+     * @param query Search String, use null to not search
      * @return DataSource containing all Notes matching query
      */
-    public DataSource.Factory<Integer, Note> getNotes(String query) {
+    public DataSource.Factory<Integer, Note> getAllNotes(@Nullable String query) {
         Log.d(TAG, "Retrieving all Notes matching query..");
-        return mNoteDao.getNotes(query);
+        String queryString = queryBuilder(getSortType(), getSortDirection(),
+                false, false, getSortFavoritesOnTop(), query);
+        SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
+        return mNoteDao.getNotes(sqlQuery);
     }
 
     /**
-     * Get all trashed Note Objects from the db as DataSource.
+     * Get all trashed Notes from the db as DataSource.
      *
+     * @param query Search String, use null to not search
      * @return DataSource containing all trashed Notes
      */
-    public DataSource.Factory<Integer, Note> getTrashedNotes() {
+    public DataSource.Factory<Integer, Note> getAllTrashedNotes(@Nullable String query) {
         Log.d(TAG, "Retrieving all trashed Notes..");
-        return mNoteDao.getTrashedNotes();
+        String queryString = queryBuilder(getSortType(), getSortDirection(),
+                true, false, false, query);
+        SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
+        return mNoteDao.getNotes(sqlQuery);
+    }
+
+    /**
+     * Get all favoritized Notes from the db as DataSource.
+     *
+     * @param query Search String, use null to not search
+     * @return DataSource containing all favoritized Notes
+     */
+    public DataSource.Factory<Integer, Note> getAllFavoritizedNotes(@Nullable String query) {
+        Log.d(TAG, "Retrieving all favoritized Notes..");
+        String queryString = queryBuilder(getSortType(), getSortDirection(),
+                false, true, false, query);
+        SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
+        return mNoteDao.getNotes(sqlQuery);
     }
 
     /**
@@ -120,13 +235,6 @@ public class NoteRepository {
 
         Log.d(TAG, "Inserted Note[id:" + noteID + "] in db..");
         return noteID;
-    }
-
-    /**
-     * DEPRECATED
-     */
-    public void insertDummyData() {
-        // not used anymore
     }
 
     /**

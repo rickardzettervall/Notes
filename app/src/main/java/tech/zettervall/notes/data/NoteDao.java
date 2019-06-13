@@ -7,7 +7,9 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import tech.zettervall.notes.models.Note;
 
@@ -17,18 +19,9 @@ import tech.zettervall.notes.models.Note;
 @Dao
 public interface NoteDao {
 
-    // Get all Notes
-    @Query("SELECT * FROM note WHERE trash = 0 ORDER BY modified_epoch DESC")
-    DataSource.Factory<Integer, Note> getNotes();
-
-    // Get all Notes (SEARCH)
-    @Query("SELECT * FROM note WHERE trash = 0 AND title LIKE '%' || :query || '%'" +
-            "OR trash = 0 AND text LIKE '%' || :query || '%' ORDER BY modified_epoch DESC")
-    DataSource.Factory<Integer, Note> getNotes(String query);
-
-    // Get all Notes (TRASH)
-    @Query("SELECT * FROM note WHERE trash = 1 ORDER BY modified_epoch DESC")
-    DataSource.Factory<Integer, Note> getTrashedNotes();
+    // Get Notes
+    @RawQuery(observedEntities = Note.class)
+    DataSource.Factory<Integer, Note> getNotes(SupportSQLiteQuery query);
 
     // Get specific Note based on ID
     @Query("SELECT * FROM note WHERE _id IS :id")
@@ -47,9 +40,11 @@ public interface NoteDao {
     @Delete
     void deleteNote(Note note);
 
+    // Delete ALL Notes
     @Query("DELETE FROM note")
     void deleteAllNotes();
 
+    // Delete ALL trashed Notes
     @Query("DELETE FROM note WHERE trash = 1")
     void deleteAllTrashedNotes();
 }
