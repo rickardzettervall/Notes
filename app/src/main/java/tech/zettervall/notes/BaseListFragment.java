@@ -25,10 +25,10 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 
-public abstract class BaseListFragment extends Fragment implements ObserverRequirements,
-        NoteAdapter.OnNoteClickListener {
+public abstract class BaseListFragment extends Fragment implements NoteAdapter.OnNoteClickListener {
 
-    private NoteListFragmentClickListener callback;
+    private static final String TAG = BaseListFragment.class.getSimpleName();
+    protected NoteListFragmentClickListener callback;
     private SharedPreferences mSharedPreferences;
 
     // Used for SearchView to restore state on configuration changes
@@ -67,20 +67,11 @@ public abstract class BaseListFragment extends Fragment implements ObserverRequi
      */
     @Override
     public void onNoteClick(int index) {
-//        try {
-//            // Get Note
-//            Note note = mNoteAdapter.getCurrentList().get(index);
-//            // Send Note to callback interface
-//            callback.onNoteClick(note);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
     }
 
     /**
      * Implement in Fragment.
      */
-    @Override
     public void subscribeObservers() {
 
     }
@@ -88,12 +79,9 @@ public abstract class BaseListFragment extends Fragment implements ObserverRequi
     /**
      * Implement in Fragment.
      */
-    @Override
-    public void refreshObservers(String query) {
+    public void refreshObservers(@Nullable String query) {
 
     }
-
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

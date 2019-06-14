@@ -34,43 +34,25 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.RecyclerViewHelper;
 import tech.zettervall.notes.viewmodels.NoteListViewModel;
 
-public class AllNotesFragment extends Fragment implements NoteAdapter.OnNoteClickListener {
+public class AllNotesFragment extends BaseListFragment {
 
     private static final String TAG = AllNotesFragment.class.getSimpleName();
-    private NoteListFragmentClickListener callback;
     private NoteListViewModel mNoteListViewModel;
     private LinearLayoutManager mLayoutManager;
     private NoteAdapter mNoteAdapter;
     private RecyclerView mRecyclerView;
     private FloatingActionButton mFab;
-    private SharedPreferences mSharedPreferences;
-    private boolean mIsTablet;
-
-    // Used for SearchView to restore state on configuration changes
-    private boolean mSearchIconified;
-    private String mSearchQuery;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
         // Initialize ViewModel
         mNoteListViewModel = ViewModelProviders.of(this).get(NoteListViewModel.class);
-
-        // Set SharedPreferences
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        // Enable Toolbar MenuItem handling
-        setHasOptionsMenu(true);
-
-        // Retrieve saved fields
-        mIsTablet = getResources().getBoolean(R.bool.isTablet);
-        if (savedInstanceState != null) {
-            mSearchQuery = savedInstanceState.getString(Constants.SEARCH_QUERY);
-            mSearchIconified = savedInstanceState.getBoolean(Constants.SEARCH_ICONIFIED);
-        }
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
@@ -111,7 +93,8 @@ public class AllNotesFragment extends Fragment implements NoteAdapter.OnNoteClic
     /**
      * Subscribe Observers.
      */
-    private void subscribeObservers() {
+    @Override
+    public void subscribeObservers() {
         mNoteListViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
@@ -123,19 +106,11 @@ public class AllNotesFragment extends Fragment implements NoteAdapter.OnNoteClic
     /**
      * Reload Observers, primarily for when user changes sorting.
      */
-    private void refreshObservers() {
+    @Override
+    public void refreshObservers(@Nullable String query) {
         mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
-        mNoteListViewModel.setNotes(null);
+        mNoteListViewModel.setNotes(query);
         subscribeObservers();
-    }
-
-    /**
-     * Callback interface for sending data back to Activity.
-     */
-    public interface NoteListFragmentClickListener {
-        void onNoteClick(Note note);
-
-        void onNoteListFragmentFabClick();
     }
 
     @Override
@@ -147,182 +122,6 @@ public class AllNotesFragment extends Fragment implements NoteAdapter.OnNoteClic
             callback.onNoteClick(note);
         } catch (NullPointerException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString(Constants.SEARCH_QUERY, mSearchQuery);
-        outState.putBoolean(Constants.SEARCH_ICONIFIED, mSearchIconified);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        // Get SearchView
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        if (mSearchQuery != null && !mSearchIconified) {
-            searchView.setIconified(false);
-            searchView.setQuery(mSearchQuery, false);
-        }
-
-        // Set Query
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            private void setResults(String query) {
-                mSearchQuery = query;
-                mSearchIconified = false;
-                mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
-                mNoteListViewModel.setNotes(query);
-                subscribeObservers();
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                setResults(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                setResults(newText);
-                return false;
-            }
-        });
-
-        // Set Close Behaviour
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Refresh List of Notes
-                refreshObservers();
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sort:
-
-                // Inflate View
-                View dialogView = View.inflate(getActivity(), R.layout.sort_alertdialog, null);
-
-                // Sort type (RadioGroup)
-                RadioGroup sortTypeGroup = dialogView.findViewById(R.id.sort_type_rg);
-                // Restore choice
-                int sortTypeChecked = mSharedPreferences.getInt(Constants.SORT_TYPE_KEY,
-                        Constants.SORT_TYPE_DEFAULT);
-                int checkedRadioButton = 0;
-                switch (sortTypeChecked) {
-                    case Constants.SORT_TYPE_ALPHABETICALLY:
-                        checkedRadioButton = R.id.sort_type_alphabetically_rb;
-                        break;
-                    case Constants.SORT_TYPE_CREATION_DATE:
-                        checkedRadioButton = R.id.sort_type_creation_date_rb;
-                        break;
-                    case Constants.SORT_TYPE_MODIFIED_DATE:
-                        checkedRadioButton = R.id.sort_type_modified_date_rb;
-                        break;
-                }
-                sortTypeGroup.check(checkedRadioButton);
-                // Set Listener
-                sortTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        switch (checkedId) {
-                            case R.id.sort_type_alphabetically_rb: // Alphabetically
-                                mSharedPreferences.edit()
-                                        .putInt(Constants.SORT_TYPE_KEY,
-                                                Constants.SORT_TYPE_ALPHABETICALLY).apply();
-                                break;
-                            case R.id.sort_type_creation_date_rb: // Creation date
-                                mSharedPreferences.edit()
-                                        .putInt(Constants.SORT_TYPE_KEY,
-                                                Constants.SORT_TYPE_CREATION_DATE).apply();
-                                break;
-                            case R.id.sort_type_modified_date_rb: // Modified date
-                                mSharedPreferences.edit()
-                                        .putInt(Constants.SORT_TYPE_KEY,
-                                                Constants.SORT_TYPE_MODIFIED_DATE).apply();
-                                break;
-                        }
-
-                        // Refresh Date to show in list
-                        mNoteAdapter.setSortType();
-
-                        // Refresh List of Notes
-                        refreshObservers();
-                    }
-                });
-
-                // Sort with favorites on top (Checkbox)
-                CheckBox sortFavoritesOnTop = dialogView.findViewById(R.id.sort_favorites_ontop_cb);
-                boolean sortFavoritesBool = mSharedPreferences.getBoolean(
-                        Constants.SORT_FAVORITES_ON_TOP_KEY,
-                        Constants.SORT_FAVORITES_ON_TOP_DEFAULT);
-                sortFavoritesOnTop.setChecked(sortFavoritesBool);
-                sortFavoritesOnTop.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                mSharedPreferences.edit()
-                                        .putBoolean(Constants.SORT_FAVORITES_ON_TOP_KEY, isChecked).apply();
-
-                                // Refresh List of Notes
-                                refreshObservers();
-                            }
-                        });
-
-                DialogInterface.OnClickListener dialogClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE: // Ascending
-                                        mSharedPreferences.edit()
-                                                .putInt(Constants.SORT_DIRECTION_KEY,
-                                                        Constants.SORT_DIRECTION_ASC).apply();
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE: // Descending
-                                        mSharedPreferences.edit()
-                                                .putInt(Constants.SORT_DIRECTION_KEY,
-                                                        Constants.SORT_DIRECTION_DESC).apply();
-                                        break;
-                                }
-
-                                // Refresh List of Notes
-                                refreshObservers();
-                            }
-                        };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getString(R.string.sort_by));
-                builder.setView(dialogView);
-                builder.setPositiveButton(R.string.sort_by_ascending, dialogClickListener);
-                builder.setPositiveButtonIcon(getResources().getDrawable(R.drawable.ic_ascending));
-                builder.setNegativeButton(R.string.sort_by_descending, dialogClickListener);
-                builder.setNegativeButtonIcon(getResources().getDrawable(R.drawable.ic_descending));
-                builder.show();
-                break;
-        }
-        return false;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        // Force Activity to implement callback interface
-        try {
-            callback = (NoteListFragmentClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
-                    " must implement 'NoteListFragmentClickListener'");
         }
     }
 }
