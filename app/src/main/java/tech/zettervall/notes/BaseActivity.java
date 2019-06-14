@@ -2,18 +2,12 @@ package tech.zettervall.notes;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
@@ -22,7 +16,6 @@ import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.viewmodels.NoteViewModel;
 
 /**
  * Base Activity with commonly used methods.
@@ -67,11 +60,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Set NoteListFragment.
+     * Set AllNotesFragment.
      */
-    public void setNoteListFragment(NoteListFragment noteListFragment) {
+    public void setNoteListFragment(AllNotesFragment allNotesFragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_list, noteListFragment, Constants.FRAGMENT_NOTELIST)
+                .replace(R.id.frame_list, allNotesFragment, Constants.FRAGMENT_NOTELIST)
                 .commit();
     }
 

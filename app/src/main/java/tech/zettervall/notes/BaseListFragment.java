@@ -14,121 +14,26 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.utils.RecyclerViewHelper;
-import tech.zettervall.notes.viewmodels.NoteListViewModel;
 
-public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClickListener {
+public abstract class BaseListFragment extends Fragment implements ObserverRequirements,
+        NoteAdapter.OnNoteClickListener {
 
-    private static final String TAG = NoteListFragment.class.getSimpleName();
     private NoteListFragmentClickListener callback;
-    private NoteListViewModel mNoteListViewModel;
-    private LinearLayoutManager mLayoutManager;
-    private NoteAdapter mNoteAdapter;
-    private RecyclerView mRecyclerView;
-    private FloatingActionButton mFab;
     private SharedPreferences mSharedPreferences;
-    private boolean mIsTablet;
 
     // Used for SearchView to restore state on configuration changes
     private boolean mSearchIconified;
     private String mSearchQuery;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
-
-        // Initialize ViewModel
-        mNoteListViewModel = ViewModelProviders.of(this).get(NoteListViewModel.class);
-
-        // Set SharedPreferences
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        // Enable Toolbar MenuItem handling
-        setHasOptionsMenu(true);
-
-        // Retrieve saved fields
-        mIsTablet = getResources().getBoolean(R.bool.isTablet);
-        if (savedInstanceState != null) {
-            mSearchQuery = savedInstanceState.getString(Constants.SEARCH_QUERY);
-            mSearchIconified = savedInstanceState.getBoolean(Constants.SEARCH_ICONIFIED);
-        }
-
-        // Find Views
-        mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
-        mFab = rootView.findViewById(R.id.notes_list_fab);
-
-        // Set Adapter / LayoutManager / Decoration
-        mNoteAdapter = new NoteAdapter(this, getActivity());
-        mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(getActivity());
-        mRecyclerView.setAdapter(mNoteAdapter);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    mFab.hide();
-                } else {
-                    mFab.show();
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
-        // Set FAB OnClickListener
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onNoteListFragmentFabClick();
-            }
-        });
-
-        // Subscribe Observers
-        subscribeObservers();
-
-        return rootView;
-    }
-
-    /**
-     * Subscribe Observers.
-     */
-    private void subscribeObservers() {
-        mNoteListViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mNoteAdapter.submitList(notes);
-            }
-        });
-    }
-
-    /**
-     * Reload Observers, primarily for when user changes sorting.
-     */
-    private void refreshObservers() {
-        mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
-        mNoteListViewModel.setNotes(null);
-        subscribeObservers();
-    }
 
     /**
      * Callback interface for sending data back to Activity.
@@ -139,17 +44,56 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
         void onNoteListFragmentFabClick();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Set SharedPreferences
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        // Enable Toolbar MenuItem handling
+        setHasOptionsMenu(true);
+
+        // Retrieve saved fields
+        if (savedInstanceState != null) {
+            mSearchQuery = savedInstanceState.getString(Constants.SEARCH_QUERY);
+            mSearchIconified = savedInstanceState.getBoolean(Constants.SEARCH_ICONIFIED);
+        }
+
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    /**
+     * Implement in Fragment.
+     */
     @Override
     public void onNoteClick(int index) {
-        try {
-            // Get Note
-            Note note = mNoteAdapter.getCurrentList().get(index);
-            // Send Note to callback interface
-            callback.onNoteClick(note);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            // Get Note
+//            Note note = mNoteAdapter.getCurrentList().get(index);
+//            // Send Note to callback interface
+//            callback.onNoteClick(note);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
     }
+
+    /**
+     * Implement in Fragment.
+     */
+    @Override
+    public void subscribeObservers() {
+
+    }
+
+    /**
+     * Implement in Fragment.
+     */
+    @Override
+    public void refreshObservers(String query) {
+
+    }
+
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -177,8 +121,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
             private void setResults(String query) {
                 mSearchQuery = query;
                 mSearchIconified = false;
-                mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
-                mNoteListViewModel.setNotes(query);
+                refreshObservers(query);
                 subscribeObservers();
             }
 
@@ -200,7 +143,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
             @Override
             public boolean onClose() {
                 // Refresh List of Notes
-                refreshObservers();
+                refreshObservers(null);
                 return false;
             }
         });
@@ -254,11 +197,8 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
                                 break;
                         }
 
-                        // Refresh Date to show in list
-                        mNoteAdapter.setSortType();
-
                         // Refresh List of Notes
-                        refreshObservers();
+                        refreshObservers(null);
                     }
                 });
 
@@ -272,11 +212,11 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                mSharedPreferences.edit()
-                                        .putBoolean(Constants.SORT_FAVORITES_ON_TOP_KEY, isChecked).apply();
+                                mSharedPreferences.edit().putBoolean(
+                                        Constants.SORT_FAVORITES_ON_TOP_KEY, isChecked).apply();
 
                                 // Refresh List of Notes
-                                refreshObservers();
+                                refreshObservers(null);
                             }
                         });
 
@@ -298,7 +238,7 @@ public class NoteListFragment extends Fragment implements NoteAdapter.OnNoteClic
                                 }
 
                                 // Refresh List of Notes
-                                refreshObservers();
+                                refreshObservers(null);
                             }
                         };
 

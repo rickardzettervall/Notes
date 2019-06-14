@@ -25,7 +25,7 @@ import tech.zettervall.notes.models.Note;
  * 3. allow user to set notification reminder for a note
  */
 public class MainActivity extends BaseActivity implements
-        NoteListFragment.NoteListFragmentClickListener,
+        AllNotesFragment.NoteListFragmentClickListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements
 
         // Set Fragments
         if(savedInstanceState == null) {
-            setNoteListFragment(new NoteListFragment());
+            setNoteListFragment(new AllNotesFragment());
             if (mIsTablet) { // TABLET
                 setNoteFragment(new NoteFragment());
             }

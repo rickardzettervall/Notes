@@ -1,6 +1,8 @@
 package tech.zettervall.notes.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +15,22 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.models.Note;
 
 public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
     private static final String TAG = NoteAdapter.class.getSimpleName();
     private OnNoteClickListener mOnNoteClickListener;
-    private Context context;
+    private SharedPreferences mSharedPreferences;
+    private Context mContext;
+    private int mSortType;
 
     public NoteAdapter(OnNoteClickListener onNoteClickListener, Context context) {
         super(DIFF_CALLBACK);
         mOnNoteClickListener = onNoteClickListener;
-        this.context = context;
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mContext = context;
     }
 
     /**
@@ -91,12 +97,25 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
         if (note != null) {
             holder.mHeadlineTv.setText(note.getTitle());
             holder.mTextTv.setText(note.getText());
-            holder.mDateTv.setText(note.getModifiedString(context));
+
+            // Date
+            if(mSortType == Constants.SORT_TYPE_CREATION_DATE) {
+                holder.mDateTv.setText(note.getCreationString(mContext));
+            } else {
+                holder.mDateTv.setText(note.getModifiedString(mContext));
+            }
+
+            // Favorite
             if(note.isFavorite()) {
                 holder.mFavorite.setVisibility(View.VISIBLE);
             } else {
                 holder.mFavorite.setVisibility(View.GONE);
             }
         }
+    }
+
+    public void setSortType() {
+        mSortType = mSharedPreferences.getInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_DEFAULT);
+        notifyDataSetChanged();
     }
 }
