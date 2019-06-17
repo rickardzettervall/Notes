@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_agenda"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="tech.zettervall.notes.FavoritesActivity"></activity>
         <activity
             android:name="tech.zettervall.notes.TrashActivity"
             android:label="@string/action_trash" />
@@ -18,8 +19,9 @@
         <activity
             android:name="tech.zettervall.notes.SettingsActivity"
             android:label="@string/action_settings" />
-        <activity android:name="tech.zettervall.notes.NoteActivity"
-            android:label="@string/note"/>
+        <activity
+            android:name="tech.zettervall.notes.NoteActivity"
+            android:label="@string/note" />
         <activity
             android:name="tech.zettervall.notes.MainActivity"
             android:label="@string/action_all_notes">
