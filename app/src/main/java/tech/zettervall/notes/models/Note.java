@@ -208,19 +208,16 @@ public class Note implements Comparable<Note> {
     }
 
     /**
-     * Compare contents for diff check in Adapter.
+     * Compare contents for diff check in Adapter, determines whether to update the item
+     * in adapter. Since modifiedEpoch is changed on a updated Note, it's the only field
+     * that is checked.
      *
      * @param note Note to compare to this
      * @return 0 when match and otherwise -1
      */
     @Override
     public int compareTo(@NonNull Note note) {
-        boolean matchHeadline = this.title.equals(note.getTitle()),
-                matchText = this.text.equals(note.getText());
-        if (matchHeadline && matchText) {
-            return 0;
-        }
-        return -1;
+        return this.modifiedEpoch == note.getModifiedEpoch() ? 0 : -1;
     }
 
     @NonNull
