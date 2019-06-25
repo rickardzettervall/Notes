@@ -110,26 +110,26 @@ public class TrashActivity extends BaseActivity implements NoteAdapter.OnNoteCli
         DialogInterface.OnClickListener dialogClickListener;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (item.getItemId()) {
-            case R.id.action_restore_trash:
-                dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                // TODO: change all notes to trash = false
-                                Toast.makeText(TrashActivity.this,
-                                        "Restored all Notes",
-                                        Toast.LENGTH_SHORT).show();
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                break;
-                        }
-                    }
-                };
-                builder.setMessage(getString(R.string.confirm_restore_trash))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
-                break;
+//            case R.id.action_restore_trash:
+//                dialogClickListener = new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        switch (which) {
+//                            case DialogInterface.BUTTON_POSITIVE:
+//                                // TODO: change all notes to trash = false
+//                                Toast.makeText(TrashActivity.this,
+//                                        "Restored all Notes",
+//                                        Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case DialogInterface.BUTTON_NEGATIVE:
+//                                break;
+//                        }
+//                    }
+//                };
+//                builder.setMessage(getString(R.string.confirm_restore_trash))
+//                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
+//                        .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
+//                break;
             case R.id.action_empty_trash:
                 dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override

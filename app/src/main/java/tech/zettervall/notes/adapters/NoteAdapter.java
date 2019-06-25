@@ -31,6 +31,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
         mOnNoteClickListener = onNoteClickListener;
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mContext = context;
+        mSortType = mSharedPreferences.getInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_DEFAULT);
     }
 
     /**
@@ -112,10 +113,5 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
                 holder.mFavorite.setVisibility(View.GONE);
             }
         }
-    }
-
-    public void setSortType() {
-        mSortType = mSharedPreferences.getInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_DEFAULT);
-        notifyDataSetChanged();
     }
 }

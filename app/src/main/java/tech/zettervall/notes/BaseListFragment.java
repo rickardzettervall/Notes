@@ -41,7 +41,7 @@ public abstract class BaseListFragment extends Fragment implements NoteAdapter.O
     public interface NoteListFragmentClickListener {
         void onNoteClick(Note note);
 
-        void onNoteListFragmentFabClick();
+        void onNoteListFragmentFabClick(boolean setFavorite);
     }
 
     @Nullable

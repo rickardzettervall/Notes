@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tech.zettervall.notes.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="tech.zettervall.notes.TrashActivity"
+    tools:showIn="@layout/activity_trash">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/AppBarLayout"
@@ -18,6 +18,6 @@
 
     <include
         style="@style/Content"
-        layout="@layout/content_main" />
+        layout="@layout/content_trash" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

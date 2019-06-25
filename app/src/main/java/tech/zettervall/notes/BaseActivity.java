@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
@@ -69,6 +70,24 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
+     * Set FavoritesFragment.
+     */
+    public void setFavoritesFragment(FavoritesFragment favoritesFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_list, favoritesFragment, Constants.FRAGMENT_FAVORITES)
+                .commit();
+    }
+
+    /**
+     * Set TrashFragment.
+     */
+    public void setTrashFragment(TrashFragment trashFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_list, trashFragment, Constants.FRAGMENT_TRASH)
+                .commit();
+    }
+
+    /**
      * Set NoteFragment.
      */
     public void setNoteFragment(NoteFragment noteFragment) {
@@ -80,19 +99,38 @@ public abstract class BaseActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_all_notes:
-                startActivity(new Intent(this, MainActivity.class));
+            case R.id.nav_all_notes: // Set Fragment or launch activity when outside MainActivity
+                if(this instanceof MainActivity) {
+                    setNoteListFragment(new AllNotesFragment());
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
-            case R.id.nav_favories:
+            case R.id.nav_favories: // Set Fragment or launch activity when outside MainActivity
+                if(this instanceof MainActivity) {
+                    setFavoritesFragment(new FavoritesFragment());
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
-            case R.id.nav_reminders:
+            case R.id.nav_reminders: // Set Fragment or launch activity when outside MainActivity
+                if(this instanceof MainActivity) {
+                    // Todo: set fragment
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
-            case R.id.nav_tags:
+            case R.id.nav_tags: // Launch Activity
+                // Todo: launch tags activity
                 break;
-            case R.id.nav_trash:
-                startActivity(new Intent(this, TrashActivity.class));
+            case R.id.nav_trash: // Launch Activity
+                if(this instanceof MainActivity) {
+                    setTrashFragment(new TrashFragment());
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
-            case R.id.nav_settings:
+            case R.id.nav_settings: // Launch Activity
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.nav_change_theme:

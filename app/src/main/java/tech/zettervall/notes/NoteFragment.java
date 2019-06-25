@@ -83,6 +83,12 @@ public class NoteFragment extends Fragment {
             mDataBinding.updatedTv.setVisibility(View.GONE);
         }
 
+        // Disable editing for trashed Notes
+        if(mNote.isTrash()) {
+            mDataBinding.titleTv.setEnabled(false);
+            mDataBinding.textTv.setEnabled(false);
+        }
+
         // Hide / Show FAB depending on device
         if (mIsTablet) {
             mDataBinding.fab.setOnClickListener(new View.OnClickListener() {

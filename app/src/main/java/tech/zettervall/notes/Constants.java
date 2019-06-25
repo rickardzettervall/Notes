@@ -4,9 +4,16 @@ public abstract class Constants {
 
     // Note
     public static final String NOTE = "note";
+    public static final String NOTE_ID = "note_id";
+    public static final String NOTE_TITLE = "note_title"; // Used for Notifications
+    public static final String NOTE_TEXT = "note_text"; // Used for Notifications
+    public static final String NOTE_FAVORITE = "note_favorite"; // New Note in Favorites List
 
     // Fragment
     public static final String FRAGMENT_NOTELIST = "fragment_notelist";
+    public static final String FRAGMENT_FAVORITES = "fragment_favorites";
+    public static final String FRAGMENT_REMINDERS = "fragment_reminders";
+    public static final String FRAGMENT_TRASH = "fragment_trash";
     public static final String FRAGMENT_NOTE = "fragment_note";
 
     // Time

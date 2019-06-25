@@ -80,9 +80,12 @@ public class AllNotesFragment extends BaseListFragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onNoteListFragmentFabClick();
+                callback.onNoteListFragmentFabClick(false);
             }
         });
+
+        // Set title
+        getActivity().setTitle(R.string.action_all_notes);
 
         // Subscribe Observers
         subscribeObservers();
@@ -123,5 +126,11 @@ public class AllNotesFragment extends BaseListFragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

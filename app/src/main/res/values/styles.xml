@@ -19,12 +19,19 @@
 
     <!-- Navigation Drawer -->
     <style name="Drawer">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="headerLayout">@layout/nav_header</item>
+        <item name="menu">@menu/menu_drawer</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <!-- Content Includer located behind Navigation Drawer -->
     <style name="Content">
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <!-- Informer for when a List is empty -->
@@ -33,12 +40,29 @@
         <item name="android:visibility">gone</item>
     </style>
 
+    <!-- AppBarLayout -->
+    <style name="AppBarLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:theme">@style/AppTheme.AppBarOverlay</item>
+    </style>
+
+    <!-- ToolBar -->
+    <style name="ToolBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimaryDark</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
+    </style>
+
     <!-- RecyclerView -->
     <style name="RecyclerView">
         <item name="android:scrollbars">vertical</item>
     </style>
 
     <!-- Attributes for dark Theme -->
-    <attr name="Selector" format="reference"/>
+    <attr name="Selector" format="reference" />
 
 </resources>
