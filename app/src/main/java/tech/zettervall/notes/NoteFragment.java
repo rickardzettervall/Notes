@@ -55,17 +55,14 @@ public class NoteFragment extends Fragment {
         // Get Note
         if (savedInstanceState != null) { // Existing Note but configuration changed
             mNote = Parcels.unwrap(savedInstanceState.getParcelable(Constants.NOTE));
-        } else if (getArguments() != null) { // Clicked Note
-            mNote = Parcels.unwrap(getArguments().getParcelable(Constants.NOTE));
+        } else if (getArguments() != null) { // Clicked Note or new Note from Favorites Fragment
+            if(getArguments().getBoolean(Constants.NOTE_FAVORITE)) {
+                mNote = newNote(true);
+            } else {
+                mNote = Parcels.unwrap(getArguments().getParcelable(Constants.NOTE));
+            }
         } else { // New Note
-            mNote = new Note(mDataBinding.titleTv.getText().toString(),
-                    mDataBinding.textTv.getText().toString(),
-                    new ArrayList<String>(),
-                    DateTimeHelper.getCurrentEpoch(),
-                    -1,
-                    -1,
-                    false,
-                    false);
+            mNote = newNote(false);
         }
 
         // Get Tablet bool
@@ -84,7 +81,7 @@ public class NoteFragment extends Fragment {
         }
 
         // Disable editing for trashed Notes
-        if(mNote.isTrash()) {
+        if (mNote.isTrash()) {
             mDataBinding.titleTv.setEnabled(false);
             mDataBinding.textTv.setEnabled(false);
         }
@@ -103,6 +100,22 @@ public class NoteFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    /**
+     * Create new Note.
+     *
+     * @param isFavorite Set favorite on creation
+     */
+    private Note newNote(boolean isFavorite) {
+        return new Note(mDataBinding.titleTv.getText().toString(),
+                mDataBinding.textTv.getText().toString(),
+                new ArrayList<String>(),
+                DateTimeHelper.getCurrentEpoch(),
+                -1,
+                -1,
+                false,
+                isFavorite);
     }
 
     /**

@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements
         mNavView.setNavigationItemSelectedListener(this);
 
         // Set Fragments
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             setNoteListFragment(new AllNotesFragment());
             if (mIsTablet) { // TABLET
                 setNoteFragment(new NoteFragment());
@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Clicked Notification
-        if(getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null) {
             int noteID = getIntent().getIntExtra(Constants.NOTE_ID, 0);
             Note note = NoteRepository.getInstance(getApplication()).getNote(noteID).getValue();
             onNoteClick(note);
@@ -75,14 +75,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     /**
-     * Create Fragment for new Note.
-     */
-    public void newNote() {
-
-    }
-
-    /**
      * Create new Note.
+     *
      * @param setFavorite when true, Note will be favorite on creation
      */
     @Override

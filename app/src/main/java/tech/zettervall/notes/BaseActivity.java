@@ -49,13 +49,18 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Get NoteFragment bundled with Note.
+     * Get NoteFragment.
+     * @param note Clicked Note to send to Fragment, set null for new Note
+     * @param setFavorite Determines if the new Note should be a favorite on creation
      */
-    public NoteFragment getNoteFragmentWithBundledNote(Note note) {
-        // Create Bundle and Fragment
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.NOTE, Parcels.wrap(note));
+    public NoteFragment getNoteFragment(@Nullable Note note, boolean setFavorite) {
         NoteFragment noteFragment = new NoteFragment();
+        Bundle bundle = new Bundle();
+        if(note != null) {
+            bundle.putParcelable(Constants.NOTE, Parcels.wrap(note));
+        } else {
+            bundle.putBoolean(Constants.NOTE_FAVORITE, setFavorite);
+        }
         noteFragment.setArguments(bundle);
         return noteFragment;
     }
@@ -88,7 +93,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Set NoteFragment.
+     * Set NoteFragment
      */
     public void setNoteFragment(NoteFragment noteFragment) {
         getSupportFragmentManager().beginTransaction()
@@ -100,21 +105,21 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_all_notes: // Set Fragment or launch activity when outside MainActivity
-                if(this instanceof MainActivity) {
+                if (this instanceof MainActivity) {
                     setNoteListFragment(new AllNotesFragment());
                 } else {
                     startActivity(new Intent(this, MainActivity.class));
                 }
                 break;
             case R.id.nav_favories: // Set Fragment or launch activity when outside MainActivity
-                if(this instanceof MainActivity) {
+                if (this instanceof MainActivity) {
                     setFavoritesFragment(new FavoritesFragment());
                 } else {
                     startActivity(new Intent(this, MainActivity.class));
                 }
                 break;
             case R.id.nav_reminders: // Set Fragment or launch activity when outside MainActivity
-                if(this instanceof MainActivity) {
+                if (this instanceof MainActivity) {
                     // Todo: set fragment
                 } else {
                     startActivity(new Intent(this, MainActivity.class));
@@ -124,7 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 // Todo: launch tags activity
                 break;
             case R.id.nav_trash: // Launch Activity
-                if(this instanceof MainActivity) {
+                if (this instanceof MainActivity) {
                     setTrashFragment(new TrashFragment());
                 } else {
                     startActivity(new Intent(this, MainActivity.class));

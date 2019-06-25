@@ -30,11 +30,15 @@ public class NoteActivity extends BaseActivity {
 
         // Set Fragments
         if (savedInstanceState == null) {
-            if (getIntent().getExtras() != null) { // Clicked Note
-                Note note = Parcels.unwrap(getIntent().getExtras().getParcelable(Constants.NOTE));
-                setNoteFragment(getNoteFragmentWithBundledNote(note));
-            } else { // New Note
-                setNoteFragment(new NoteFragment());
+            if (getIntent().getExtras() != null) { // Clicked Note or new Note from Favorites Fragment
+                if(getIntent().getExtras().getBoolean(Constants.NOTE_FAVORITE)) {
+                    setNoteFragment(getNoteFragment(null, true));
+                } else if(getIntent().getExtras().getParcelable(Constants.NOTE) != null) {
+                    Note note = Parcels.unwrap(getIntent().getExtras().getParcelable(Constants.NOTE));
+                    setNoteFragment(getNoteFragment(note, false));
+                } else {
+                    setNoteFragment(new NoteFragment());
+                }
             }
         }
     }
