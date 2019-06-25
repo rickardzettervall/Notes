@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +30,7 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.DateTimeHelper;
+import tech.zettervall.notes.utils.Keyboard;
 import tech.zettervall.notes.viewmodels.NoteViewModel;
 
 /**
@@ -97,6 +102,13 @@ public class NoteFragment extends Fragment {
             });
         } else {
             mDataBinding.fab.hide();
+        }
+
+        // Set title
+        if(mNote.isTrash()) {
+            getActivity().setTitle(R.string.note_trash);
+            // Hide keyboard
+            Keyboard.hideKeyboard(getActivity());
         }
 
         return rootView;
@@ -175,10 +187,14 @@ public class NoteFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        if (mNote != null && mNote.isFavorite()) {
-            MenuItem favoritize = menu.findItem(R.id.action_favoritize);
-            setFavoritizedIcon(favoritize);
+        if(!mNote.isTrash()) {
+            inflater.inflate(R.menu.menu_note, menu);
+            if (mNote != null && mNote.isFavorite()) {
+                MenuItem favoritize = menu.findItem(R.id.action_favoritize);
+                setFavoritizedIcon(favoritize);
+            }
+        } else { // TRASHED
+            inflater.inflate(R.menu.menu_note_trashed, menu);
         }
     }
 
@@ -200,13 +216,17 @@ public class NoteFragment extends Fragment {
                 mFavoriteStatusChanged = true; // Used to determine if to save
                 break;
             case R.id.action_delete:
-                DialogInterface.OnClickListener dialogClickListener =
+                DialogInterface.OnClickListener dialogClickListenerDelete =
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
-                                        mTrash = true;
+                                        if(!mNote.isTrash()) {
+                                            mTrash = true;
+                                        } else { // TRASHED
+                                            mNoteViewModel.deleteNote(mNote);
+                                        }
                                         if (!mIsTablet) { // PHONE
                                             getActivity().finish();
                                         } else { // TABLET
@@ -218,10 +238,39 @@ public class NoteFragment extends Fragment {
                                 }
                             }
                         };
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(getString(R.string.confirm_deletion))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
+                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
+                deleteBuilder.setTitle(getString(R.string.confirm_deletion))
+                        .setPositiveButton(getString(R.string.confirm), dialogClickListenerDelete)
+                        .setNegativeButton(getString(R.string.abort), dialogClickListenerDelete);
+                if(mNote.isTrash()) {
+                    deleteBuilder.setMessage(getString(R.string.confirm_deletion_message));
+                }
+                deleteBuilder.show();
+                break;
+            case R.id.action_restore:
+                DialogInterface.OnClickListener dialogClickListenerRestore =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        mTrash = false;
+                                        if (!mIsTablet) { // PHONE
+                                            getActivity().finish();
+                                        } else { // TABLET
+                                            // TODO: What happens for tablet users?
+                                        }
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
+                            }
+                        };
+                AlertDialog.Builder restoreBuilder = new AlertDialog.Builder(getActivity());
+                restoreBuilder.setTitle(getString(R.string.confirm_restore))
+                        .setPositiveButton(getString(R.string.confirm), dialogClickListenerRestore)
+                        .setNegativeButton(getString(R.string.abort), dialogClickListenerRestore);
+                restoreBuilder.show();
                 break;
         }
         return false;

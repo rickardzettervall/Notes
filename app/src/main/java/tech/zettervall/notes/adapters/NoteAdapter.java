@@ -88,7 +88,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_notes, viewGroup, false);
+                .inflate(R.layout.list_note, viewGroup, false);
         return new NoteViewHolder(view);
     }
 

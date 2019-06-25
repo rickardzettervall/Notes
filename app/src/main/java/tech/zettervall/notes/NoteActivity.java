@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,7 @@ public class NoteActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_note, menu);
+//        getMenuInflater().inflate(R.menu.menu_note, menu);
         return true;
     }
 
