@@ -107,8 +107,8 @@ public class TrashFragment extends BaseListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_trash, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_trash, menu);
     }
 
     @Override

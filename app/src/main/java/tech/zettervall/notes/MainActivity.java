@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate in each Fragment
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

@@ -116,10 +116,4 @@ public class FavoritesFragment extends BaseListFragment {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 }
