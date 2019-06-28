@@ -43,7 +43,7 @@ public class NoteFragment extends Fragment {
     private FragmentNoteBinding mDataBinding;
     private NoteViewModel mNoteViewModel;
     private Note mNote;
-    private boolean mTrash, mFavoriteStatusChanged, mIsTablet;
+    private boolean mTrash, mDeleted, mFavoriteStatusChanged, mIsTablet;
 
     @Nullable
     @Override
@@ -135,6 +135,7 @@ public class NoteFragment extends Fragment {
      * title/text or change other parameters.
      */
     private void saveNote() {
+        mNote.setTrash(mTrash);
         if ((!mDataBinding.titleTv.getText().toString().isEmpty() ||
                 !mDataBinding.textTv.getText().toString().isEmpty()) &&
                 !mDataBinding.titleTv.getText().toString().equals(mNote.getTitle()) ||
@@ -144,11 +145,12 @@ public class NoteFragment extends Fragment {
             mNote.setTitle(mDataBinding.titleTv.getText().toString());
             mNote.setText(mDataBinding.textTv.getText().toString());
             mNote.setModifiedEpoch(DateTimeHelper.getCurrentEpoch());
-            if (mNote.getId() > 0) { // Existing Note
-                mNoteViewModel.updateNote(mNote);
-            } else { // New Note
-                mNote.setId((int) mNoteViewModel.insertNote(mNote));
-            }
+        }
+
+        if (mNote.getId() > 0) { // Existing Note
+            mNoteViewModel.updateNote(mNote);
+        } else { // New Note
+            mNote.setId((int) mNoteViewModel.insertNote(mNote));
         }
     }
 
@@ -165,16 +167,18 @@ public class NoteFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (!mTrash) { // SAVE
-            saveNote();
-        } else if (mNote != null) { // TRASH
-            mNote.setTrash(true);
-            mNoteViewModel.updateNote(mNote);
-            // Message to user
-            String toastMessage = mNote.getTitle() != null && !mNote.getTitle().isEmpty() ?
-                    getString(R.string.note_trashed_detailed, mNote.getTitle()) :
-                    getString(R.string.note_trashed);
-            Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+        if(!mDeleted) {
+            if (!mTrash) { // SAVE
+                saveNote();
+            } else if (mNote != null) { // TRASH
+                mNote.setTrash(true);
+                mNoteViewModel.updateNote(mNote);
+                // Message to user
+                String toastMessage = mNote.getTitle() != null && !mNote.getTitle().isEmpty() ?
+                        getString(R.string.note_trashed_detailed, mNote.getTitle()) :
+                        getString(R.string.note_trashed);
+                Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -224,8 +228,15 @@ public class NoteFragment extends Fragment {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         if(!mNote.isTrash()) {
                                             mTrash = true;
-                                        } else { // TRASHED
+                                        } else { // TRASHED (final deletion)
                                             mNoteViewModel.deleteNote(mNote);
+                                            mDeleted = true;
+                                            String message = !mNote.getTitle().isEmpty() ?
+                                                    getString(R.string.note_deleted_detailed,
+                                                            mNote.getTitle()) :
+                                                    getString(R.string.note_deleted);
+                                            Toast.makeText(getActivity(), message,
+                                                    Toast.LENGTH_SHORT).show();
                                         }
                                         if (!mIsTablet) { // PHONE
                                             getActivity().finish();
@@ -260,6 +271,11 @@ public class NoteFragment extends Fragment {
                                         } else { // TABLET
                                             // TODO: What happens for tablet users?
                                         }
+                                        String message = !mNote.getTitle().isEmpty() ?
+                                                getString(R.string.note_restored_detailed,
+                                                        mNote.getTitle()) :
+                                                getString(R.string.note_restored);
+                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;

@@ -11,8 +11,12 @@
     <string name="note">Note</string>
     <string name="creation_date">Created: <xliff:g example="Jun 1, 2019 10:55" id="date">%s</xliff:g></string>
     <string name="modified_date">Updated: <xliff:g example="Jun 2, 2019 12:00" id="date">%s</xliff:g></string>
-    <string name="note_trashed">Moved note to trash</string>
-    <string name="note_trashed_detailed">Moved \'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' to trash</string>
+    <string name="note_trashed">Note moved to trash</string>
+    <string name="note_trashed_detailed">\'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' moved to trash</string>
+    <string name="note_deleted">Note deleted</string>
+    <string name="note_deleted_detailed">\'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' deleted</string>
+    <string name="note_restored">Note restored</string>
+    <string name="note_restored_detailed">\'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' restored</string>
     <string name="note_favorites_added">Added to favorites</string>
     <string name="note_favorites_removed">Removed from favorites</string>
 
@@ -22,6 +26,7 @@
 
     <!-- Confirm Alert -->
     <string name="confirm_deletion">Delete note?</string>
+    <string name="confirm_trash">Trash note?</string>
     <string name="confirm_deletion_message">This deletes the note beyond restoration.</string>
     <string name="confirm">Confirm</string>
     <string name="abort">Abort</string>
