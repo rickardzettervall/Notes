@@ -1,8 +1,14 @@
 package tech.zettervall.notes;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,9 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethod;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,13 +30,18 @@ import androidx.lifecycle.ViewModelProviders;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.services.NotificationJobService;
 import tech.zettervall.notes.utils.DateTimeHelper;
 import tech.zettervall.notes.utils.Keyboard;
 import tech.zettervall.notes.viewmodels.NoteViewModel;
+
+import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
 /**
  * Fragment for editing a Note, used ViewModel to fetch data from db.
@@ -40,10 +50,13 @@ public class NoteFragment extends Fragment {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
     private static final String FAVORITE_STATUS = "favorite_status";
+    private static final String REMINDER_STATUS = "reminder_status";
     private FragmentNoteBinding mDataBinding;
     private NoteViewModel mNoteViewModel;
     private Note mNote;
-    private boolean mTrash, mDeleted, mFavoriteStatusChanged, mIsTablet;
+    private boolean mTrash, mDeleted, mFavoriteStatusChanged, mReminderChanged, mIsTablet;
+    private Calendar mReminderDateTime;
+    private long mReminderDateTimeEpoch;
 
     @Nullable
     @Override
@@ -140,7 +153,7 @@ public class NoteFragment extends Fragment {
                 !mDataBinding.textTv.getText().toString().isEmpty()) &&
                 !mDataBinding.titleTv.getText().toString().equals(mNote.getTitle()) ||
                 !mDataBinding.textTv.getText().toString().equals(mNote.getText()) ||
-                mFavoriteStatusChanged) {
+                mFavoriteStatusChanged || mReminderChanged) {
             // Change Note values and update modified time stamp
             mNote.setTitle(mDataBinding.titleTv.getText().toString());
             mNote.setText(mDataBinding.textTv.getText().toString());
@@ -162,6 +175,62 @@ public class NoteFragment extends Fragment {
     private void setUnfavoritizedIcon(MenuItem item) {
         item.setIcon(R.drawable.ic_star_border);
         item.setTitle(R.string.action_favoritize);
+    }
+
+    private void scheduleReminderJob(Context context) {
+        // Set bundle
+        PersistableBundle bundle = new PersistableBundle();
+        if(mNote.getId() == 0) {
+            saveNote();
+        }
+        bundle.putInt(Constants.NOTE_ID, mNote.getId());
+        bundle.putString(Constants.NOTE_TITLE, mDataBinding.titleTv.getText().toString());
+        bundle.putString(Constants.NOTE_TEXT, mDataBinding.textTv.getText().toString());
+
+        // Get System Scheduler
+        JobScheduler jobScheduler =
+                (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
+
+        // Build job
+        ComponentName jobService = new ComponentName(context.getPackageName(),
+                NotificationJobService.class.getName());
+        JobInfo.Builder jobBuilder = new JobInfo.Builder(mNote.getId(), jobService)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setMinimumLatency(Math.abs(DateTimeHelper.getCurrentEpoch() - mReminderDateTimeEpoch))
+                .setExtras(bundle);
+        JobInfo jobInfo = jobBuilder.build();
+
+        // Schedule job
+        jobScheduler.schedule(jobInfo);
+    }
+
+    private void dateTimePicker() {
+        final Calendar currentDate = Calendar.getInstance();
+        mReminderDateTime = Calendar.getInstance();
+        new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                mReminderDateTime.set(year, monthOfYear, dayOfMonth);
+                new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        mReminderDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        mReminderDateTime.set(Calendar.MINUTE, minute);
+                        mReminderDateTimeEpoch = DateTimeHelper.
+                                getEpochWithZeroSeconds(mReminderDateTime.getTime().getTime());
+                        // Display for user
+                        Toast.makeText(getActivity(), getString(R.string.reminder_set,
+                                DateTimeHelper.getDateStringFromEpoch(mReminderDateTimeEpoch,
+                                        getActivity())), Toast.LENGTH_LONG).show();
+                        // Set Reminder for Note
+                        mNote.setNotificationEpoch(mReminderDateTimeEpoch);
+                        scheduleReminderJob(getActivity());
+                        mReminderChanged = true;
+                    }
+                }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE),
+                        DateTimeHelper.use24h(getActivity())).show();
+            }
+        }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
     }
 
     @Override
@@ -186,6 +255,7 @@ public class NoteFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(Constants.NOTE, Parcels.wrap(mNote));
         outState.putBoolean(FAVORITE_STATUS, mFavoriteStatusChanged);
+        outState.putBoolean(REMINDER_STATUS, mReminderChanged);
         super.onSaveInstanceState(outState);
     }
 
@@ -218,6 +288,10 @@ public class NoteFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 }
                 mFavoriteStatusChanged = true; // Used to determine if to save
+                break;
+            case R.id.action_reminder:
+                // todo: set date/time
+                dateTimePicker();
                 break;
             case R.id.action_delete:
                 DialogInterface.OnClickListener dialogClickListenerDelete =

@@ -11,8 +11,14 @@
     <item
         android:id="@+id/action_tags"
         android:icon="@drawable/ic_tag"
-        android:orderInCategory="10"
+        android:orderInCategory="20"
         android:title="@string/action_tags"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_reminder"
+        android:icon="@drawable/ic_reminder"
+        android:orderInCategory="30"
+        android:title="@string/action_reminder"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_delete"

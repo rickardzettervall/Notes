@@ -1,10 +1,16 @@
 package tech.zettervall.notes.utils;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.util.Log;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -21,6 +27,19 @@ public abstract class DateTimeHelper {
     }
 
     /**
+     * Get Unix Epoch timestamp in long but with the seconds reset to 00.
+     * For example 01/01/2000 20:33:21 will be converted to 01/01/2000 20:33:00.
+     * This is used for setting notifications.
+     */
+    public static long getEpochWithZeroSeconds(long epoch) {
+        Date date = new Date();
+        date.setTime(epoch);
+        String dateString = date.toString();
+        int seconds = Integer.valueOf(dateString.substring(17, 19));
+        return epoch - (seconds * 1000);
+    }
+
+    /**
      * Get Date String in local timezone from Epoch.
      *
      * @param epoch   Unix Epoch to use.
@@ -29,13 +48,6 @@ public abstract class DateTimeHelper {
      * Epoch is, e.g. an Epoch from today will return "Today, HH:MM".
      */
     public static String getDateStringFromEpoch(long epoch, Context context) {
-
-        // Get user preferences
-        int timeSelector = PreferenceManager.getDefaultSharedPreferences(context).
-                getInt(Constants.TIME_SELECTOR, 0);
-
-        // Countries with AM/PM clock
-        Locale[] amPmCountries = {Locale.US, Locale.CANADA, Locale.CANADA_FRENCH};
 
         // Set Date Objects
         Date currentDate = new Date();
@@ -57,15 +69,9 @@ public abstract class DateTimeHelper {
                 yearFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
 
         // Set AM/PM for countries which use that standard
-        if (timeSelector != Constants.TIME_24) {
-            for (Locale i : amPmCountries) {
-                if (timeSelector == Constants.TIME_12 ||
-                        Locale.getDefault().getDisplayCountry().equals(i.getDisplayCountry())) {
-                    timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-                    dateFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
-                    break;
-                }
-            }
+        if (!use24h(context)) {
+            timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+            dateFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
         }
 
         // Return Strings
@@ -80,5 +86,36 @@ public abstract class DateTimeHelper {
                     yearFormat.format(inputDate) +
                     " " + timeFormat.format(inputDate);
         }
+    }
+
+    /**
+     * Checks whether to use 12 or 24H for time. Uses 24H as default but changes to 12H if
+     * user system language uses that, but also overrides that if user chose to in
+     * the app settings activity.
+     *
+     * @param context Use context to retrieve SharedPreferences
+     * @return true for 24h and false for 12h
+     */
+    public static boolean use24h(Context context) {
+
+        // Get user preferences
+        int timeSelector = PreferenceManager.getDefaultSharedPreferences(context).
+                getInt(Constants.TIME_SELECTOR, Constants.TIME_12);
+
+        // Countries with AM/PM clock
+        Locale[] amPmCountries = {Locale.US, Locale.CANADA, Locale.CANADA_FRENCH};
+
+        boolean use24h = true;
+        for (Locale i : amPmCountries) { // Check if system preferences are a AM/PM country
+            if (Locale.getDefault().getDisplayCountry().equals(i.getDisplayCountry())) {
+                use24h = false;
+                break;
+            }
+        }
+        if (timeSelector == Constants.TIME_24) {
+            use24h = true;
+        }
+
+        return use24h;
     }
 }

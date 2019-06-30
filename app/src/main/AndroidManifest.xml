@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.zettervall.mNotes">
 
+    <!-- Permissions -->
+    <permission android:name="android.permissions.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_agenda"

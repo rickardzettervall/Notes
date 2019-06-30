@@ -217,7 +217,8 @@ public class Note implements Comparable<Note> {
      */
     @Override
     public int compareTo(@NonNull Note note) {
-        return this.modifiedEpoch == note.getModifiedEpoch() ? 0 : -1;
+        boolean notificationEpochChanged = this.notificationEpoch != note.getNotificationEpoch();
+        return this.modifiedEpoch == note.getModifiedEpoch() || notificationEpochChanged ? 0 : -1;
     }
 
     @NonNull

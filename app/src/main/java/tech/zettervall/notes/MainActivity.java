@@ -10,7 +10,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,7 +21,7 @@ import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.repositories.NoteRepository;
+import tech.zettervall.notes.viewmodels.NotificationViewModel;
 
 /**
  * 1. make it possible to add notes and display them in the main recyclerview
@@ -33,6 +36,7 @@ public class MainActivity extends BaseActivity implements
     private Toolbar mToolbar;
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
+    private NotificationViewModel mNotificationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +73,24 @@ public class MainActivity extends BaseActivity implements
         // Clicked Notification
         if (getIntent().getExtras() != null) {
             int noteID = getIntent().getIntExtra(Constants.NOTE_ID, 0);
-            Note note = NoteRepository.getInstance(getApplication()).getNote(noteID).getValue();
-            onNoteClick(note);
+
+            // Initialize ViewModel and set Note
+            mNotificationViewModel =
+                    ViewModelProviders.of(this).get(NotificationViewModel.class);
+            mNotificationViewModel.setNote(noteID);
+
+            // Observer
+            mNotificationViewModel.getNote().observe(this, new Observer<Note>() {
+                @Override
+                public void onChanged(Note note) {
+                    // Reset Notification
+                    note.setNotificationEpoch(-1);
+                    // Simulate click
+                    onNoteClick(note);
+                    // Remove Extra to prevent loop
+                    getIntent().removeExtra(Constants.NOTE_ID);
+                }
+            });
         }
     }
 
@@ -141,5 +161,15 @@ public class MainActivity extends BaseActivity implements
         super.onNavigationItemSelected(menuItem);
         mNavDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        /* This observer is only needed once (when user clicks the notification),
+         * therefor we remove it directly after it's used. */
+        if (mNotificationViewModel != null) {
+            mNotificationViewModel.getNote().removeObservers(this);
+        }
     }
 }

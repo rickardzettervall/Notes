@@ -56,7 +56,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mHeadlineTv, mTextTv, mDateTv;
-        private ImageView mFavorite;
+        private ImageView mFavorite, mReminder;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +66,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             mTextTv = itemView.findViewById(R.id.text_tv);
             mDateTv = itemView.findViewById(R.id.date_tv);
             mFavorite = itemView.findViewById(R.id.favorite_iv);
+            mReminder = itemView.findViewById(R.id.reminder_iv);
 
             // Set OnClickListener
             itemView.setOnClickListener(this);
@@ -111,6 +112,13 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
                 holder.mFavorite.setVisibility(View.VISIBLE);
             } else {
                 holder.mFavorite.setVisibility(View.GONE);
+            }
+
+            // Reminder
+            if(note.getNotificationEpoch() > 0) {
+                holder.mReminder.setVisibility(View.VISIBLE);
+            } else {
+                holder.mReminder.setVisibility(View.GONE);
             }
         }
     }

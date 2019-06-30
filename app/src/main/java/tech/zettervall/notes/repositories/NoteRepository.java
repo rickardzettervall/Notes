@@ -83,8 +83,8 @@ public class NoteRepository {
      * @return Complete SQL query String ready to be used with RawQuery in Room
      */
     private String queryBuilder(int sortType, int sortDirection, boolean trash,
-                                boolean onlyFavorites, boolean favoritesOnTop,
-                                @Nullable String searchQuery) {
+                                boolean onlyFavorites, boolean onlyReminders,
+                                boolean favoritesOnTop, @Nullable String searchQuery) {
         // SQL query
         StringBuilder query = new StringBuilder("SELECT * FROM note WHERE ");
 
@@ -94,6 +94,7 @@ public class NoteRepository {
 
         // Query Strings
         final String favoritesQuery = " AND " + Note.favoriteColumnName + " = " + favoritesVal;
+        final String remindersQuery = " AND " + Note.notificationEpochColumnName + " > 0";
         final String sortDirectionQuery = sortDirection == Constants.SORT_DIRECTION_ASC ?
                 "ASC" : "DESC";
 
@@ -103,6 +104,8 @@ public class NoteRepository {
         // Only show favoritized Notes?
         if (onlyFavorites) {
             query.append(favoritesQuery);
+        } else if (onlyReminders) {
+            query.append(remindersQuery);
         }
 
         // User query
@@ -153,7 +156,7 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getAllNotes(@Nullable String query) {
         Log.d(TAG, "Retrieving all Notes matching query..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                false, false, getSortFavoritesOnTop(), query);
+                false, false, false, getSortFavoritesOnTop(), query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotes(sqlQuery);
     }
@@ -167,7 +170,7 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getAllTrashedNotes(@Nullable String query) {
         Log.d(TAG, "Retrieving all trashed Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                true, false, false, query);
+                true, false, false, false, query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotes(sqlQuery);
     }
@@ -181,7 +184,21 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getAllFavoritizedNotes(@Nullable String query) {
         Log.d(TAG, "Retrieving all favoritized Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                false, true, false, query);
+                false, true, false, false, query);
+        SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
+        return mNoteDao.getNotes(sqlQuery);
+    }
+
+    /**
+     * Get all reminder Notes from the db as DataSource.
+     *
+     * @param query Search String, use null to not search
+     * @return DataSource containing all reminder Notes
+     */
+    public DataSource.Factory<Integer, Note> getAllReminderNotes(@Nullable String query) {
+        Log.d(TAG, "Retrieving all reminder Notes..");
+        String queryString = queryBuilder(getSortType(), getSortDirection(),
+                false, false, true, getSortFavoritesOnTop(), query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotes(sqlQuery);
     }

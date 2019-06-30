@@ -84,6 +84,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
+     * Set RemindersFragment.
+     */
+    public void setRemindersFragment(RemindersFragment remindersFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_list, remindersFragment, Constants.FRAGMENT_FAVORITES)
+                .commit();
+    }
+
+    /**
      * Set TrashFragment.
      */
     public void setTrashFragment(TrashFragment trashFragment) {
@@ -120,7 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_reminders: // Set Fragment or launch activity when outside MainActivity
                 if (this instanceof MainActivity) {
-                    // Todo: set fragment
+                    setRemindersFragment(new RemindersFragment());
                 } else {
                     startActivity(new Intent(this, MainActivity.class));
                 }
