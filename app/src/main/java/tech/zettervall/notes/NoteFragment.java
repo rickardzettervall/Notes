@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +30,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
@@ -51,12 +49,12 @@ public class NoteFragment extends Fragment {
     private static final String TAG = NoteFragment.class.getSimpleName();
     private static final String FAVORITE_STATUS = "favorite_status";
     private static final String REMINDER_STATUS = "reminder_status";
+    private boolean mTrash, mDeleted, mFavoriteStatusChanged, mReminderChanged, mIsTablet;
+    private long mReminderDateTimeEpoch;
     private FragmentNoteBinding mDataBinding;
     private NoteViewModel mNoteViewModel;
     private Note mNote;
-    private boolean mTrash, mDeleted, mFavoriteStatusChanged, mReminderChanged, mIsTablet;
-    private Calendar mReminderDateTime;
-    private long mReminderDateTimeEpoch;
+    private Calendar mReminderCalender, mDateTimePickerCalender;
 
     @Nullable
     @Override
@@ -74,7 +72,7 @@ public class NoteFragment extends Fragment {
         if (savedInstanceState != null) { // Existing Note but configuration changed
             mNote = Parcels.unwrap(savedInstanceState.getParcelable(Constants.NOTE));
         } else if (getArguments() != null) { // Clicked Note or new Note from Favorites Fragment
-            if(getArguments().getBoolean(Constants.NOTE_FAVORITE)) {
+            if (getArguments().getBoolean(Constants.NOTE_FAVORITE)) {
                 mNote = newNote(true);
             } else {
                 mNote = Parcels.unwrap(getArguments().getParcelable(Constants.NOTE));
@@ -118,7 +116,7 @@ public class NoteFragment extends Fragment {
         }
 
         // Set title
-        if(mNote.isTrash()) {
+        if (mNote.isTrash()) {
             getActivity().setTitle(R.string.note_trash);
             // Hide keyboard
             Keyboard.hideKeyboard(getActivity());
@@ -180,7 +178,7 @@ public class NoteFragment extends Fragment {
     private void scheduleReminderJob(Context context) {
         // Set bundle
         PersistableBundle bundle = new PersistableBundle();
-        if(mNote.getId() == 0) {
+        if (mNote.getId() == 0) {
             saveNote();
         }
         bundle.putInt(Constants.NOTE_ID, mNote.getId());
@@ -196,7 +194,9 @@ public class NoteFragment extends Fragment {
                 NotificationJobService.class.getName());
         JobInfo.Builder jobBuilder = new JobInfo.Builder(mNote.getId(), jobService)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setMinimumLatency(Math.abs(DateTimeHelper.getCurrentEpoch() - mReminderDateTimeEpoch))
+                .setMinimumLatency(
+                        Math.abs(DateTimeHelper.getCurrentEpoch() - mReminderDateTimeEpoch))
+                .setPersisted(true)
                 .setExtras(bundle);
         JobInfo jobInfo = jobBuilder.build();
 
@@ -205,19 +205,22 @@ public class NoteFragment extends Fragment {
     }
 
     private void dateTimePicker() {
-        final Calendar currentDate = Calendar.getInstance();
-        mReminderDateTime = Calendar.getInstance();
+        mDateTimePickerCalender = Calendar.getInstance();
+        mReminderCalender = Calendar.getInstance();
+        if (mNote.getNotificationEpoch() > 0) {
+            mDateTimePickerCalender.setTimeInMillis(mNote.getNotificationEpoch());
+        }
         new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mReminderDateTime.set(year, monthOfYear, dayOfMonth);
+                mReminderCalender.set(year, monthOfYear, dayOfMonth);
                 new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mReminderDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        mReminderDateTime.set(Calendar.MINUTE, minute);
+                        mReminderCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        mReminderCalender.set(Calendar.MINUTE, minute);
                         mReminderDateTimeEpoch = DateTimeHelper.
-                                getEpochWithZeroSeconds(mReminderDateTime.getTime().getTime());
+                                getEpochWithZeroSeconds(mReminderCalender.getTime().getTime());
                         // Display for user
                         Toast.makeText(getActivity(), getString(R.string.reminder_set,
                                 DateTimeHelper.getDateStringFromEpoch(mReminderDateTimeEpoch,
@@ -227,16 +230,19 @@ public class NoteFragment extends Fragment {
                         scheduleReminderJob(getActivity());
                         mReminderChanged = true;
                     }
-                }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE),
+                }, mDateTimePickerCalender.get(Calendar.HOUR_OF_DAY),
+                        mDateTimePickerCalender.get(Calendar.MINUTE),
                         DateTimeHelper.use24h(getActivity())).show();
             }
-        }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
+        }, mDateTimePickerCalender.get(Calendar.YEAR),
+                mDateTimePickerCalender.get(Calendar.MONTH),
+                mDateTimePickerCalender.get(Calendar.DATE)).show();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(!mDeleted) {
+        if (!mDeleted) {
             if (!mTrash) { // SAVE
                 saveNote();
             } else if (mNote != null) { // TRASH
@@ -261,7 +267,7 @@ public class NoteFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!mNote.isTrash()) {
+        if (!mNote.isTrash()) {
             inflater.inflate(R.menu.menu_note, menu);
             if (mNote != null && mNote.isFavorite()) {
                 MenuItem favoritize = menu.findItem(R.id.action_favoritize);
@@ -300,7 +306,7 @@ public class NoteFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
-                                        if(!mNote.isTrash()) {
+                                        if (!mNote.isTrash()) {
                                             mTrash = true;
                                         } else { // TRASHED (final deletion)
                                             mNoteViewModel.deleteNote(mNote);
@@ -327,7 +333,7 @@ public class NoteFragment extends Fragment {
                 deleteBuilder.setTitle(getString(R.string.confirm_deletion))
                         .setPositiveButton(getString(R.string.confirm), dialogClickListenerDelete)
                         .setNegativeButton(getString(R.string.abort), dialogClickListenerDelete);
-                if(mNote.isTrash()) {
+                if (mNote.isTrash()) {
                     deleteBuilder.setMessage(getString(R.string.confirm_deletion_message));
                 }
                 deleteBuilder.show();

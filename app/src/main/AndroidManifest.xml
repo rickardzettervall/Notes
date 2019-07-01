@@ -3,7 +3,7 @@
     package="tech.zettervall.mNotes">
 
     <!-- Permissions -->
-    <permission android:name="android.permissions.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +12,6 @@
         android:roundIcon="@mipmap/ic_agenda"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="tech.zettervall.notes.FavoritesActivity"></activity>
-        <activity
-            android:name="tech.zettervall.notes.TrashActivity"
-            android:label="@string/action_trash" />
         <activity
             android:name="tech.zettervall.notes.AboutActivity"
             android:label="@string/action_about" />
