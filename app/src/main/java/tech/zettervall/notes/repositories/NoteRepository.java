@@ -214,6 +214,36 @@ public class NoteRepository {
         return mNoteDao.getNote(_id);
     }
 
+    public Note getNoteRaw(final int _id) {
+        Log.d(TAG, "Retrieving Note[id:" + _id + "] from db..");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Callable<Note> callable = new Callable<Note>() {
+            @Override
+            public Note call() {
+                return mNoteDao.getNoteRaw(_id);
+            }
+        };
+        Future<Note> future = executorService.submit(callable);
+        Note note = null;
+        try {
+            note = future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Shutdown ExecutorService
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+
+        return note;
+    }
+
     /**
      * Insert a single Note into db.
      *

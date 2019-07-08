@@ -1,5 +1,7 @@
 package tech.zettervall.notes;
 
+import android.graphics.Color;
+
 public abstract class Constants {
 
     // Note
@@ -30,16 +32,23 @@ public abstract class Constants {
 
     // SharedPreferences
     public static final String SORT_TYPE_KEY = "sort_type_key";
-    public static final int SORT_TYPE_DEFAULT = 2;
     public static final int SORT_TYPE_ALPHABETICALLY = 0;
     public static final int SORT_TYPE_CREATION_DATE = 1;
     public static final int SORT_TYPE_MODIFIED_DATE = 2;
+    public static final int SORT_TYPE_DEFAULT = SORT_TYPE_MODIFIED_DATE;
     public static final String SORT_DIRECTION_KEY = "sort_direction_key";
-    public static final int SORT_DIRECTION_DEFAULT = 1;
     public static final int SORT_DIRECTION_ASC = 0;
     public static final int SORT_DIRECTION_DESC = 1;
+    public static final int SORT_DIRECTION_DEFAULT = SORT_DIRECTION_DESC;
     public static final String SORT_FAVORITES_ON_TOP_KEY = "sort_favorites_on_top";
     public static final boolean SORT_FAVORITES_ON_TOP_DEFAULT = false;
-
-
+    public static final String NOTIFICATIONS_ENABLE_LIGHTS_KEY = "notifications_enable_lights";
+    public static final boolean NOTIFICATIONS_ENABLE_LIGHTS_DEFAULT = false;
+    public static final String NOTIFICATIONS_LIGHT_COLOR_KEY = "notifications_light_color";
+    public static final int NOTIFICATION_COLOR_RED = Color.RED;
+    public static final int NOTIFICATION_COLOR_GREEN = Color.GREEN;
+    public static final int NOTIFICATION_COLOR_BLUE = Color.BLUE;
+    public static final int NOTIFICATION_COLOR_DEFAULT = NOTIFICATION_COLOR_GREEN;
+    public static final String NOTIFICATIONS_ENABLE_VIBRATION_KEY = "notification_enable_vibration";
+    public static final boolean NOTIFICATIONS_ENABLE_VIBRATION_DEFAULT = false;
 }

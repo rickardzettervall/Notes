@@ -5,21 +5,20 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-
-import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.MainActivity;
+import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.repositories.NoteRepository;
 
 public class NotificationJobService extends JobService {
 
@@ -30,17 +29,17 @@ public class NotificationJobService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
-
         PersistableBundle persistableBundle = params.getExtras();
-        int noteID;
-        String title, text;
+        int noteID = persistableBundle.getInt(Constants.NOTE_ID);
 
-        noteID = persistableBundle.getInt(Constants.NOTE_ID);
-        title = persistableBundle.getString(Constants.NOTE_TITLE);
-        text = persistableBundle.getString(Constants.NOTE_TEXT);
+        // Reset Note Notification
+        NoteRepository noteRepository = NoteRepository.getInstance(getApplication());
+        Note note = noteRepository.getNoteRaw(noteID);
+        note.setNotificationEpoch(-1);
+        noteRepository.updateNote(note);
 
         // Create Notification channel
-        createNotificationChannel();
+        createNotificationChannel(getApplicationContext());
 
         // Intent for when user clicks the Notification
         Intent intent = new Intent(this, MainActivity.class);
@@ -51,8 +50,8 @@ public class NotificationJobService extends JobService {
         // Build Notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder
                 (this, PRIMARY_CHANNEL_ID)
-                .setContentTitle(title)
-                .setContentText(text)
+                .setContentTitle(note.getTitle())
+                .setContentText(note.getText())
                 .setContentIntent(contentPendingIntent)
                 .setSmallIcon(R.drawable.ic_note)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -73,7 +72,7 @@ public class NotificationJobService extends JobService {
     /**
      * Creates a Notification channel, for OREO and higher.
      */
-    private void createNotificationChannel() {
+    private void createNotificationChannel(Context context) {
 
         // Define notification manager object.
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -85,10 +84,20 @@ public class NotificationJobService extends JobService {
             NotificationChannel notificationChannel = new NotificationChannel
                     (PRIMARY_CHANNEL_ID, PRIMARY_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
 
-            // Todo: set these depending on user preferences
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(context);
+
+            // Set lights and vibration depending on user settings
+            notificationChannel.enableLights(sharedPreferences.getBoolean(
+                    Constants.NOTIFICATIONS_ENABLE_LIGHTS_KEY,
+                    Constants.NOTIFICATIONS_ENABLE_LIGHTS_DEFAULT));
+            notificationChannel.setLightColor(sharedPreferences.getInt(
+                            Constants.NOTIFICATIONS_LIGHT_COLOR_KEY,
+                            Constants.NOTIFICATION_COLOR_DEFAULT));
+            notificationChannel.enableVibration(sharedPreferences.getBoolean(
+                    Constants.NOTIFICATIONS_ENABLE_VIBRATION_KEY,
+                    Constants.NOTIFICATIONS_ENABLE_VIBRATION_DEFAULT
+            ));
 
             mNotificationManager.createNotificationChannel(notificationChannel);
         }

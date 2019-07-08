@@ -27,6 +27,10 @@ public interface NoteDao {
     @Query("SELECT * FROM note WHERE _id IS :id")
     LiveData<Note> getNote(int id);
 
+    // Get specific Note based on ID
+    @Query("SELECT * FROM note WHERE _id IS :id")
+    Note getNoteRaw(int id);
+
     // Insert Note and return the ID
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertNote(Note note);
