@@ -31,7 +31,6 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import io.reactivex.Flowable;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
 import tech.zettervall.notes.models.Note;

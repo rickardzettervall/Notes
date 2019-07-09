@@ -3,6 +3,7 @@ package tech.zettervall.notes.models;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -18,8 +19,8 @@ import tech.zettervall.notes.data.typeconverters.StringListTypeConverter;
 import tech.zettervall.notes.utils.DateTimeHelper;
 
 @Parcel
-@Entity(tableName = "note")
-public class Note implements Comparable<Note> {
+@Entity(tableName = "notes")
+public class Note {
 
     /**
      * DB column names.
@@ -33,8 +34,6 @@ public class Note implements Comparable<Note> {
     public static final String notificationEpochColumnName = "notification_epoch";
     public static final String trashColumnName = "trash";
     public static final String favoriteColumnName = "favorite";
-    public static final String folderIdColumnName = "folder_id";
-    public static final String colorIdColumnName = "color_id";
 
     @ColumnInfo(name = idColumnName)
     @PrimaryKey(autoGenerate = true)
@@ -56,10 +55,6 @@ public class Note implements Comparable<Note> {
     public boolean isTrash;
     @ColumnInfo(name = favoriteColumnName)
     public boolean isFavorite;
-    @ColumnInfo(name = folderIdColumnName)
-    public int folderId;
-    @ColumnInfo(name = colorIdColumnName)
-    public int colorId;
 
     /**
      * Empty Constructor for Parceler.
@@ -177,10 +172,6 @@ public class Note implements Comparable<Note> {
 
     public void setTrash(boolean trash) {
         isTrash = trash;
-        if (trash) {
-            // Also set isFavorite to false because a trashed Note shouldn't be in favorites
-            isFavorite = false;
-        }
     }
 
     public boolean isFavorite() {
@@ -191,34 +182,21 @@ public class Note implements Comparable<Note> {
         isFavorite = favorite;
     }
 
-    public int getFolderId() {
-        return folderId;
-    }
-
-    public void setFolderId(int folderId) {
-        this.folderId = folderId;
-    }
-
-    public int getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
-    }
-
     /**
      * Compare contents for diff check in Adapter, determines whether to update the item
-     * in adapter. Since modifiedEpoch is changed on a updated Note, it's the only field
-     * that is checked.
+     * in adapter. Whenever modifiedEpoch changed it means that the Note was modified,
+     * so this is the only field we need to check.
      *
-     * @param note Note to compare to this
-     * @return 0 when match and otherwise -1
+     * @param obj Note to compare to this
+     * @return true when contents are the same
      */
     @Override
-    public int compareTo(@NonNull Note note) {
-        boolean notificationEpochChanged = this.notificationEpoch != note.getNotificationEpoch();
-        return this.modifiedEpoch == note.getModifiedEpoch() || notificationEpochChanged ? 0 : -1;
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Note note = (Note) obj;
+        return modifiedEpoch == note.getModifiedEpoch();
     }
 
     @NonNull

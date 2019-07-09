@@ -86,7 +86,7 @@ public class NoteRepository {
                                 boolean onlyFavorites, boolean onlyReminders,
                                 boolean favoritesOnTop, @Nullable String searchQuery) {
         // SQL query
-        StringBuilder query = new StringBuilder("SELECT * FROM note WHERE ");
+        StringBuilder query = new StringBuilder("SELECT * FROM notes WHERE ");
 
         // Convert booleans to 1/0 for SQL query
         int trashVal = trash ? 1 : 0;

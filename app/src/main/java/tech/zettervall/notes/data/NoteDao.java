@@ -24,11 +24,11 @@ public interface NoteDao {
     DataSource.Factory<Integer, Note> getNotes(SupportSQLiteQuery query);
 
     // Get specific Note based on ID
-    @Query("SELECT * FROM note WHERE _id IS :id")
+    @Query("SELECT * FROM notes WHERE _id IS :id")
     LiveData<Note> getNote(int id);
 
     // Get specific Note based on ID
-    @Query("SELECT * FROM note WHERE _id IS :id")
+    @Query("SELECT * FROM notes WHERE _id IS :id")
     Note getNoteRaw(int id);
 
     // Insert Note and return the ID
@@ -45,10 +45,10 @@ public interface NoteDao {
     void deleteNote(Note note);
 
     // Delete ALL Notes
-    @Query("DELETE FROM note")
+    @Query("DELETE FROM notes")
     void deleteAllNotes();
 
     // Delete ALL trashed Notes
-    @Query("DELETE FROM note WHERE trash = 1")
+    @Query("DELETE FROM notes WHERE trash = 1")
     void deleteAllTrashedNotes();
 }

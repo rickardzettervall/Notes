@@ -1,7 +1,6 @@
 package tech.zettervall.notes.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,16 +21,12 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
 
     private static final String TAG = NoteAdapter.class.getSimpleName();
     private OnNoteClickListener mOnNoteClickListener;
-    private SharedPreferences mSharedPreferences;
     private Context mContext;
-    private int mSortType;
 
     public NoteAdapter(OnNoteClickListener onNoteClickListener, Context context) {
         super(DIFF_CALLBACK);
         mOnNoteClickListener = onNoteClickListener;
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mContext = context;
-        mSortType = mSharedPreferences.getInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_DEFAULT);
     }
 
     /**
@@ -46,7 +41,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-                    return (oldItem.compareTo(newItem) == 0);
+                    return oldItem.equals(newItem);
                 }
             };
 
@@ -101,21 +96,23 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             holder.mTextTv.setText(note.getText());
 
             // Date
-            if(mSortType == Constants.SORT_TYPE_CREATION_DATE) {
+            int sortType = PreferenceManager.getDefaultSharedPreferences(mContext)
+                    .getInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_DEFAULT);
+            if (sortType == Constants.SORT_TYPE_CREATION_DATE) {
                 holder.mDateTv.setText(note.getCreationString(mContext));
             } else {
                 holder.mDateTv.setText(note.getModifiedString(mContext));
             }
 
             // Favorite
-            if(note.isFavorite()) {
+            if (note.isFavorite()) {
                 holder.mFavorite.setVisibility(View.VISIBLE);
             } else {
                 holder.mFavorite.setVisibility(View.GONE);
             }
 
             // Reminder
-            if(note.getNotificationEpoch() > 0) {
+            if (note.getNotificationEpoch() > 0) {
                 holder.mReminder.setVisibility(View.VISIBLE);
             } else {
                 holder.mReminder.setVisibility(View.GONE);
