@@ -41,6 +41,8 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+                    /* The equals method of Note compares modifiedEpoch, therefor a changed
+                     * Note MUST update modifiedEpoch when changed for the adapter to update. */
                     return oldItem.equals(newItem);
                 }
             };
