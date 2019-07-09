@@ -5,31 +5,19 @@
     android:id="@+id/list_note_item"
     android:background="@drawable/selector_listitem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
 
     <LinearLayout
         android:id="@+id/title_layout"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        app:layout_constraintEnd_toStartOf="@+id/date_tv"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/favorite_iv"
-            android:layout_width="@dimen/ic_size_list"
-            android:layout_height="@dimen/ic_size_list"
-            android:layout_marginEnd="4dp"
-            android:contentDescription="@string/cont_favorite"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_star_list"
-            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/reminder_iv"
@@ -39,6 +27,16 @@
             android:contentDescription="@string/cont_reminder"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_reminder_list"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/favorite_iv"
+            android:layout_width="@dimen/ic_size_list"
+            android:layout_height="@dimen/ic_size_list"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/cont_favorite"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_star_list"
             tools:visibility="visible" />
 
         <TextView
@@ -57,27 +55,14 @@
         android:id="@+id/text_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:ellipsize="end"
-        android:maxLines="5"
+        android:maxLines="3"
         android:textAppearance="?android:textAppearanceSmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/title_layout"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_layout"
         app:layout_constraintVertical_bias="0.0"
         tools:text="@string/tools_text" />
-
-    <TextView
-        android:id="@+id/date_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:textAppearance="?android:textAppearanceSmall"
-        app:layout_constraintBottom_toBottomOf="@+id/title_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/title_layout"
-        tools:text="@string/tools_date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

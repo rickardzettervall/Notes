@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,12 +20,10 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
 
     private static final String TAG = NoteAdapter.class.getSimpleName();
     private OnNoteClickListener mOnNoteClickListener;
-    private Context mContext;
 
-    public NoteAdapter(OnNoteClickListener onNoteClickListener, Context context) {
+    public NoteAdapter(OnNoteClickListener onNoteClickListener) {
         super(DIFF_CALLBACK);
         mOnNoteClickListener = onNoteClickListener;
-        mContext = context;
     }
 
     /**
@@ -50,8 +49,9 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
      */
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mHeadlineTv, mTextTv, mDateTv;
+        private TextView mHeadlineTv, mTextTv;
         private ImageView mFavorite, mReminder;
+        private LinearLayout mTitleLayout;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,9 +59,9 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             // Find Views
             mHeadlineTv = itemView.findViewById(R.id.title_tv);
             mTextTv = itemView.findViewById(R.id.text_tv);
-            mDateTv = itemView.findViewById(R.id.date_tv);
             mFavorite = itemView.findViewById(R.id.favorite_iv);
             mReminder = itemView.findViewById(R.id.reminder_iv);
+            mTitleLayout = itemView.findViewById(R.id.title_layout);
 
             // Set OnClickListener
             itemView.setOnClickListener(this);
@@ -92,9 +92,12 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = getItem(position);
         if (note != null) {
+            if(note.getTitle().isEmpty() && !note.isFavorite() && !(note.notificationEpoch > 0)) {
+                holder.mTitleLayout.setVisibility(View.GONE);
+            }
+
             holder.mHeadlineTv.setText(note.getTitle());
             holder.mTextTv.setText(note.getText());
-            holder.mDateTv.setText(note.getModifiedString(mContext));
 
             // Favorite
             if (note.isFavorite()) {

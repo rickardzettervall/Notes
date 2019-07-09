@@ -48,7 +48,7 @@ public class FavoritesFragment extends BaseListFragment {
         mFab = rootView.findViewById(R.id.notes_list_fab);
 
         // Set Adapter / LayoutManager / Decoration
-        mNoteAdapter = new NoteAdapter(this, getActivity());
+        mNoteAdapter = new NoteAdapter(this);
         mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
