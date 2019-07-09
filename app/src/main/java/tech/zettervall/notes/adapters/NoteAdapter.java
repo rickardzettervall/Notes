@@ -1,7 +1,6 @@
 package tech.zettervall.notes.adapters;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.models.Note;
 
 public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHolder> {
@@ -96,15 +94,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
         if (note != null) {
             holder.mHeadlineTv.setText(note.getTitle());
             holder.mTextTv.setText(note.getText());
-
-            // Date
-            int sortType = PreferenceManager.getDefaultSharedPreferences(mContext)
-                    .getInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_DEFAULT);
-            if (sortType == Constants.SORT_TYPE_CREATION_DATE) {
-                holder.mDateTv.setText(note.getCreationString(mContext));
-            } else {
-                holder.mDateTv.setText(note.getModifiedString(mContext));
-            }
+            holder.mDateTv.setText(note.getModifiedString(mContext));
 
             // Favorite
             if (note.isFavorite()) {
