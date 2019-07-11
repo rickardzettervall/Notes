@@ -35,8 +35,8 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.services.NotificationJobService;
-import tech.zettervall.notes.utils.DateTimeHelper;
-import tech.zettervall.notes.utils.Keyboard;
+import tech.zettervall.notes.utils.DateTimeUtil;
+import tech.zettervall.notes.utils.KeyboardUtil;
 import tech.zettervall.notes.viewmodels.NoteViewModel;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
@@ -119,7 +119,7 @@ public class NoteFragment extends Fragment {
         if (mNote.isTrash()) {
             getActivity().setTitle(R.string.note_trash);
             // Hide keyboard
-            Keyboard.hideKeyboard(getActivity());
+            KeyboardUtil.hideKeyboard(getActivity());
         }
 
         return rootView;
@@ -134,7 +134,7 @@ public class NoteFragment extends Fragment {
         return new Note(mDataBinding.titleTv.getText().toString(),
                 mDataBinding.textTv.getText().toString(),
                 new ArrayList<String>(),
-                DateTimeHelper.getCurrentEpoch(),
+                DateTimeUtil.getCurrentEpoch(),
                 -1,
                 -1,
                 false,
@@ -155,7 +155,7 @@ public class NoteFragment extends Fragment {
             // Change Note values and update modified time stamp
             mNote.setTitle(mDataBinding.titleTv.getText().toString());
             mNote.setText(mDataBinding.textTv.getText().toString());
-            mNote.setModifiedEpoch(DateTimeHelper.getCurrentEpoch());
+            mNote.setModifiedEpoch(DateTimeUtil.getCurrentEpoch());
         }
 
         if (mNote.getId() > 0) { // Existing Note
@@ -195,7 +195,7 @@ public class NoteFragment extends Fragment {
         JobInfo.Builder jobBuilder = new JobInfo.Builder(mNote.getId(), jobService)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setMinimumLatency(
-                        Math.abs(DateTimeHelper.getCurrentEpoch() - mReminderDateTimeEpoch))
+                        Math.abs(DateTimeUtil.getCurrentEpoch() - mReminderDateTimeEpoch))
                 .setPersisted(true)
                 .setExtras(bundle);
         JobInfo jobInfo = jobBuilder.build();
@@ -219,11 +219,11 @@ public class NoteFragment extends Fragment {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mReminderCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         mReminderCalender.set(Calendar.MINUTE, minute);
-                        mReminderDateTimeEpoch = DateTimeHelper.
+                        mReminderDateTimeEpoch = DateTimeUtil.
                                 getEpochWithZeroSeconds(mReminderCalender.getTime().getTime());
                         // Display for user
                         Toast.makeText(getActivity(), getString(R.string.reminder_set,
-                                DateTimeHelper.getDateStringFromEpoch(mReminderDateTimeEpoch,
+                                DateTimeUtil.getDateStringFromEpoch(mReminderDateTimeEpoch,
                                         getActivity())), Toast.LENGTH_LONG).show();
                         // Set Reminder for Note
                         mNote.setNotificationEpoch(mReminderDateTimeEpoch);
@@ -232,7 +232,7 @@ public class NoteFragment extends Fragment {
                     }
                 }, mDateTimePickerCalender.get(Calendar.HOUR_OF_DAY),
                         mDateTimePickerCalender.get(Calendar.MINUTE),
-                        DateTimeHelper.use24h(getActivity())).show();
+                        DateTimeUtil.use24h(getActivity())).show();
             }
         }, mDateTimePickerCalender.get(Calendar.YEAR),
                 mDateTimePickerCalender.get(Calendar.MONTH),

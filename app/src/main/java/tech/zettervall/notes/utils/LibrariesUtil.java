@@ -11,7 +11,7 @@ import java.util.List;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Library;
 
-public abstract class Libraries {
+public abstract class LibrariesUtil {
 
     /**
      * Create and return the list of open source libraries used
@@ -19,7 +19,7 @@ public abstract class Libraries {
      * Since the libraries are static you add any new ones in this method.
      *
      * @param context Needed to reach strings.xml
-     * @return List of Libraries
+     * @return List of LibrariesUtil
      */
     public static List<Library> getLibraries(Context context) {
         List<Library> libraries = new ArrayList<>();
@@ -41,7 +41,7 @@ public abstract class Libraries {
     }
 
     /**
-     * Sort List of Libraries alphabetically.
+     * Sort List of LibrariesUtil alphabetically.
      */
     @TargetApi(24)
     private static List<Library> sortLibraries(List<Library> libraries) {

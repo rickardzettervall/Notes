@@ -1,23 +1,17 @@
 package tech.zettervall.notes.utils;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.util.Log;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.Constants;
 
-public abstract class DateTimeHelper {
+public abstract class DateTimeUtil {
 
     /**
      * Get current Unix Epoch timestamp in long.

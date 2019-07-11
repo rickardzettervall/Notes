@@ -18,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.utils.RecyclerViewHelper;
+import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.FavoritesViewModel;
 
 public class FavoritesFragment extends BaseListFragment {
@@ -47,10 +47,10 @@ public class FavoritesFragment extends BaseListFragment {
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
-        mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(getActivity());
+        mLayoutManager = RecyclerViewUtil.getDefaultLinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
+        RecyclerViewUtil.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {

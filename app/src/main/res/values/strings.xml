@@ -93,7 +93,7 @@
     <string name="cont_favorite">Favorite</string>
     <string name="cont_reminder">Reminder</string>
 
-    <!-- Libraries -->
+    <!-- LibrariesUtil -->
     <string name="library_parceler" translatable="false">Parceler</string>
     <string name="library_parceler_desc">A code generation library that generates the Android Parcelable boilerplate source code.</string>
     <string name="library_parceler_url" translatable="false">https://github.com/johncarl81/parceler</string>

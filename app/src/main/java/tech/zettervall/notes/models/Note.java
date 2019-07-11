@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.zettervall.notes.data.typeconverters.StringListTypeConverter;
-import tech.zettervall.notes.utils.DateTimeHelper;
+import tech.zettervall.notes.utils.DateTimeUtil;
 
 @Parcel
 @Entity(tableName = "notes")
@@ -139,7 +139,7 @@ public class Note {
     }
 
     public String getCreationString(Context context) {
-        return DateTimeHelper.getDateStringFromEpoch(creationEpoch, context);
+        return DateTimeUtil.getDateStringFromEpoch(creationEpoch, context);
     }
 
     public void setCreationEpoch(long creationEpoch) {
@@ -151,7 +151,7 @@ public class Note {
     }
 
     public String getModifiedString(Context context) {
-        return DateTimeHelper.getDateStringFromEpoch(modifiedEpoch, context);
+        return DateTimeUtil.getDateStringFromEpoch(modifiedEpoch, context);
     }
 
     public void setModifiedEpoch(long modifiedEpoch) {

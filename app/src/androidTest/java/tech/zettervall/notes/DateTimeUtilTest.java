@@ -8,21 +8,20 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import java.util.Date;
 
-import tech.zettervall.notes.utils.DateTimeHelper;
+import tech.zettervall.notes.utils.DateTimeUtil;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 /**
- * Tests the DateTimeHelper class methods.
+ * Tests the DateTimeUtil class methods.
  */
 @RunWith(AndroidJUnit4.class)
-public class DateTimeHelperTest {
+public class DateTimeUtilTest {
 
     private long dayInMilliseconds;
     private Context context;
@@ -35,7 +34,7 @@ public class DateTimeHelperTest {
 
     @Test
     public void getCurrentEpoch() {
-        assertEquals(new Date().getTime(), DateTimeHelper.getCurrentEpoch());
+        assertEquals(new Date().getTime(), DateTimeUtil.getCurrentEpoch());
     }
 
     @Test
@@ -48,23 +47,23 @@ public class DateTimeHelperTest {
         long oldEpoch = 1514808030000L;
 
         // Today (time now)
-        assertThat(DateTimeHelper.getDateStringFromEpoch(todayEpoch, context),
+        assertThat(DateTimeUtil.getDateStringFromEpoch(todayEpoch, context),
                 containsString("Today"));
 
         // Yesterday
-        assertThat(DateTimeHelper.getDateStringFromEpoch(dayOldEpoch, context),
+        assertThat(DateTimeUtil.getDateStringFromEpoch(dayOldEpoch, context),
                 containsString("Yesterday"));
 
         // Week old
-        assertFalse((DateTimeHelper.getDateStringFromEpoch(weekOldEpoch, context)
+        assertFalse((DateTimeUtil.getDateStringFromEpoch(weekOldEpoch, context)
                         .contains("Yesterday") &&
-                DateTimeHelper.getDateStringFromEpoch(weekOldEpoch, context)
+                DateTimeUtil.getDateStringFromEpoch(weekOldEpoch, context)
                         .contains("Today") &&
-                DateTimeHelper.getDateStringFromEpoch(weekOldEpoch, context)
+                DateTimeUtil.getDateStringFromEpoch(weekOldEpoch, context)
                         .contains("2019")));
 
         // Year old
-        assertThat(DateTimeHelper.getDateStringFromEpoch(oldEpoch, context),
+        assertThat(DateTimeUtil.getDateStringFromEpoch(oldEpoch, context),
                 is("Jan 1 2018, 1:00 PM"));
     }
 }

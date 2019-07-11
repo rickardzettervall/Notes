@@ -15,7 +15,7 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Library;
 
 /**
- * Used to display open source Libraries in About Activity.
+ * Used to display open source LibrariesUtil in About Activity.
  */
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 

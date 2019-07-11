@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.LibraryAdapter;
-import tech.zettervall.notes.utils.Libraries;
-import tech.zettervall.notes.utils.RecyclerViewHelper;
+import tech.zettervall.notes.utils.LibrariesUtil;
+import tech.zettervall.notes.utils.RecyclerViewUtil;
 
 public class AboutActivity extends AppCompatActivity implements LibraryAdapter.OnLibraryClickListener {
 
@@ -30,11 +30,11 @@ public class AboutActivity extends AppCompatActivity implements LibraryAdapter.O
 
         // Set Adapter / LayoutManager / Decoration
         mLibraryAdapter = new LibraryAdapter(this,
-                Libraries.getLibraries(this));
-        mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(this);
+                LibrariesUtil.getLibraries(this));
+        mLayoutManager = RecyclerViewUtil.getDefaultLinearLayoutManager(this);
         mRecyclerView.setAdapter(mLibraryAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
+        RecyclerViewUtil.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
     }
 
     @Override

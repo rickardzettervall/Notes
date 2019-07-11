@@ -24,7 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.utils.RecyclerViewHelper;
+import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.TrashViewModel;
 
 public class TrashFragment extends BaseListFragment {
@@ -53,10 +53,10 @@ public class TrashFragment extends BaseListFragment {
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
-        mLayoutManager = RecyclerViewHelper.getDefaultLinearLayoutManager(getActivity());
+        mLayoutManager = RecyclerViewUtil.getDefaultLinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerViewHelper.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
+        RecyclerViewUtil.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
 
         // Hide FAB
         mFab.hide();
