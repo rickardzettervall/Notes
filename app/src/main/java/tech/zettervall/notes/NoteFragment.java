@@ -65,7 +65,7 @@ public class NoteFragment extends Fragment {
         // Initialize ViewModel
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
-        // Enable Toolbar MenuItem handling
+        // Enable Toolbar MenuItem handling.
         setHasOptionsMenu(true);
 
         // Get Note
