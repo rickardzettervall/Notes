@@ -85,8 +85,8 @@ public class Note {
     public Note(int _id, String title, String text, @NonNull List<String> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this._id = _id;
-        this.title = title;
-        this.text = text;
+        this.title = setFirstCharUpperCase(title);
+        this.text = setFirstCharUpperCase(text);
         this.tags = tags;
         this.creationEpoch = creationEpoch;
         this.modifiedEpoch = modifiedEpoch;
@@ -185,7 +185,7 @@ public class Note {
     /**
      * Compare contents for diff check in Adapter, determines whether to update the item
      * in adapter. Whenever modifiedEpoch changed it means that the Note was modified,
-     * so this is the only field we need to check.
+     * so this is the only field beyond _id we need to check.
      *
      * @param obj Note to compare to this
      * @return true when contents are the same
@@ -196,7 +196,7 @@ public class Note {
             return false;
         }
         Note note = (Note) obj;
-        return modifiedEpoch == note.getModifiedEpoch();
+        return _id == note.getId() && modifiedEpoch == note.getModifiedEpoch();
     }
 
     @NonNull
