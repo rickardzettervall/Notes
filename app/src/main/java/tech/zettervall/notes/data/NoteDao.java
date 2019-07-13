@@ -14,7 +14,7 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import tech.zettervall.notes.models.Note;
 
 /**
- * Data Access Object (DAO) for interacting with Note Db.
+ * Data Access Object (DAO) for interacting with Note table.
  */
 @Dao
 public interface NoteDao {

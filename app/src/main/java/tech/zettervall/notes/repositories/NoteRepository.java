@@ -214,6 +214,14 @@ public class NoteRepository {
         return mNoteDao.getNote(_id);
     }
 
+    /**
+     * Get single Note based on unique _id in regular Object form, this is
+     * primarily used for notification to fetch the Note and to reset the
+     * notificationEpoch.
+     *
+     * @param _id Db _id
+     * @return Note Object
+     */
     public Note getNoteRaw(final int _id) {
         Log.d(TAG, "Retrieving Note[id:" + _id + "] from db..");
         ExecutorService executorService = Executors.newSingleThreadExecutor();
