@@ -123,6 +123,11 @@ public class NoteFragment extends Fragment {
             KeyboardUtil.hideKeyboard(getActivity());
         }
 
+        // Set focus on text field if user has set title
+        if (!mNote.getTitle().isEmpty()) {
+            mDataBinding.textTv.requestFocus();
+        }
+
         return rootView;
     }
 
