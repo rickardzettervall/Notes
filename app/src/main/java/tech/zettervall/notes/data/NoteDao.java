@@ -11,7 +11,10 @@ import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
+import java.util.List;
+
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 
 /**
  * Data Access Object (DAO) for interacting with Note table.
@@ -23,11 +26,19 @@ public interface NoteDao {
     @RawQuery(observedEntities = Note.class)
     DataSource.Factory<Integer, Note> getNotes(SupportSQLiteQuery query);
 
+    // Get Notes by Tag
+    @Query("SELECT * FROM notes WHERE tags LIKE :tag")
+    DataSource.Factory<Integer, Note> getNotesByTag(Tag tag);
+
+    // Get Notes by Tag (Raw)
+    @Query("SELECT * FROM notes WHERE tags LIKE :tag")
+    List<Note> getNotesByTagRaw(Tag tag);
+
     // Get specific Note based on ID
     @Query("SELECT * FROM notes WHERE _id IS :id")
     LiveData<Note> getNote(int id);
 
-    // Get specific Note based on ID
+    // Get specific Note based on ID (Raw)
     @Query("SELECT * FROM notes WHERE _id IS :id")
     Note getNoteRaw(int id);
 
@@ -35,12 +46,11 @@ public interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertNote(Note note);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertNotes(Note[] notes);
-
+    // Update Note
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateNote(Note note);
 
+    // Delete Note
     @Delete
     void deleteNote(Note note);
 

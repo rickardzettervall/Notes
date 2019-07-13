@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,7 +21,9 @@ import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
+import tech.zettervall.notes.data.typeconverters.TagTypeConverter;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 
 public class NoteRepository {
 
@@ -159,6 +162,54 @@ public class NoteRepository {
                 false, false, false, getSortFavoritesOnTop(), query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotes(sqlQuery);
+    }
+
+    /**
+     * Get all Notes matching tag from the db as DataSource.
+     *
+     * @param tag Tag to query Notes with
+     * @return DataSource containing all Notes containing tag
+     */
+    public DataSource.Factory<Integer, Note> getAllNotesByTag(Tag tag) {
+        Log.d(TAG, "Retrieving all Notes matching tag..");
+        return mNoteDao.getNotesByTag(tag);
+    }
+
+    /**
+     * Get all Notes matching tag in plain List,
+     * this is used when deleting a tag.
+     *
+     * @param tag Tag to query Notes with
+     * @return List of Notes
+     */
+    public List<Note> getAllNotesByTagRaw(final Tag tag) {
+        Log.d(TAG, "Retrieving Notes matching tag from db..");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Callable<List<Note>> callable = new Callable<List<Note>>() {
+            @Override
+            public List<Note> call() {
+                return mNoteDao.getNotesByTagRaw(tag);
+            }
+        };
+        Future<List<Note>> future = executorService.submit(callable);
+        List<Note> notes = null;
+        try {
+            notes = future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Shutdown ExecutorService
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+
+        return notes;
     }
 
     /**
