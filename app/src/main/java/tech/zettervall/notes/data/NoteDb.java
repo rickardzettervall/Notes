@@ -6,11 +6,14 @@ import android.util.Log;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
+import tech.zettervall.notes.data.typeconverters.TagTypeConverter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 
 @Database(entities = {Note.class, Tag.class}, version = 5, exportSchema = false)
+@TypeConverters(TagTypeConverter.class)
 public abstract class NoteDb extends RoomDatabase {
 
     private static final String TAG = NoteDb.class.getSimpleName();

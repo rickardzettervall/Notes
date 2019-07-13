@@ -9,7 +9,18 @@ import java.util.List;
 
 import tech.zettervall.notes.models.Tag;
 
-public abstract class TagListTypeConverter {
+public abstract class TagTypeConverter {
+
+    @TypeConverter
+    public static Tag jsonToTag(String json) {
+        return new Gson().fromJson(json, new TypeToken<Tag>() {
+        }.getType());
+    }
+
+    @TypeConverter
+    public static String tagToJson(Tag tag) {
+        return new Gson().toJson(tag);
+    }
 
     @TypeConverter
     public static List<Tag> jsonToTagList(String json) {

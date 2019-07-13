@@ -8,14 +8,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.zettervall.notes.data.typeconverters.TagListTypeConverter;
 import tech.zettervall.notes.utils.DateTimeUtil;
 
 /**
@@ -46,7 +44,6 @@ public class Note {
     @ColumnInfo(name = textColumnName)
     public String text;
     @ColumnInfo(name = tagsColumnName)
-    @TypeConverters(TagListTypeConverter.class)
     public List<Tag> tags;
     @ColumnInfo(name = creationEpochColumnName)
     public long creationEpoch;
