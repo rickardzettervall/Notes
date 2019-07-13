@@ -9,7 +9,7 @@ import java.util.List;
 
 import tech.zettervall.notes.models.Tag;
 
-public class TagListTypeConverter {
+public abstract class TagListTypeConverter {
 
     @TypeConverter
     public static List<Tag> jsonToTagList(String json) {
