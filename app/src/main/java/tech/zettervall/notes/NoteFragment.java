@@ -34,6 +34,7 @@ import java.util.Calendar;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.services.NotificationJobService;
 import tech.zettervall.notes.utils.DateTimeUtil;
 import tech.zettervall.notes.utils.KeyboardUtil;
@@ -133,7 +134,7 @@ public class NoteFragment extends Fragment {
     private Note newNote(boolean isFavorite) {
         return new Note(mDataBinding.titleTv.getText().toString(),
                 mDataBinding.textTv.getText().toString(),
-                new ArrayList<String>(),
+                new ArrayList<Tag>(),
                 DateTimeUtil.getCurrentEpoch(),
                 -1,
                 -1,

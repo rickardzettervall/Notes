@@ -5,9 +5,12 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import org.parceler.Parcel;
+
 /**
  * Tag which can be applied to Notes to allow user specified labeling.
  */
+@Parcel
 @Entity(tableName = "tags")
 public class Tag {
 
@@ -19,9 +22,16 @@ public class Tag {
 
     @ColumnInfo(name = idColumnName)
     @PrimaryKey(autoGenerate = true)
-    private int _id;
+    public int _id;
     @ColumnInfo(name = tagColumnName)
-    private String tag;
+    public String tag;
+
+    /**
+     * Empty Constructor for Parcel.
+     */
+    @Ignore
+    public Tag() {
+    }
 
     @Ignore
     public Tag(String tag) {
