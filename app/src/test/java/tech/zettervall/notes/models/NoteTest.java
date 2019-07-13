@@ -2,8 +2,6 @@ package tech.zettervall.notes.models;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 
@@ -11,23 +9,26 @@ import tech.zettervall.notes.utils.DateTimeUtil;
 
 import static org.junit.Assert.*;
 
-@RunWith(JUnit4.class)
 public class NoteTest {
 
-    private String title, text;
+    private String title1, title2, text1, text2;
     private long creationEpoch, modifiedEpoch_1, modifiedEpoch_2, notificationEpoch;
+    private ArrayList<Tag> tags;
 
     /**
      * Set fields which will be used in various tests.
      */
     @Before
     public void setup() {
-        title = "this is the title";
-        text = "this is the text";
+        title1 = "this is the title";
+        title2 = "This is the title";
+        text1 = "this is the text";
+        text2 = "This is the text";
         creationEpoch = DateTimeUtil.getCurrentEpoch();
         modifiedEpoch_1 = DateTimeUtil.getCurrentEpoch();
         modifiedEpoch_2 = DateTimeUtil.getCurrentEpoch() + 1000L;
         notificationEpoch = -1;
+        tags = new ArrayList<>();
     }
 
     /**
@@ -35,19 +36,11 @@ public class NoteTest {
      */
     @Test
     public void isTitleAndText_upperCased_returnTrue() {
-        Note note = new Note(1, title, text, new ArrayList<String>(), creationEpoch,
+        Note note = new Note(1, title1, text1, tags, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
 
-        String title1 = title,
-                title2 = note.getTitle(),
-                text1 = text,
-                text2 = note.getText();
-
-        title1 = title1.substring(0, 1).toUpperCase() + title1.substring(1);
-        text1 = text1.substring(0, 1).toUpperCase() + text1.substring(1);
-
-        assertEquals(title1, title2);
-        assertEquals(text1, text2);
+        assertEquals(note.getTitle(), title2);
+        assertEquals(note.getText(), text2);
         System.out.println("The title and text was formatted correctly!");
     }
 
@@ -56,9 +49,9 @@ public class NoteTest {
      */
     @Test
     public void isNotesEqual_identical_returnTrue() {
-        Note note1 = new Note(1, title, text, new ArrayList<String>(), creationEpoch,
+        Note note1 = new Note(1, title1, text1, tags, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
-        Note note2 = new Note(1, title, text, new ArrayList<String>(), creationEpoch,
+        Note note2 = new Note(1, title1, text1, tags, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
 
         assertEquals(note1, note2);
@@ -70,9 +63,9 @@ public class NoteTest {
      */
     @Test
     public void isNotesEqual_updated_returnFalse() {
-        Note note1 = new Note(1, title, text, new ArrayList<String>(), creationEpoch,
+        Note note1 = new Note(1, title1, text1, tags, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
-        Note note2 = new Note(1, title, text, new ArrayList<String>(), creationEpoch,
+        Note note2 = new Note(1, title1, text1, tags, creationEpoch,
                 modifiedEpoch_2, notificationEpoch, false, false);
 
         assertNotEquals(note1, note2);
@@ -84,9 +77,9 @@ public class NoteTest {
      */
     @Test
     public void isNotesEqual_differentIds_returnFalse() {
-        Note note1 = new Note(1, title, text, new ArrayList<String>(), creationEpoch,
+        Note note1 = new Note(1, title1, text1, tags, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
-        Note note2 = new Note(2, title, text, new ArrayList<String>(), creationEpoch,
+        Note note2 = new Note(2, title1, text1, tags, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
 
         assertNotEquals(note1, note2);
