@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEnableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(getString(R.string.enable_dark_theme_key), false);
+                .getBoolean(getString(R.string.enable_dark_theme_key), true);
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Set Theme

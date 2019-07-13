@@ -22,11 +22,6 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.viewmodels.NotificationViewModel;
 
-/**
- * 1. make it possible to add notes and display them in the main recyclerview
- * 2. allow settings to be changed, theme
- * 3. allow user to set notification reminder for a note
- */
 public class MainActivity extends BaseActivity implements
         AllNotesFragment.NoteListFragmentClickListener,
         NavigationView.OnNavigationItemSelectedListener {
