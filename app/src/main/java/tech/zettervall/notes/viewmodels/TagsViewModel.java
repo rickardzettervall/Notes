@@ -18,14 +18,12 @@ public class TagsViewModel extends AndroidViewModel {
     private LiveData<List<Tag>> mTags;
     private TagRepository mTagRepository;
     private NoteRepository mNoteRepository;
-    private Application mApplication;
 
     public TagsViewModel(@NonNull Application application) {
         super(application);
         mTagRepository = TagRepository.getInstance(application);
         mNoteRepository = NoteRepository.getInstance(application);
         mTags = mTagRepository.getTags();
-        mApplication = application;
     }
 
     public LiveData<List<Tag>> getTags() {
