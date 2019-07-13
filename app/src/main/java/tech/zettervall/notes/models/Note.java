@@ -15,9 +15,12 @@ import org.parceler.Parcel;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.zettervall.notes.data.typeconverters.StringListTypeConverter;
+import tech.zettervall.notes.data.typeconverters.TagListTypeConverter;
 import tech.zettervall.notes.utils.DateTimeUtil;
 
+/**
+ * Note which is stored in Room DB.
+ */
 @Parcel
 @Entity(tableName = "notes")
 public class Note {
@@ -43,8 +46,8 @@ public class Note {
     @ColumnInfo(name = textColumnName)
     public String text;
     @ColumnInfo(name = tagsColumnName)
-    @TypeConverters(StringListTypeConverter.class)
-    public List<String> tags;
+    @TypeConverters(TagListTypeConverter.class)
+    public List<Tag> tags;
     @ColumnInfo(name = creationEpochColumnName)
     public long creationEpoch;
     @ColumnInfo(name = modifiedEpochColumnName)
@@ -67,7 +70,7 @@ public class Note {
      * Constructor for new Note Objects.
      */
     @Ignore
-    public Note(String title, String text, @NonNull List<String> tags, long creationEpoch,
+    public Note(String title, String text, @NonNull List<Tag> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this.title = setFirstCharUpperCase(title);
         this.text = setFirstCharUpperCase(text);
@@ -82,7 +85,7 @@ public class Note {
     /**
      * Constructor for Room.
      */
-    public Note(int _id, String title, String text, @NonNull List<String> tags, long creationEpoch,
+    public Note(int _id, String title, String text, @NonNull List<Tag> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this._id = _id;
         this.title = setFirstCharUpperCase(title);
@@ -98,7 +101,7 @@ public class Note {
     /**
      * Set first char in a String to uppercase.
      */
-    private String setFirstCharUpperCase(String str) {
+    private String setFirstCharUpperCase(@NonNull String str) {
         return !str.isEmpty() ? str.substring(0, 1).toUpperCase() + str.substring(1) : str;
     }
 
@@ -126,11 +129,11 @@ public class Note {
         this.text = setFirstCharUpperCase(text);
     }
 
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return new ArrayList<>(tags);
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
@@ -199,7 +202,6 @@ public class Note {
         return _id == note.getId() && modifiedEpoch == note.getModifiedEpoch();
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "Note{" +
