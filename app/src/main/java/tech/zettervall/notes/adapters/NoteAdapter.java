@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
 
+import static android.view.View.GONE;
+
 public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
     private static final String TAG = NoteAdapter.class.getSimpleName();
@@ -91,12 +93,20 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = getItem(position);
         if (note != null) {
-            if(note.getTitle().isEmpty() && !note.isFavorite() && !(note.notificationEpoch > 0)) {
+            if (note.getTitle().isEmpty() && !note.isFavorite() && !(note.notificationEpoch > 0)) {
+                // Hide title field when empty
                 holder.mTitleLayout.setVisibility(View.GONE);
+            } else {
+                holder.mTitleLayout.setVisibility(View.VISIBLE);
+                holder.mHeadlineTv.setText(note.getTitle());
             }
 
-            holder.mHeadlineTv.setText(note.getTitle());
-            holder.mTextTv.setText(note.getText());
+            if (note.getText().isEmpty()) { // Hide text field when empty
+                holder.mTextTv.setVisibility(View.GONE);
+            } else {
+                holder.mTextTv.setVisibility(View.VISIBLE);
+                holder.mTextTv.setText(note.getText());
+            }
 
             // Favorite
             if (note.isFavorite()) {
