@@ -184,8 +184,9 @@ public class Note {
 
     /**
      * Compare contents for diff check in Adapter, determines whether to update the item
-     * in adapter. Whenever modifiedEpoch changed it means that the Note was modified,
-     * so this is the only field beyond _id we need to check.
+     * in adapter. Whenever modifiedEpoch changed it means that the Note text fields was
+     * modified. We also need to check if favorite status or notificationEpoch changed
+     * because the adapter displays an icon for those.
      *
      * @param obj Note to compare to this
      * @return true when contents are the same
@@ -196,7 +197,10 @@ public class Note {
             return false;
         }
         Note note = (Note) obj;
-        return _id == note.getId() && modifiedEpoch == note.getModifiedEpoch();
+        return _id == note.getId() &&
+                modifiedEpoch == note.getModifiedEpoch() &&
+                isFavorite == note.isFavorite() &&
+                notificationEpoch == note.getNotificationEpoch();
     }
 
     @Override

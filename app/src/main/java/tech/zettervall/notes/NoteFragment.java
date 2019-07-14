@@ -48,9 +48,7 @@ import static android.content.Context.JOB_SCHEDULER_SERVICE;
 public class NoteFragment extends Fragment {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
-    private static final String FAVORITE_STATUS = "favorite_status";
-    private static final String REMINDER_STATUS = "reminder_status";
-    private boolean mTrash, mDeleted, mFavoriteStatusChanged, mReminderChanged, mIsTablet;
+    private boolean mTrash, mDeleted, mIsTablet;
     private long mReminderDateTimeEpoch;
     private FragmentNoteBinding mDataBinding;
     private NoteViewModel mNoteViewModel;
@@ -153,12 +151,9 @@ public class NoteFragment extends Fragment {
      */
     private void saveNote() {
         mNote.setTrash(mTrash);
-        if ((!mDataBinding.titleTv.getText().toString().isEmpty() ||
-                !mDataBinding.textTv.getText().toString().isEmpty()) &&
-                !mDataBinding.titleTv.getText().toString().equals(mNote.getTitle()) ||
-                !mDataBinding.textTv.getText().toString().equals(mNote.getText()) ||
-                mFavoriteStatusChanged || mReminderChanged) {
-            // Change Note values and update modified time stamp
+        if (!mDataBinding.titleTv.getText().toString().equals(mNote.getTitle()) ||
+                !mDataBinding.textTv.getText().toString().equals(mNote.getText())) {
+            // Change Note title/text and update modified time stamp
             mNote.setTitle(mDataBinding.titleTv.getText().toString());
             mNote.setText(mDataBinding.textTv.getText().toString());
             mNote.setModifiedEpoch(DateTimeUtil.getCurrentEpoch());
@@ -166,7 +161,8 @@ public class NoteFragment extends Fragment {
 
         if (mNote.getId() > 0) { // Existing Note
             mNoteViewModel.updateNote(mNote);
-        } else { // New Note
+        } else if(!mNote.getTitle().isEmpty() ||
+                !mNote.getText().isEmpty()) { // New Note
             mNote.setId((int) mNoteViewModel.insertNote(mNote));
         }
     }
@@ -234,7 +230,6 @@ public class NoteFragment extends Fragment {
                         // Set Reminder for Note
                         mNote.setNotificationEpoch(mReminderDateTimeEpoch);
                         scheduleReminderJob(getActivity());
-                        mReminderChanged = true;
                     }
                 }, mDateTimePickerCalender.get(Calendar.HOUR_OF_DAY),
                         mDateTimePickerCalender.get(Calendar.MINUTE),
@@ -266,8 +261,6 @@ public class NoteFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(Constants.NOTE, Parcels.wrap(mNote));
-        outState.putBoolean(FAVORITE_STATUS, mFavoriteStatusChanged);
-        outState.putBoolean(REMINDER_STATUS, mReminderChanged);
         super.onSaveInstanceState(outState);
     }
 
@@ -299,10 +292,8 @@ public class NoteFragment extends Fragment {
                     Toast.makeText(getActivity(), getString(R.string.note_favorites_added),
                             Toast.LENGTH_SHORT).show();
                 }
-                mFavoriteStatusChanged = true; // Used to determine if to save
                 break;
             case R.id.action_reminder:
-                // todo: set date/time
                 dateTimePicker();
                 break;
             case R.id.action_delete:
