@@ -53,7 +53,7 @@ public class NotificationJobService extends JobService {
                 .setContentTitle(note.getTitle())
                 .setContentText(note.getText())
                 .setContentIntent(contentPendingIntent)
-                .setSmallIcon(R.drawable.ic_note)
+                .setSmallIcon(R.drawable.ic_edit)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setAutoCancel(true);
