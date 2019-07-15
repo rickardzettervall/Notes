@@ -18,7 +18,7 @@ import tech.zettervall.notes.models.Tag;
 public interface TagDao {
 
     // Get all Tags (sorted alphabetically)
-    @Query("SELECT * FROM tags ORDER BY tag DESC")
+    @Query("SELECT * FROM tags ORDER BY tag ASC")
     DataSource.Factory<Integer, Tag> getTags();
 
     // Get specific Tag based on ID
@@ -28,6 +28,10 @@ public interface TagDao {
     // Insert Tag and return the ID
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertTag(Tag tag);
+
+    // Insert multiple Tags
+    @Insert
+    void insertTags(Tag[] tags);
 
     // Update Tag
     @Update(onConflict = OnConflictStrategy.REPLACE)

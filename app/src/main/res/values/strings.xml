@@ -89,6 +89,7 @@
     <!-- Content Descriptions -->
     <string name="cont_new_note">Add new note</string>
     <string name="cont_save_note">Save note</string>
+    <string name="cont_new_tag">Add new tag</string>
     <string name="title_activity_settings">Settings</string>
     <string name="cont_favorite">Favorite</string>
     <string name="cont_reminder">Reminder</string>
@@ -100,6 +101,10 @@
     <string name="library_mockito" translatable="false">Mockito</string>
     <string name="library_mockito_desc">Framework which allows the creation of test objects (mock objects) in automated unit tests for the purpose of test-driven development (TDD) or behavior-driven development (BDD).</string>
     <string name="library_mockito_url" translatable="false">https://site.mockito.org/</string>
+
+    <!-- Pre defined Tags -->
+    <string name="tag_personal">Personal</string>
+    <string name="tag_work">Work</string>
 
     <!-- Preference Titles -->
     <string name="theme">Theme</string>

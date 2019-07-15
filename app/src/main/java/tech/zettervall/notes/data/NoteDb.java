@@ -3,11 +3,15 @@ package tech.zettervall.notes.data;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.data.typeconverters.TagTypeConverter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
@@ -33,11 +37,28 @@ public abstract class NoteDb extends RoomDatabase {
                             context.getApplicationContext(),
                             NoteDb.class,
                             DB_NAME
-                    ).build();
+                    ).addCallback(new Callback() {
+                        @Override
+                        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                            super.onCreate(db);
+                            AppExecutor.getExecutor().diskIO().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG, "Creating default tags..");
+                                    Tag[] tags = {
+                                            new Tag(context.getString(R.string.tag_personal)),
+                                            new Tag(context.getString(R.string.tag_work)) };
+                                    getInstance(context).tagDao().insertTags(tags);
+                                }
+                            });
+                        }
+                    }).build();
                 }
             }
         }
         Log.d(TAG, "Getting db instance..");
         return INSTANCE;
     }
+
+
 }
