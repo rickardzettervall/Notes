@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -87,7 +88,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
      */
     public void setRemindersFragment(RemindersFragment remindersFragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_list, remindersFragment, Constants.FRAGMENT_FAVORITES)
+                .replace(R.id.frame_list, remindersFragment, Constants.FRAGMENT_REMINDERS)
+                .commit();
+    }
+
+    /**
+     * Set TagsFragment.
+     */
+    public void setTagsFragment(TagsFragment tagsFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_list, tagsFragment, Constants.FRAGMENT_TAGS)
                 .commit();
     }
 
@@ -134,7 +144,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 }
                 break;
             case R.id.nav_tags: // Launch Activity
-                // Todo: launch tags activity
+                if (this instanceof MainActivity) {
+                    setTagsFragment(new TagsFragment());
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
             case R.id.nav_trash: // Launch Activity
                 if (this instanceof MainActivity) {

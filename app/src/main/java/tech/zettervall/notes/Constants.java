@@ -15,6 +15,7 @@ public abstract class Constants {
     public static final String FRAGMENT_NOTELIST = "fragment_notelist";
     public static final String FRAGMENT_FAVORITES = "fragment_favorites";
     public static final String FRAGMENT_REMINDERS = "fragment_reminders";
+    public static final String FRAGMENT_TAGS = "fragment_tags";
     public static final String FRAGMENT_TRASH = "fragment_trash";
     public static final String FRAGMENT_NOTE = "fragment_note";
 
