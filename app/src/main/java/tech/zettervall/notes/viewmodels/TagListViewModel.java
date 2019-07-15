@@ -13,13 +13,13 @@ import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.repositories.TagRepository;
 
-public class TagsViewModel extends AndroidViewModel {
+public class TagListViewModel extends AndroidViewModel {
 
     private LiveData<List<Tag>> mTags;
     private TagRepository mTagRepository;
     private NoteRepository mNoteRepository;
 
-    public TagsViewModel(@NonNull Application application) {
+    public TagListViewModel(@NonNull Application application) {
         super(application);
         mTagRepository = TagRepository.getInstance(application);
         mNoteRepository = NoteRepository.getInstance(application);
