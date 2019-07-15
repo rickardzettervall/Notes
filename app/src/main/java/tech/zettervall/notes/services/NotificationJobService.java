@@ -35,8 +35,10 @@ public class NotificationJobService extends JobService {
         // Reset Note Notification
         NoteRepository noteRepository = NoteRepository.getInstance(getApplication());
         Note note = noteRepository.getNoteRaw(noteID);
-        note.setNotificationEpoch(-1);
-        noteRepository.updateNote(note);
+        if(note != null) {
+            note.setNotificationEpoch(-1);
+            noteRepository.updateNote(note);
+        }
 
         // Create Notification channel
         createNotificationChannel(getApplicationContext());
