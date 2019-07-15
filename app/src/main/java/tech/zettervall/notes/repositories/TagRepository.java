@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -41,11 +42,11 @@ public class TagRepository {
     }
 
     /**
-     * Get all Tags in LiveData format.
+     * Get all Tags in PagedList LiveData format.
      *
-     * @return All Tags in LiveData List
+     * @return All Tags in PagedList LiveData
      */
-    public LiveData<List<Tag>> getTags() {
+    public DataSource.Factory<Integer, Tag> getTags() {
         Log.d(TAG, "Retrieving Tags from db..");
         return mTagDao.getTags();
     }

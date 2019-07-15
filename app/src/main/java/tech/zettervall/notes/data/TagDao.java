@@ -1,14 +1,13 @@
 package tech.zettervall.notes.data;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
-
-import java.util.List;
 
 import tech.zettervall.notes.models.Tag;
 
@@ -20,7 +19,7 @@ public interface TagDao {
 
     // Get all Tags (sorted alphabetically)
     @Query("SELECT * FROM tags ORDER BY tag DESC")
-    LiveData<List<Tag>> getTags();
+    DataSource.Factory<Integer, Tag> getTags();
 
     // Get specific Tag based on ID
     @Query("SELECT * FROM tags WHERE _id IS :id")

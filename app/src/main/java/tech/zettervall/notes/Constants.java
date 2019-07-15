@@ -25,6 +25,7 @@ public abstract class Constants {
 
     // List
     public static final int NOTE_LIST_PAGE_SIZE = 10;
+    public static final int TAG_LIST_PAGE_SIZE = 10;
 
     // Search
     public static final String SEARCH_QUERY = "search_query";
