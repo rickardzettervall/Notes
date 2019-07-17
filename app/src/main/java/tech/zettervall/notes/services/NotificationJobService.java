@@ -38,30 +38,30 @@ public class NotificationJobService extends JobService {
         if(note != null) {
             note.setNotificationEpoch(-1);
             noteRepository.updateNote(note);
+
+            // Create Notification channel
+            createNotificationChannel(getApplicationContext());
+
+            // Intent for when user clicks the Notification
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(Constants.NOTE_ID, noteID);
+            PendingIntent contentPendingIntent = PendingIntent.getActivity
+                    (this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Build Notification
+            NotificationCompat.Builder builder = new NotificationCompat.Builder
+                    (this, PRIMARY_CHANNEL_ID)
+                    .setContentTitle(note.getTitle())
+                    .setContentText(note.getText())
+                    .setContentIntent(contentPendingIntent)
+                    .setSmallIcon(R.drawable.ic_edit)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setAutoCancel(true);
+
+            // Send Notification
+            mNotificationManager.notify(0, builder.build());
         }
-
-        // Create Notification channel
-        createNotificationChannel(getApplicationContext());
-
-        // Intent for when user clicks the Notification
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.NOTE_ID, noteID);
-        PendingIntent contentPendingIntent = PendingIntent.getActivity
-                (this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Build Notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder
-                (this, PRIMARY_CHANNEL_ID)
-                .setContentTitle(note.getTitle())
-                .setContentText(note.getText())
-                .setContentIntent(contentPendingIntent)
-                .setSmallIcon(R.drawable.ic_edit)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setAutoCancel(true);
-
-        // Send Notification
-        mNotificationManager.notify(0, builder.build());
 
         return false;
     }
