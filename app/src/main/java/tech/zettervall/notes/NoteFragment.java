@@ -224,8 +224,6 @@ public class NoteFragment extends Fragment {
             saveNote();
         }
         bundle.putInt(Constants.NOTE_ID, mNote.getId());
-        bundle.putString(Constants.NOTE_TITLE, mDataBinding.titleTv.getText().toString());
-        bundle.putString(Constants.NOTE_TEXT, mDataBinding.textTv.getText().toString());
 
         // Build job
         ComponentName jobService = new ComponentName(context.getPackageName(),
