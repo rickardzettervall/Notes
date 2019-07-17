@@ -54,6 +54,7 @@ public class NoteFragment extends Fragment {
     private NoteViewModel mNoteViewModel;
     private Note mNote;
     private Calendar mReminderCalender, mDateTimePickerCalender;
+    private JobScheduler mJobScheduler;
 
     @Nullable
     @Override
@@ -66,6 +67,9 @@ public class NoteFragment extends Fragment {
 
         // Enable Toolbar MenuItem handling.
         setHasOptionsMenu(true);
+
+        // Get System Scheduler
+        mJobScheduler = (JobScheduler) getActivity().getSystemService(JOB_SCHEDULER_SERVICE);
 
         // Get Note
         if (savedInstanceState != null) { // Existing Note but configuration changed
@@ -161,22 +165,33 @@ public class NoteFragment extends Fragment {
 
         if (mNote.getId() > 0) { // Existing Note
             mNoteViewModel.updateNote(mNote);
-        } else if(!mNote.getTitle().isEmpty() ||
+        } else if (!mNote.getTitle().isEmpty() ||
                 !mNote.getText().isEmpty()) { // New Note
             mNote.setId((int) mNoteViewModel.insertNote(mNote));
         }
     }
 
+    /**
+     * Change MenuItem icon.
+     */
     private void setFavoritizedIcon(MenuItem item) {
         item.setIcon(R.drawable.ic_star);
         item.setTitle(R.string.action_unfavoritize);
     }
 
+    /**
+     * Change MenuItem icon.
+     */
     private void setUnfavoritizedIcon(MenuItem item) {
         item.setIcon(R.drawable.ic_star_border);
         item.setTitle(R.string.action_favoritize);
     }
 
+    /**
+     * Schedule Reminder (Notification) for Note.
+     *
+     * @param context Activity context
+     */
     private void scheduleReminderJob(Context context) {
         // Set bundle
         PersistableBundle bundle = new PersistableBundle();
@@ -186,10 +201,6 @@ public class NoteFragment extends Fragment {
         bundle.putInt(Constants.NOTE_ID, mNote.getId());
         bundle.putString(Constants.NOTE_TITLE, mDataBinding.titleTv.getText().toString());
         bundle.putString(Constants.NOTE_TEXT, mDataBinding.textTv.getText().toString());
-
-        // Get System Scheduler
-        JobScheduler jobScheduler =
-                (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
 
         // Build job
         ComponentName jobService = new ComponentName(context.getPackageName(),
@@ -203,9 +214,23 @@ public class NoteFragment extends Fragment {
         JobInfo jobInfo = jobBuilder.build();
 
         // Schedule job
-        jobScheduler.schedule(jobInfo);
+        mJobScheduler.schedule(jobInfo);
     }
 
+    /**
+     * Cancel Reminder job (Notification) for Note.
+     */
+    private void cancelReminderJob() {
+        if (mJobScheduler != null) {
+            mNote.setNotificationEpoch(-1);
+            mJobScheduler.cancel(mNote.getId());
+            mJobScheduler = null;
+        }
+    }
+
+    /**
+     * Pick date/time for Notification.
+     */
     private void dateTimePicker() {
         mDateTimePickerCalender = Calendar.getInstance();
         mReminderCalender = Calendar.getInstance();
@@ -240,6 +265,9 @@ public class NoteFragment extends Fragment {
                 mDateTimePickerCalender.get(Calendar.DATE)).show();
     }
 
+    /**
+     * Save / Trash Note.
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -249,6 +277,10 @@ public class NoteFragment extends Fragment {
             } else if (mNote != null) { // TRASH
                 mNote.setTrash(true);
                 mNoteViewModel.updateNote(mNote);
+                // Remove notification
+                if (mNote.getNotificationEpoch() > 0) {
+                    cancelReminderJob();
+                }
                 // Message to user
                 String toastMessage = mNote.getTitle() != null && !mNote.getTitle().isEmpty() ?
                         getString(R.string.note_trashed_detailed, mNote.getTitle()) :
