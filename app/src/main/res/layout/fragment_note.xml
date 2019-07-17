@@ -58,19 +58,56 @@
                     app:layout_constraintStart_toStartOf="@+id/text_tv"
                     app:layout_constraintTop_toBottomOf="@+id/text_tv">
 
-                    <!-- Last updated -->
-                    <TextView
-                        android:id="@+id/updated_tv"
+                    <!-- Reminder Layout -->
+                    <LinearLayout
+                        android:id="@+id/reminder_ll"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="@string/tools_date_updated" />
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
-                    <!-- Creation date -->
-                    <TextView
-                        android:id="@+id/created_tv"
+                        <!-- Reminder text -->
+                        <TextView
+                            android:id="@+id/reminder_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/tools_reminder_set"
+                            android:textAppearance="?android:textAppearanceMedium"
+                            android:textStyle="bold"
+                            tools:text="@string/tools_reminder_set" />
+
+                        <!-- Reminder removal -->
+                        <Button
+                            android:id="@+id/reminder_remove_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="42dp"
+                            android:text="@string/remove" />
+
+                    </LinearLayout>
+
+                    <!-- Creation Layout -->
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="@string/tools_date_created" />
+                        android:orientation="vertical">
+
+                        <!-- Last updated -->
+                        <TextView
+                            android:id="@+id/updated_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="@string/tools_date_updated" />
+
+                        <!-- Creation date -->
+                        <TextView
+                            android:id="@+id/created_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="@string/tools_date_created" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -7,6 +7,9 @@
     <string name="nav_drawer_close">Close navigation drawer</string>
     <string name="by_line">By Rickard Zettervall</string>
 
+    <!-- Generic -->
+    <string name="remove">Remove</string>
+
     <!-- Note -->
     <string name="note">Note</string>
     <string name="creation_date">Created: <xliff:g example="Jun 1, 2019 10:55" id="date">%s</xliff:g></string>
@@ -26,6 +29,7 @@
 
     <!-- Reminder -->
     <string name="reminder_set">Reminder set for <xliff:g example="date" id="dateString">%s</xliff:g></string>
+    <string name="reminder_removed">Reminder removed</string>
 
     <!-- Confirm Alert -->
     <string name="confirm_deletion">Delete note?</string>
@@ -83,8 +87,9 @@
     <string name="tools_headline" translatable="false">Important stuff</string>
     <string name="tools_text" translatable="false">This is some text containing very important stuff, this might even span through many lines. Indeed this text is super important and must be quite long, it must be longer than three rows so that the three dots are allowed to appear in the tools.</string>
     <string name="tools_date" translatable="false">May 1, 2019 11:55</string>
-    <string name="tools_date_created" translatable="false">Created: May 1, 2019 11:55</string>
-    <string name="tools_date_updated" translatable="false">Updated: May 1, 2019 11:55</string>
+    <string name="tools_date_created" translatable="false">Created: May 1, 11:55</string>
+    <string name="tools_date_updated" translatable="false">Updated: May 1, 11:55</string>
+    <string name="tools_reminder_set" translatable="false">Reminder set for May 5, 12:00</string>
 
     <!-- Content Descriptions -->
     <string name="cont_new_note">Add new note</string>

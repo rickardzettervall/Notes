@@ -84,6 +84,9 @@ public class NoteFragment extends Fragment {
             mNote = newNote(false);
         }
 
+        // Show Reminder
+        showReminder(getActivity(), mNote.getNotificationEpoch());
+
         // Get Tablet bool
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
@@ -131,6 +134,28 @@ public class NoteFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    /**
+     * Show or Hide Reminder layout.
+     */
+    private void showReminder(final Context context, long notificationEpoch) {
+        if (notificationEpoch > 0) {
+            mDataBinding.reminderLl.setVisibility(View.VISIBLE);
+            mDataBinding.reminderTv.setText(getString(R.string.reminder_set,
+                    DateTimeUtil.getDateStringFromEpoch(notificationEpoch, context)));
+            mDataBinding.reminderRemoveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDataBinding.reminderLl.setVisibility(View.GONE);
+                    cancelReminderJob();
+                    Toast.makeText(context, getString(R.string.reminder_removed),
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            mDataBinding.reminderLl.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -215,6 +240,9 @@ public class NoteFragment extends Fragment {
 
         // Schedule job
         mJobScheduler.schedule(jobInfo);
+
+        // Show Reminder
+        showReminder(getActivity(), mNote.getNotificationEpoch());
     }
 
     /**
