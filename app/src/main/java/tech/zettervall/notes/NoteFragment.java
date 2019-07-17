@@ -250,7 +250,6 @@ public class NoteFragment extends Fragment {
         if (mJobScheduler != null) {
             mNote.setNotificationEpoch(-1);
             mJobScheduler.cancel(mNote.getId());
-            mJobScheduler = null;
         }
     }
 
