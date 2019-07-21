@@ -85,7 +85,7 @@ public class RemindersFragment extends BaseListFragment {
      */
     @Override
     public void subscribeObservers() {
-        mRemindersViewModel.getReminders().observe(this, new Observer<PagedList<Note>>() {
+        mRemindersViewModel.getReminders().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);

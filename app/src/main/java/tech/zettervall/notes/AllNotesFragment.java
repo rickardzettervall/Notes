@@ -85,7 +85,7 @@ public class AllNotesFragment extends BaseListFragment {
      */
     @Override
     public void subscribeObservers() {
-        mNoteListViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
+        mNoteListViewModel.getNotes().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);

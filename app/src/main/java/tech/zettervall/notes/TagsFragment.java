@@ -79,7 +79,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
      */
     @Override
     public void subscribeObservers() {
-        mTagListViewModel.getTags().observe(this, new Observer<PagedList<Tag>>() {
+        mTagListViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<PagedList<Tag>>() {
             @Override
             public void onChanged(PagedList<Tag> tags) {
                 mTagAdapter.submitList(tags);
