@@ -2,6 +2,7 @@ package tech.zettervall.notes.utils;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +42,7 @@ public abstract class DateTimeUtil {
      * @return Date String formatted in various ways depending on how old the
      * Epoch is, e.g. an Epoch from today will return "Today, HH:MM".
      */
+    @NonNull
     public static String getDateStringFromEpoch(long epoch, Context context) {
 
         // Set Date Objects
@@ -106,7 +108,7 @@ public abstract class DateTimeUtil {
                 break;
             }
         }
-        if(timeSelector == Constants.TIME_12) {
+        if (timeSelector == Constants.TIME_12) {
             use24h = false;
         }
 
