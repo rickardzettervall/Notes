@@ -49,13 +49,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/title_tv" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
                     android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="@+id/text_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_tv">
 
                     <!-- Reminder Layout -->
@@ -86,6 +87,17 @@
                             android:text="@string/remove" />
 
                     </LinearLayout>
+
+                    <!-- Tags -->
+                    <TextView
+                        android:id="@+id/tags_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:visibility="gone"
+                        tools:text="@string/tools_tags"
+                        tools:visibility="visible" />
 
                     <!-- Creation Layout -->
                     <LinearLayout

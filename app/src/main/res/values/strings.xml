@@ -91,6 +91,7 @@
     <string name="tools_date_created" translatable="false">Created: May 1, 11:55</string>
     <string name="tools_date_updated" translatable="false">Updated: May 1, 11:55</string>
     <string name="tools_reminder_set" translatable="false">Reminder set for May 5, 12:00</string>
+    <string name="tools_tags" translatable="false">#Personal #Work #Other #Exercise</string>
 
     <!-- Content Descriptions -->
     <string name="cont_new_note">Add new note</string>

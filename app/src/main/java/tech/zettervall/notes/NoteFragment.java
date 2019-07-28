@@ -139,6 +139,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             mDataBinding.textTv.requestFocus();
         }
 
+        // Set Tags TextView
+        updateTagsUi();
+
         return rootView;
     }
 
@@ -200,6 +203,25 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 !mNote.getText().isEmpty()) { // New Note
             mNote.setId((int) mNoteViewModel.insertNote(mNote));
         }
+    }
+
+    /**
+     * Update Tags TextView.
+     */
+    private void updateTagsUi() {
+        StringBuilder tags = new StringBuilder();
+        if(!mNote.getTags().isEmpty()) {
+            mDataBinding.tagsTv.setVisibility(View.VISIBLE);
+            for (int i = 0; i < mNote.getTags().size(); i++) {
+                tags.append("#").append(mNote.getTags().get(i).getTag());
+                if (i < mNote.getTags().size() - 1) {
+                    tags.append(" ");
+                }
+            }
+        } else {
+            mDataBinding.tagsTv.setVisibility(View.GONE);
+        }
+        mDataBinding.tagsTv.setText(tags.toString());
     }
 
     /**
@@ -358,6 +380,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
         // Update Note Tags
         mNote.setTags(noteTags);
+
+        // Set Tags TextView
+        updateTagsUi();
     }
 
     @Override
