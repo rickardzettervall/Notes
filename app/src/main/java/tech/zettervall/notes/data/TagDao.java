@@ -9,6 +9,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 import tech.zettervall.notes.models.Tag;
 
 /**
@@ -20,6 +22,10 @@ public interface TagDao {
     // Get all Tags (sorted alphabetically)
     @Query("SELECT * FROM tags ORDER BY tag ASC")
     DataSource.Factory<Integer, Tag> getTags();
+
+    // Get all Tags (Raw) (sorted alphabetically)
+    @Query("SELECT * FROM tags ORDER BY tag ASC")
+    List<Tag> getTagsRaw();
 
     // Get specific Tag based on ID
     @Query("SELECT * FROM tags WHERE _id IS :id")
