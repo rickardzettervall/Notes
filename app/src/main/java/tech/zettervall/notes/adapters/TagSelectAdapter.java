@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -80,6 +79,8 @@ public class TagSelectAdapter extends RecyclerView.Adapter<TagSelectAdapter.View
     @Override
     public void onBindViewHolder(@NonNull TagSelectAdapter.ViewHolder holder, final int position) {
         final Tag tag = mTags.get(position);
+
+        holder.tag_cb.setClickable(false);
 
         // Set CheckBox
         if(mCheckedTags[position]) {
