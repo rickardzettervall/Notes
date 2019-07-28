@@ -52,6 +52,38 @@ public class TagRepository {
     }
 
     /**
+     * Get all Tags in plain List.
+     *
+     * @return List of all Tags
+     */
+    public List<Tag> getTagsRaw() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Callable<List<Tag>> callable = new Callable<List<Tag>>() {
+            @Override
+            public List<Tag> call() throws Exception {
+                return mTagDao.getTagsRaw();
+            }
+        };
+        Future<List<Tag>> future = executorService.submit(callable);
+        List<Tag> tags = null;
+        try {
+            tags = future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+        Log.d(TAG, "Retrieving Tags from db..");
+        return tags;
+    }
+
+    /**
      * Get a specific Tag based on ID.
      *
      * @param _id ID of Tag
