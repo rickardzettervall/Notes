@@ -48,7 +48,7 @@ import tech.zettervall.notes.viewmodels.NoteViewModel;
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
 /**
- * Fragment for editing a Note, used ViewModel to fetch data from db.
+ * Fragment for editing a Note, uses ViewModel to fetch data from db.
  */
 public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener {
 
