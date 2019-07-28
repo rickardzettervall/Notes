@@ -81,7 +81,8 @@
     <string name="hint_title">Title..</string>
     <string name="hint_text">Notes..</string>
 
-    <!-- Trash -->
+    <!-- Empty Lists -->
+    <string name="list_is_empty">List is empty..</string>
     <string name="trash_is_empty">Trash is empty..</string>
 
     <!-- Tools -->
