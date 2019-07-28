@@ -12,18 +12,14 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
-import tech.zettervall.notes.data.typeconverters.TagTypeConverter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
+import tech.zettervall.notes.utils.DbUtil;
 
 public class NoteRepository {
 
@@ -184,32 +180,12 @@ public class NoteRepository {
      */
     public List<Note> getAllNotesByTagRaw(final Tag tag) {
         Log.d(TAG, "Retrieving Notes matching tag from db..");
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Callable<List<Note>> callable = new Callable<List<Note>>() {
+        return DbUtil.rawDB(new Callable<List<Note>>() {
             @Override
-            public List<Note> call() {
+            public List<Note> call() throws Exception {
                 return mNoteDao.getNotesByTagRaw(tag);
             }
-        };
-        Future<List<Note>> future = executorService.submit(callable);
-        List<Note> notes = null;
-        try {
-            notes = future.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Shutdown ExecutorService
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-        }
-
-        return notes;
+        });
     }
 
     /**
@@ -275,32 +251,12 @@ public class NoteRepository {
      */
     public Note getNoteRaw(final int _id) {
         Log.d(TAG, "Retrieving Note[id:" + _id + "] from db..");
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Callable<Note> callable = new Callable<Note>() {
+        return DbUtil.rawDB(new Callable<Note>() {
             @Override
             public Note call() {
                 return mNoteDao.getNoteRaw(_id);
             }
-        };
-        Future<Note> future = executorService.submit(callable);
-        Note note = null;
-        try {
-            note = future.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Shutdown ExecutorService
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-        }
-
-        return note;
+        });
     }
 
     /**
@@ -310,36 +266,13 @@ public class NoteRepository {
      * @return ID of inserted Note
      */
     public long insertNote(final Note note) {
-        // Create ExecutorService and Callable for storing new Note and receiving NoteID
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Callable<Long> callable = new Callable<Long>() {
+        long noteID = DbUtil.rawDB(new Callable<Long>() {
             @Override
             public Long call() {
                 return mNoteDao.insertNote(note);
             }
-        };
-
-        // Retrieve noteID from Future
-        Future<Long> future = executorService.submit(callable);
-        long noteID = 0;
-        try {
-            // Don't set timeout because noteID is vital to the function of the App
-            noteID = future.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Shutdown ExecutorService
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-        }
-
-        Log.d(TAG, "Inserted Note[id:" + noteID + "] in db..");
+        });
+        Log.d(NoteRepository.TAG, "Inserted Note[id:" + noteID + "] into db..");
         return noteID;
     }
 
