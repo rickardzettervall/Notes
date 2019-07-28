@@ -81,9 +81,11 @@ public class TagSelectAdapter extends RecyclerView.Adapter<TagSelectAdapter.View
     public void onBindViewHolder(@NonNull TagSelectAdapter.ViewHolder holder, final int position) {
         final Tag tag = mTags.get(position);
 
-        // Set pre-checked CheckBox
+        // Set CheckBox
         if(mCheckedTags[position]) {
             holder.tag_cb.setChecked(true);
+        } else {
+            holder.tag_cb.setChecked(false);
         }
 
         // Set title
