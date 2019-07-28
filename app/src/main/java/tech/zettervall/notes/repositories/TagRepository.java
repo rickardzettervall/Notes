@@ -57,7 +57,7 @@ public class TagRepository {
         Log.d(TAG, "Retrieving Tags from db..");
         return DbUtil.rawDB(new Callable<List<Tag>>() {
             @Override
-            public List<Tag> call() throws Exception {
+            public List<Tag> call() {
                 return mTagDao.getTagsRaw();
             }
         });

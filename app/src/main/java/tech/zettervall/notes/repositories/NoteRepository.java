@@ -182,7 +182,7 @@ public class NoteRepository {
         Log.d(TAG, "Retrieving Notes matching tag from db..");
         return DbUtil.rawDB(new Callable<List<Note>>() {
             @Override
-            public List<Note> call() throws Exception {
+            public List<Note> call() {
                 return mNoteDao.getNotesByTagRaw(tag);
             }
         });
