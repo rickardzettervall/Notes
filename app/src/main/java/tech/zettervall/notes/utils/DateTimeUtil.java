@@ -94,7 +94,7 @@ public abstract class DateTimeUtil {
 
         // Get user preferences
         int timeSelector = PreferenceManager.getDefaultSharedPreferences(context).
-                getInt(Constants.TIME_SELECTOR, Constants.TIME_12);
+                getInt(Constants.TIME_SELECTOR, 0);
 
         // Countries with AM/PM clock
         Locale[] amPmCountries = {Locale.US, Locale.CANADA, Locale.CANADA_FRENCH};
@@ -106,8 +106,8 @@ public abstract class DateTimeUtil {
                 break;
             }
         }
-        if (timeSelector == Constants.TIME_24) {
-            use24h = true;
+        if(timeSelector == Constants.TIME_12) {
+            use24h = false;
         }
 
         return use24h;
