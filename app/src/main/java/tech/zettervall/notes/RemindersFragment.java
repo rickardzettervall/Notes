@@ -44,6 +44,7 @@ public class RemindersFragment extends BaseListFragment {
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
         mFab = rootView.findViewById(R.id.notes_list_fab);
+        emptyTextView = rootView.findViewById(R.id.notes_list_is_empty_tv);
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
@@ -89,6 +90,7 @@ public class RemindersFragment extends BaseListFragment {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
+                emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
             }
         });
     }

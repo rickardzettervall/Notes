@@ -10,10 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -25,10 +22,6 @@ public class AllNotesFragment extends BaseListFragment {
 
     private static final String TAG = AllNotesFragment.class.getSimpleName();
     private NoteListViewModel mNoteListViewModel;
-    private LinearLayoutManager mLayoutManager;
-    private NoteAdapter mNoteAdapter;
-    private RecyclerView mRecyclerView;
-    private FloatingActionButton mFab;
 
     @Nullable
     @Override
@@ -44,6 +37,7 @@ public class AllNotesFragment extends BaseListFragment {
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
         mFab = rootView.findViewById(R.id.notes_list_fab);
+        emptyTextView = rootView.findViewById(R.id.notes_list_is_empty_tv);
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
@@ -89,6 +83,7 @@ public class AllNotesFragment extends BaseListFragment {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
+                emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
             }
         });
     }

@@ -14,12 +14,17 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -30,6 +35,15 @@ public abstract class BaseListFragment extends Fragment implements NoteAdapter.O
     private static final String TAG = BaseListFragment.class.getSimpleName();
     protected NoteListFragmentClickListener callback;
     private SharedPreferences mSharedPreferences;
+
+    // Adapter
+    protected LinearLayoutManager mLayoutManager;
+    protected RecyclerView mRecyclerView;
+    protected NoteAdapter mNoteAdapter;
+
+    // Common Views
+    protected FloatingActionButton mFab;
+    protected TextView emptyTextView;
 
     // Used for SearchView to restore state on configuration changes
     private boolean mSearchIconified;

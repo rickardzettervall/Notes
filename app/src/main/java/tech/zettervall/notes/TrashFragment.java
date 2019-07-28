@@ -16,10 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -31,10 +27,6 @@ public class TrashFragment extends BaseListFragment {
 
     private static final String TAG = TrashFragment.class.getSimpleName();
     private TrashViewModel mTrashViewModel;
-    private LinearLayoutManager mLayoutManager;
-    private NoteAdapter mNoteAdapter;
-    private RecyclerView mRecyclerView;
-    private FloatingActionButton mFab;
 
     @Nullable
     @Override
@@ -50,6 +42,8 @@ public class TrashFragment extends BaseListFragment {
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
         mFab = rootView.findViewById(R.id.notes_list_fab);
+        emptyTextView = rootView.findViewById(R.id.notes_list_is_empty_tv);
+        emptyTextView.setText(R.string.trash_is_empty);
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
@@ -79,6 +73,7 @@ public class TrashFragment extends BaseListFragment {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
+                emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
             }
         });
     }
