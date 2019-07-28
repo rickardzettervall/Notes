@@ -8,15 +8,12 @@ import androidx.paging.DataSource;
 
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.data.TagDao;
 import tech.zettervall.notes.models.Tag;
+import tech.zettervall.notes.utils.DbUtil;
 
 public class TagRepository {
 
@@ -57,30 +54,13 @@ public class TagRepository {
      * @return List of all Tags
      */
     public List<Tag> getTagsRaw() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Callable<List<Tag>> callable = new Callable<List<Tag>>() {
+        Log.d(TAG, "Retrieving Tags from db..");
+        return DbUtil.rawDB(new Callable<List<Tag>>() {
             @Override
             public List<Tag> call() throws Exception {
                 return mTagDao.getTagsRaw();
             }
-        };
-        Future<List<Tag>> future = executorService.submit(callable);
-        List<Tag> tags = null;
-        try {
-            tags = future.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-        }
-        Log.d(TAG, "Retrieving Tags from db..");
-        return tags;
+        });
     }
 
     /**
@@ -101,28 +81,12 @@ public class TagRepository {
      * @return tagID
      */
     public long insertTag(final Tag tag) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Callable<Long> callable = new Callable<Long>() {
+        long tagID = DbUtil.rawDB(new Callable<Long>() {
             @Override
             public Long call() {
                 return mTagDao.insertTag(tag);
             }
-        };
-        Future<Long> future = executorService.submit(callable);
-        long tagID = 0;
-        try {
-            tagID = future.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-        }
+        });
         Log.d(TAG, "Inserted Tag[id:" + tagID + "] in db..");
         return tagID;
     }
