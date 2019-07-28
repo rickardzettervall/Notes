@@ -25,19 +25,24 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.mNotes.databinding.FragmentNoteBinding;
+import tech.zettervall.notes.adapters.TagSelectAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.services.NotificationJobService;
 import tech.zettervall.notes.utils.DateTimeUtil;
 import tech.zettervall.notes.utils.KeyboardUtil;
+import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.NoteViewModel;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
@@ -45,7 +50,7 @@ import static android.content.Context.JOB_SCHEDULER_SERVICE;
 /**
  * Fragment for editing a Note, used ViewModel to fetch data from db.
  */
-public class NoteFragment extends Fragment {
+public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
     private boolean mTrash, mDeleted, mIsTablet;
@@ -55,6 +60,7 @@ public class NoteFragment extends Fragment {
     private Note mNote;
     private Calendar mReminderCalender, mDateTimePickerCalender;
     private JobScheduler mJobScheduler;
+    private TagSelectAdapter mTagSelectAdapter;
 
     @Nullable
     @Override
@@ -334,6 +340,26 @@ public class NoteFragment extends Fragment {
         }
     }
 
+    /**
+     * CLick event for Tag Adapter within AlertDialog for selecting Tags.
+     *
+     * @param index Index of clicked Tag
+     */
+    @Override
+    public void onTagClick(int index) {
+        List<Tag> noteTags = mNote.getTags();
+        if (mTagSelectAdapter.getCheckedTags()[index]) { // Uncheck
+            mTagSelectAdapter.setCheckedState(index, false);
+            noteTags.remove(mTagSelectAdapter.getTags().get(index)); // Remove Tag
+        } else { // Check
+            mTagSelectAdapter.setCheckedState(index, true);
+            noteTags.add(mTagSelectAdapter.getTags().get(index)); // Add Tag
+        }
+
+        // Update Note Tags
+        mNote.setTags(noteTags);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -349,6 +375,38 @@ public class NoteFragment extends Fragment {
                     Toast.makeText(getActivity(), getString(R.string.note_favorites_added),
                             Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.action_tags:
+                // Inflate View
+                View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_select, null);
+
+                // Set Adapter / LayoutManager
+                RecyclerView recyclerView = dialogView.findViewById(R.id.tags_select_list_rv);
+                LinearLayoutManager layoutManager = RecyclerViewUtil.getDefaultLinearLayoutManager(getActivity());
+                mTagSelectAdapter = new TagSelectAdapter(this, mNoteViewModel.getTags());
+                recyclerView.setAdapter(mTagSelectAdapter);
+                recyclerView.setLayoutManager(layoutManager);
+
+                // Pre-check CheckBoxes for used Tags
+                if (!mNote.getTags().isEmpty()) {
+                    for (int i = 0; i < mTagSelectAdapter.getTags().size(); i++) {
+                        if (mNote.getTags().contains(mTagSelectAdapter.getTags().get(i))) {
+                            mTagSelectAdapter.setCheckedState(i, true);
+                        }
+                    }
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getString(R.string.action_tags));
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.confirm_done, null);
+                builder.show();
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        saveNote();
+                    }
+                });
                 break;
             case R.id.action_reminder:
                 dateTimePicker();
