@@ -143,7 +143,7 @@ public abstract class BaseListFragment extends Fragment implements NoteAdapter.O
             case R.id.action_sort:
 
                 // Inflate View
-                View dialogView = View.inflate(getActivity(), R.layout.sort_alertdialog, null);
+                View dialogView = View.inflate(getActivity(), R.layout.dialog_sort, null);
 
                 // Sort type (RadioGroup)
                 RadioGroup sortTypeGroup = dialogView.findViewById(R.id.sort_type_rg);
