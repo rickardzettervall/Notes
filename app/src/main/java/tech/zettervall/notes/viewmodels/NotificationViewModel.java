@@ -13,6 +13,8 @@ import tech.zettervall.notes.repositories.NoteRepository;
  * ViewModel used for when user clicks a notification, this
  * fetches the clicked Note based on ID received from the
  * notification.
+ * <p>
+ * Used in MainActivity.
  */
 public class NotificationViewModel extends AndroidViewModel {
 
@@ -24,11 +26,11 @@ public class NotificationViewModel extends AndroidViewModel {
         mNoteRepository = NoteRepository.getInstance(application);
     }
 
-    public void setNote(int noteID) {
-        this.mNote = mNoteRepository.getNote(noteID);
-    }
-
     public LiveData<Note> getNote() {
         return mNote;
+    }
+
+    public void setNote(int noteID) {
+        this.mNote = mNoteRepository.getNote(noteID);
     }
 }

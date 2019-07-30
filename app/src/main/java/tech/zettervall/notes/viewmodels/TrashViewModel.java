@@ -13,6 +13,9 @@ import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
+/**
+ * ViewModel for List (PagedList) of all trashed Notes.
+ */
 public class TrashViewModel extends AndroidViewModel {
 
     private NoteRepository mNoteRepository;

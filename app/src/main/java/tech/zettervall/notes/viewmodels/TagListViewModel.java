@@ -16,6 +16,9 @@ import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.repositories.TagRepository;
 
+/**
+ * ViewModel for List (PagedList) of all Tags.
+ */
 public class TagListViewModel extends AndroidViewModel {
 
     private LiveData<PagedList<Tag>> mTags;

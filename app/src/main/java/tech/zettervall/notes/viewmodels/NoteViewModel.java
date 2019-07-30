@@ -13,8 +13,7 @@ import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.repositories.TagRepository;
 
 /**
- * ViewModel for a single Note.
- * Handles inserting and updating a note.
+ * ViewModel for handling inserting and updating Notes.
  */
 public class NoteViewModel extends AndroidViewModel {
 
@@ -40,7 +39,7 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     /**
-     * Get Tags in List, used in AlertDialog for single Note.
+     * Get all Tags in List, used in Dialog when selecting Tags for a Note.
      */
     public List<Tag> getTags() {
         return mTagRepository.getTagsRaw();
