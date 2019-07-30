@@ -34,6 +34,10 @@ public class TagListViewModel extends AndroidViewModel {
         return mTags;
     }
 
+    public void insertTag(Tag tag) {
+        mTagRepository.insertTag(tag);
+    }
+
     /**
      * Delete Tag and clear the tag from all Notes.
      *
