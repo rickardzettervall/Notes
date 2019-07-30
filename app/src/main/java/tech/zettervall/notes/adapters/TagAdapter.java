@@ -36,14 +36,12 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Tag oldItem, @NonNull Tag newItem) {
-                    /* The equals method of Note compares modifiedEpoch, therefor a changed
-                     * Note MUST update modifiedEpoch when changed for the adapter to update. */
                     return oldItem.equals(newItem);
                 }
             };
 
     /**
-     * ViewHolder
+     * ViewHolder.
      */
     class TagViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -68,7 +66,7 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
     }
 
     /**
-     * Callback interface used for Click events.
+     * Callback interface.
      */
     public interface OnTagClickListener {
         void onTagClick(int index);
