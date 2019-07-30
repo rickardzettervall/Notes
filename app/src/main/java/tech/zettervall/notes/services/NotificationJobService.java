@@ -20,6 +20,9 @@ import tech.zettervall.notes.MainActivity;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
+/**
+ * Notification for Note Reminders.
+ */
 public class NotificationJobService extends JobService {
 
     private static final String TAG = NotificationJobService.class.getSimpleName();
@@ -35,7 +38,7 @@ public class NotificationJobService extends JobService {
         // Reset Note Notification
         NoteRepository noteRepository = NoteRepository.getInstance(getApplication());
         Note note = noteRepository.getNoteRaw(noteID);
-        if(note != null) {
+        if (note != null) {
             note.setNotificationEpoch(-1);
             noteRepository.updateNote(note);
 
@@ -94,8 +97,8 @@ public class NotificationJobService extends JobService {
                     Constants.NOTIFICATIONS_ENABLE_LIGHTS_KEY,
                     Constants.NOTIFICATIONS_ENABLE_LIGHTS_DEFAULT));
             notificationChannel.setLightColor(sharedPreferences.getInt(
-                            Constants.NOTIFICATIONS_LIGHT_COLOR_KEY,
-                            Constants.NOTIFICATION_COLOR_DEFAULT));
+                    Constants.NOTIFICATIONS_LIGHT_COLOR_KEY,
+                    Constants.NOTIFICATION_COLOR_DEFAULT));
             notificationChannel.enableVibration(sharedPreferences.getBoolean(
                     Constants.NOTIFICATIONS_ENABLE_VIBRATION_KEY,
                     Constants.NOTIFICATIONS_ENABLE_VIBRATION_DEFAULT

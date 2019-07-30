@@ -138,24 +138,24 @@ public class Note {
         return creationEpoch;
     }
 
-    public String getCreationString(Context context) {
-        return DateTimeUtil.getDateStringFromEpoch(creationEpoch, context);
-    }
-
     public void setCreationEpoch(long creationEpoch) {
         this.creationEpoch = creationEpoch;
+    }
+
+    public String getCreationString(Context context) {
+        return DateTimeUtil.getDateStringFromEpoch(creationEpoch, context);
     }
 
     public long getModifiedEpoch() {
         return modifiedEpoch;
     }
 
-    public String getModifiedString(Context context) {
-        return DateTimeUtil.getDateStringFromEpoch(modifiedEpoch, context);
-    }
-
     public void setModifiedEpoch(long modifiedEpoch) {
         this.modifiedEpoch = modifiedEpoch;
+    }
+
+    public String getModifiedString(Context context) {
+        return DateTimeUtil.getDateStringFromEpoch(modifiedEpoch, context);
     }
 
     public long getNotificationEpoch() {

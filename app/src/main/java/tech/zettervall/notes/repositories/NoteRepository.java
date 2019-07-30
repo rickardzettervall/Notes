@@ -320,7 +320,7 @@ public class NoteRepository {
     }
 
     /**
-     * Delete alla trashed Notes.
+     * Delete all trashed Notes.
      */
     public void deleteAllTrashedNotes() {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {

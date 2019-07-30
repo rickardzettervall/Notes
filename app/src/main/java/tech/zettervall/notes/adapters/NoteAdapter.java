@@ -15,18 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
 
-import static android.view.View.GONE;
-
+/**
+ * Adapter for displaying Notes in RecyclerView.
+ */
 public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
     private static final String TAG = NoteAdapter.class.getSimpleName();
-    private OnNoteClickListener mOnNoteClickListener;
-
-    public NoteAdapter(OnNoteClickListener onNoteClickListener) {
-        super(DIFF_CALLBACK);
-        mOnNoteClickListener = onNoteClickListener;
-    }
-
     /**
      * Callback to check for difference and decide whether to update the list.
      */
@@ -39,46 +33,15 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-                    /* The equals method of Note compares modifiedEpoch, therefor a changed
-                     * Note MUST update modifiedEpoch when changed for the adapter to update. */
+                    // Check Note class equals method for more information.
                     return oldItem.equals(newItem);
                 }
             };
+    private OnNoteClickListener mOnNoteClickListener;
 
-    /**
-     * ViewHolder
-     */
-    class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        private TextView mHeadlineTv, mTextTv;
-        private ImageView mFavorite, mReminder;
-        private LinearLayout mTitleLayout;
-
-        public NoteViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            // Find Views
-            mHeadlineTv = itemView.findViewById(R.id.title_tv);
-            mTextTv = itemView.findViewById(R.id.text_tv);
-            mFavorite = itemView.findViewById(R.id.favorite_iv);
-            mReminder = itemView.findViewById(R.id.reminder_iv);
-            mTitleLayout = itemView.findViewById(R.id.title_layout);
-
-            // Set OnClickListener
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            mOnNoteClickListener.onNoteClick(getAdapterPosition());
-        }
-    }
-
-    /**
-     * Callback interface used for Click events.
-     */
-    public interface OnNoteClickListener {
-        void onNoteClick(int index);
+    public NoteAdapter(OnNoteClickListener onNoteClickListener) {
+        super(DIFF_CALLBACK);
+        mOnNoteClickListener = onNoteClickListener;
     }
 
     @NonNull
@@ -121,6 +84,42 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             } else {
                 holder.mReminder.setVisibility(View.GONE);
             }
+        }
+    }
+
+    /**
+     * Callback interface.
+     */
+    public interface OnNoteClickListener {
+        void onNoteClick(int index);
+    }
+
+    /**
+     * ViewHolder
+     */
+    class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private TextView mHeadlineTv, mTextTv;
+        private ImageView mFavorite, mReminder;
+        private LinearLayout mTitleLayout;
+
+        public NoteViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            // Find Views
+            mHeadlineTv = itemView.findViewById(R.id.title_tv);
+            mTextTv = itemView.findViewById(R.id.text_tv);
+            mFavorite = itemView.findViewById(R.id.favorite_iv);
+            mReminder = itemView.findViewById(R.id.reminder_iv);
+            mTitleLayout = itemView.findViewById(R.id.title_layout);
+
+            // Set OnClickListener
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mOnNoteClickListener.onNoteClick(getAdapterPosition());
         }
     }
 }

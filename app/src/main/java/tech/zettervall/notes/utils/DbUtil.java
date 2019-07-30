@@ -9,9 +9,8 @@ import java.util.concurrent.TimeUnit;
 public abstract class DbUtil {
 
     /**
-     * Generic method for retrieving raw db objects, use when you don't
-     * want to use an observable. Waits on data from db before allowing
-     * main thread to continue.
+     * Generic method for retrieving raw db objects,
+     * for when you don't want to use an observable.
      *
      * @param callable Callable for retrieving db object
      * @param <T>      Return type

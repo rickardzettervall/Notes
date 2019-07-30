@@ -14,16 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Tag;
 
+/**
+ * Adapter for displaying Tags in RecyclerView.
+ */
 public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> {
 
     private static final String TAG = TagAdapter.class.getSimpleName();
-    private OnTagClickListener mOnTagClickListener;
-
-    public TagAdapter(OnTagClickListener onTagClickListener) {
-        super(DIFF_CALLBACK);
-        mOnTagClickListener = onTagClickListener;
-    }
-
     /**
      * Callback to check for difference and decide whether to update the list.
      */
@@ -36,9 +32,40 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Tag oldItem, @NonNull Tag newItem) {
+                    // Check Tag class equals method for more information.
                     return oldItem.equals(newItem);
                 }
             };
+    private OnTagClickListener mOnTagClickListener;
+
+    public TagAdapter(OnTagClickListener onTagClickListener) {
+        super(DIFF_CALLBACK);
+        mOnTagClickListener = onTagClickListener;
+    }
+
+    @NonNull
+    @Override
+    public TagViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.list_tag, viewGroup, false);
+        return new TagViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull TagViewHolder holder, int position) {
+        Tag tag = getItem(position);
+        if (tag != null) {
+            String tagString = "#" + tag.getTag();
+            holder.mTagTextView.setText(tagString);
+        }
+    }
+
+    /**
+     * Callback interface.
+     */
+    public interface OnTagClickListener {
+        void onTagClick(int index);
+    }
 
     /**
      * ViewHolder.
@@ -62,30 +89,6 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
         @Override
         public void onClick(View v) {
             mOnTagClickListener.onTagClick(getAdapterPosition());
-        }
-    }
-
-    /**
-     * Callback interface.
-     */
-    public interface OnTagClickListener {
-        void onTagClick(int index);
-    }
-
-    @NonNull
-    @Override
-    public TagViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_tag, viewGroup, false);
-        return new TagViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull TagViewHolder holder, int position) {
-        Tag tag = getItem(position);
-        if (tag != null) {
-            String tagString = "#" + tag.getTag();
-            holder.mTagTextView.setText(tagString);
         }
     }
 }
