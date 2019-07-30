@@ -23,7 +23,7 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.viewmodels.NotificationViewModel;
 
 public class MainActivity extends BaseActivity implements
-        AllNotesFragment.NoteListFragmentClickListener,
+        BaseListFragment.ListFragmentClickListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity implements
      * @param setFavorite when true, Note will be favorite on creation
      */
     @Override
-    public void onNoteListFragmentFabClick(boolean setFavorite) {
+    public void onFragmentFabClick(boolean setFavorite) {
         if (!mIsTablet) { // PHONE
             Intent intent = new Intent(this, NoteActivity.class);
             intent.putExtra(Constants.NOTE_FAVORITE, setFavorite);

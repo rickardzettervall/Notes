@@ -61,7 +61,7 @@ public class AllNotesFragment extends BaseListFragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onNoteListFragmentFabClick(false);
+                callback.onFragmentFabClick(false);
             }
         });
 
