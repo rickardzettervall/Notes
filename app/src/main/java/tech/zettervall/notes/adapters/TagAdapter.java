@@ -47,13 +47,15 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
      */
     class TagViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mTagTv;
+        private TextView mTagTextView;
+        private ImageView mClearImageView;
 
         public TagViewHolder(@NonNull View itemView) {
             super(itemView);
 
             // Find Views
-            mTagTv = itemView.findViewById(R.id.tag_tv);
+            mTagTextView = itemView.findViewById(R.id.list_tag_textview);
+            mClearImageView = itemView.findViewById(R.id.list_tag_clear_imageview);
 
             // Set OnClickListener
             itemView.setOnClickListener(this);
@@ -85,7 +87,7 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
         Tag tag = getItem(position);
         if (tag != null) {
             String tagString = "#" + tag.getTag();
-            holder.mTagTv.setText(tagString);
+            holder.mTagTextView.setText(tagString);
         }
     }
 }
