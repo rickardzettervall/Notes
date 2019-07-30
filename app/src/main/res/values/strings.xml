@@ -1,6 +1,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- VERSION -->
-    <string name="version" translatable="false">Version 1.0.1</string>
+    <string name="version" translatable="false">Version 1.0</string>
 
     <string name="app_name">Simple Notes</string>
     <string name="nav_drawer_open">Open navigation drawer</string>
