@@ -22,12 +22,12 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.TagAdapter;
 import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
-import tech.zettervall.notes.viewmodels.TagListViewModel;
+import tech.zettervall.notes.viewmodels.TagsFragmentViewModel;
 
 public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagClickListener {
 
     private static final String TAG = TagsFragment.class.getSimpleName();
-    private TagListViewModel mTagListViewModel;
+    private TagsFragmentViewModel mTagsFragmentViewModel;
     private TagAdapter mTagAdapter;
 
     @Nullable
@@ -39,7 +39,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         View rootView = inflater.inflate(R.layout.fragment_taglist, container, false);
 
         // Initialize ViewModel
-        mTagListViewModel = ViewModelProviders.of(this).get(TagListViewModel.class);
+        mTagsFragmentViewModel = ViewModelProviders.of(this).get(TagsFragmentViewModel.class);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.tags_list_rv);
@@ -79,7 +79,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                                         EditText newTag = dialogView.findViewById(R.id.new_tag_edittext);
                                         String str = newTag.getText().toString()
                                                 .replaceAll("#", "");
-                                        mTagListViewModel.insertTag(new Tag(str));
+                                        mTagsFragmentViewModel.insertTag(new Tag(str));
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;
@@ -107,7 +107,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
 
     @Override
     public void subscribeObservers() {
-        mTagListViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<PagedList<Tag>>() {
+        mTagsFragmentViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<PagedList<Tag>>() {
             @Override
             public void onChanged(PagedList<Tag> tags) {
                 mTagAdapter.submitList(tags);

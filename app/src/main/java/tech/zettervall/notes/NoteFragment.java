@@ -43,7 +43,7 @@ import tech.zettervall.notes.services.NotificationJobService;
 import tech.zettervall.notes.utils.DateTimeUtil;
 import tech.zettervall.notes.utils.KeyboardUtil;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
-import tech.zettervall.notes.viewmodels.NoteViewModel;
+import tech.zettervall.notes.viewmodels.NoteFragmentViewModel;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
@@ -56,7 +56,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private boolean mTrash, mDeleted, mIsTablet;
     private long mReminderDateTimeEpoch;
     private FragmentNoteBinding mDataBinding;
-    private NoteViewModel mNoteViewModel;
+    private NoteFragmentViewModel mNoteFragmentViewModel;
     private Note mNote;
     private Calendar mReminderCalender, mDateTimePickerCalender;
     private JobScheduler mJobScheduler;
@@ -69,7 +69,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         View rootView = mDataBinding.getRoot();
 
         // Initialize ViewModel
-        mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+        mNoteFragmentViewModel = ViewModelProviders.of(this).get(NoteFragmentViewModel.class);
 
         // Enable Toolbar MenuItem handling.
         setHasOptionsMenu(true);
@@ -198,10 +198,10 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         }
 
         if (mNote.getId() > 0) { // Existing Note
-            mNoteViewModel.updateNote(mNote);
+            mNoteFragmentViewModel.updateNote(mNote);
         } else if (!mNote.getTitle().isEmpty() ||
                 !mNote.getText().isEmpty()) { // New Note
-            mNote.setId((int) mNoteViewModel.insertNote(mNote));
+            mNote.setId((int) mNoteFragmentViewModel.insertNote(mNote));
         }
     }
 
@@ -329,7 +329,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 saveNote();
             } else if (mNote != null) { // TRASH
                 mNote.setTrash(true);
-                mNoteViewModel.updateNote(mNote);
+                mNoteFragmentViewModel.updateNote(mNote);
                 // Remove notification
                 if (mNote.getNotificationEpoch() > 0) {
                     cancelReminderJob();
@@ -408,7 +408,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 // Set Adapter / LayoutManager
                 RecyclerView recyclerView = dialogView.findViewById(R.id.tags_select_list_rv);
                 LinearLayoutManager layoutManager = RecyclerViewUtil.getDefaultLinearLayoutManager(getActivity());
-                mTagSelectAdapter = new TagSelectAdapter(this, mNoteViewModel.getTags());
+                mTagSelectAdapter = new TagSelectAdapter(this, mNoteFragmentViewModel.getTags());
                 recyclerView.setAdapter(mTagSelectAdapter);
                 recyclerView.setLayoutManager(layoutManager);
 
@@ -446,7 +446,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                                         if (!mNote.isTrash()) {
                                             mTrash = true;
                                         } else { // TRASHED (final deletion)
-                                            mNoteViewModel.deleteNote(mNote);
+                                            mNoteFragmentViewModel.deleteNote(mNote);
                                             mDeleted = true;
                                             String message = !mNote.getTitle().isEmpty() ?
                                                     getString(R.string.note_deleted_detailed,

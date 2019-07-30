@@ -20,7 +20,7 @@ import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.viewmodels.NotificationViewModel;
+import tech.zettervall.notes.viewmodels.MainActivityViewModel;
 
 public class MainActivity extends BaseActivity implements
         BaseListFragment.ListFragmentClickListener,
@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity implements
     private Toolbar mToolbar;
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
-    private NotificationViewModel mNotificationViewModel;
+    private MainActivityViewModel mMainActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +69,12 @@ public class MainActivity extends BaseActivity implements
             int noteID = getIntent().getIntExtra(Constants.NOTE_ID, 0);
 
             // Initialize ViewModel and set Note
-            mNotificationViewModel =
-                    ViewModelProviders.of(this).get(NotificationViewModel.class);
-            mNotificationViewModel.setNote(noteID);
+            mMainActivityViewModel =
+                    ViewModelProviders.of(this).get(MainActivityViewModel.class);
+            mMainActivityViewModel.setNote(noteID);
 
             // Observer
-            mNotificationViewModel.getNote().observe(this, new Observer<Note>() {
+            mMainActivityViewModel.getNotificationNote().observe(this, new Observer<Note>() {
                 @Override
                 public void onChanged(Note note) {
                     // Reset Notification
@@ -162,8 +162,8 @@ public class MainActivity extends BaseActivity implements
         super.onPause();
         /* This observer is only needed once (when user clicks the notification),
          * therefor we remove it directly after it's used. */
-        if (mNotificationViewModel != null) {
-            mNotificationViewModel.getNote().removeObservers(this);
+        if (mMainActivityViewModel != null) {
+            mMainActivityViewModel.getNotificationNote().removeObservers(this);
         }
     }
 }

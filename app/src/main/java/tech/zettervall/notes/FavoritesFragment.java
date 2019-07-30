@@ -16,12 +16,12 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
-import tech.zettervall.notes.viewmodels.FavoritesViewModel;
+import tech.zettervall.notes.viewmodels.FavoritesFragmentViewModel;
 
 public class FavoritesFragment extends BaseListFragment {
 
     private static final String TAG = FavoritesFragment.class.getSimpleName();
-    private FavoritesViewModel mFavoritesViewModel;
+    private FavoritesFragmentViewModel mFavoritesFragmentViewModel;
 
     @Nullable
     @Override
@@ -32,7 +32,7 @@ public class FavoritesFragment extends BaseListFragment {
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
         // Initialize ViewModel
-        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        mFavoritesFragmentViewModel = ViewModelProviders.of(this).get(FavoritesFragmentViewModel.class);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
@@ -76,7 +76,7 @@ public class FavoritesFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
-        mFavoritesViewModel.getFavorites().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
+        mFavoritesFragmentViewModel.getFavorites().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
@@ -87,8 +87,8 @@ public class FavoritesFragment extends BaseListFragment {
 
     @Override
     public void refreshObservers(@Nullable String query) {
-        mFavoritesViewModel.getFavorites().removeObservers(getViewLifecycleOwner());
-        mFavoritesViewModel.setNotes(query);
+        mFavoritesFragmentViewModel.getFavorites().removeObservers(getViewLifecycleOwner());
+        mFavoritesFragmentViewModel.setNotes(query);
         subscribeObservers();
     }
 

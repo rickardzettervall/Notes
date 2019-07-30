@@ -17,15 +17,15 @@ import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.repositories.TagRepository;
 
 /**
- * ViewModel for List (PagedList) of all Tags.
+ * ViewModel for TagsFragment.
  */
-public class TagListViewModel extends AndroidViewModel {
+public class TagsFragmentViewModel extends AndroidViewModel {
 
     private LiveData<PagedList<Tag>> mTags;
     private TagRepository mTagRepository;
     private NoteRepository mNoteRepository;
 
-    public TagListViewModel(@NonNull Application application) {
+    public TagsFragmentViewModel(@NonNull Application application) {
         super(application);
         mTagRepository = TagRepository.getInstance(application);
         mNoteRepository = NoteRepository.getInstance(application);

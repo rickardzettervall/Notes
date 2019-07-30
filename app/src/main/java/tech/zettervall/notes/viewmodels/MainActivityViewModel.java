@@ -10,27 +10,25 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
 /**
- * ViewModel used for when user clicks a notification, this
- * fetches the clicked Note based on ID received from the
- * notification.
- * <p>
- * Used in MainActivity.
+ * ViewModel for MainActivity.
+ * Used for when user clicks a notification, this fetches the
+ * clicked Note based on ID received from the notification.
  */
-public class NotificationViewModel extends AndroidViewModel {
+public class MainActivityViewModel extends AndroidViewModel {
 
-    private LiveData<Note> mNote;
+    private LiveData<Note> mNotificationNote;
     private NoteRepository mNoteRepository;
 
-    public NotificationViewModel(@NonNull Application application) {
+    public MainActivityViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
     }
 
-    public LiveData<Note> getNote() {
-        return mNote;
+    public LiveData<Note> getNotificationNote() {
+        return mNotificationNote;
     }
 
     public void setNote(int noteID) {
-        this.mNote = mNoteRepository.getNote(noteID);
+        this.mNotificationNote = mNoteRepository.getNote(noteID);
     }
 }

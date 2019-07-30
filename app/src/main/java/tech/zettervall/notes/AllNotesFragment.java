@@ -16,12 +16,12 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
-import tech.zettervall.notes.viewmodels.NoteListViewModel;
+import tech.zettervall.notes.viewmodels.AllNotesFragmentViewModel;
 
 public class AllNotesFragment extends BaseListFragment {
 
     private static final String TAG = AllNotesFragment.class.getSimpleName();
-    private NoteListViewModel mNoteListViewModel;
+    private AllNotesFragmentViewModel mAllNotesFragmentViewModel;
 
     @Nullable
     @Override
@@ -32,7 +32,7 @@ public class AllNotesFragment extends BaseListFragment {
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
         // Initialize ViewModel
-        mNoteListViewModel = ViewModelProviders.of(this).get(NoteListViewModel.class);
+        mAllNotesFragmentViewModel = ViewModelProviders.of(this).get(AllNotesFragmentViewModel.class);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
@@ -76,7 +76,7 @@ public class AllNotesFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
-        mNoteListViewModel.getNotes().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
+        mAllNotesFragmentViewModel.getNotes().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
@@ -87,8 +87,8 @@ public class AllNotesFragment extends BaseListFragment {
 
     @Override
     public void refreshObservers(@Nullable String query) {
-        mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
-        mNoteListViewModel.setNotes(query);
+        mAllNotesFragmentViewModel.getNotes().removeObservers(getViewLifecycleOwner());
+        mAllNotesFragmentViewModel.setNotes(query);
         subscribeObservers();
     }
 

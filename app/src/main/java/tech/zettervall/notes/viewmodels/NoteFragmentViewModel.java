@@ -13,14 +13,14 @@ import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.repositories.TagRepository;
 
 /**
- * ViewModel for handling inserting and updating Notes.
+ * ViewModel for NoteFragment.
  */
-public class NoteViewModel extends AndroidViewModel {
+public class NoteFragmentViewModel extends AndroidViewModel {
 
     private NoteRepository mNoteRepository;
     private TagRepository mTagRepository;
 
-    public NoteViewModel(@NonNull Application application) {
+    public NoteFragmentViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
         mTagRepository = TagRepository.getInstance(application);

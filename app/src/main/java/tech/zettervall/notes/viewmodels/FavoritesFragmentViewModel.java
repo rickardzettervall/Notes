@@ -14,25 +14,25 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
 /**
- * ViewModel for List (PagedList) of all favoritized Notes.
+ * ViewModel for FavoritesFragment.
  */
-public class RemindersViewModel extends AndroidViewModel {
+public class FavoritesFragmentViewModel extends AndroidViewModel {
 
     private NoteRepository mNoteRepository;
-    private LiveData<PagedList<Note>> mReminders;
+    private LiveData<PagedList<Note>> mFavorites;
 
-    public RemindersViewModel(@NonNull Application application) {
+    public FavoritesFragmentViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
         setNotes(null);
     }
 
-    public LiveData<PagedList<Note>> getReminders() {
-        return mReminders;
+    public LiveData<PagedList<Note>> getFavorites() {
+        return mFavorites;
     }
 
     public void setNotes(@Nullable String query) {
-        mReminders = new LivePagedListBuilder<>(mNoteRepository.getAllReminderNotes(query),
+        mFavorites = new LivePagedListBuilder<>(mNoteRepository.getAllFavoritizedNotes(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 }

@@ -21,12 +21,12 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
-import tech.zettervall.notes.viewmodels.TrashViewModel;
+import tech.zettervall.notes.viewmodels.TrashFragmentViewModel;
 
 public class TrashFragment extends BaseListFragment {
 
     private static final String TAG = TrashFragment.class.getSimpleName();
-    private TrashViewModel mTrashViewModel;
+    private TrashFragmentViewModel mTrashFragmentViewModel;
 
     @Nullable
     @Override
@@ -37,7 +37,7 @@ public class TrashFragment extends BaseListFragment {
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
         // Initialize ViewModel
-        mTrashViewModel = ViewModelProviders.of(this).get(TrashViewModel.class);
+        mTrashFragmentViewModel = ViewModelProviders.of(this).get(TrashFragmentViewModel.class);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
@@ -66,7 +66,7 @@ public class TrashFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
-        mTrashViewModel.getTrash().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
+        mTrashFragmentViewModel.getTrash().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
@@ -77,8 +77,8 @@ public class TrashFragment extends BaseListFragment {
 
     @Override
     public void refreshObservers(@Nullable String query) {
-        mTrashViewModel.getTrash().removeObservers(getViewLifecycleOwner());
-        mTrashViewModel.setNotes(query);
+        mTrashFragmentViewModel.getTrash().removeObservers(getViewLifecycleOwner());
+        mTrashFragmentViewModel.setNotes(query);
         subscribeObservers();
     }
 
@@ -111,7 +111,7 @@ public class TrashFragment extends BaseListFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                mTrashViewModel.emptyTrash();
+                                mTrashFragmentViewModel.emptyTrash();
                                 Toast.makeText(getActivity(),
                                         "Trash emptied",
                                         Toast.LENGTH_SHORT).show();

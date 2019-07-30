@@ -14,14 +14,14 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
 /**
- * ViewModel for List (PagedList) of all Notes.
+ * ViewModel for AllNotesFragment.
  */
-public class NoteListViewModel extends AndroidViewModel {
+public class AllNotesFragmentViewModel extends AndroidViewModel {
 
     private NoteRepository mNoteRepository;
     private LiveData<PagedList<Note>> mNotes;
 
-    public NoteListViewModel(@NonNull Application application) {
+    public AllNotesFragmentViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
         setNotes(null);

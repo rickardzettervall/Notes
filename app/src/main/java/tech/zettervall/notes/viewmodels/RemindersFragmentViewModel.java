@@ -14,29 +14,25 @@ import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
 
 /**
- * ViewModel for List (PagedList) of all trashed Notes.
+ * ViewModel for RemindersFragment.
  */
-public class TrashViewModel extends AndroidViewModel {
+public class RemindersFragmentViewModel extends AndroidViewModel {
 
     private NoteRepository mNoteRepository;
-    private LiveData<PagedList<Note>> mTrash;
+    private LiveData<PagedList<Note>> mReminders;
 
-    public TrashViewModel(@NonNull Application application) {
+    public RemindersFragmentViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
         setNotes(null);
     }
 
-    public LiveData<PagedList<Note>> getTrash() {
-        return mTrash;
+    public LiveData<PagedList<Note>> getReminders() {
+        return mReminders;
     }
 
     public void setNotes(@Nullable String query) {
-        mTrash = new LivePagedListBuilder<>(mNoteRepository.getAllTrashedNotes(query),
+        mReminders = new LivePagedListBuilder<>(mNoteRepository.getAllReminderNotes(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
-    }
-
-    public void emptyTrash() {
-        mNoteRepository.deleteAllTrashedNotes();
     }
 }
