@@ -111,7 +111,7 @@ public class MainActivity extends BaseActivity implements
             intent.putExtra(Constants.NOTE, Parcels.wrap(note));
             startActivity(intent);
         } else { // TABLET
-            //TODO: FIX LATER
+            // TODO: FIX TABLET VERSION LATER
 //            setNoteFragment(getNoteFragmentWithBundledNote(note.getId()));
         }
     }
@@ -141,10 +141,10 @@ public class MainActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.action_search:
-                // Implemented in Fragment
+                // IMPLEMENT IN FRAGMENT
                 break;
             case R.id.action_sort:
-                // Implemented in Fragment
+                // IMPLEMENT IN FRAGMENT
                 break;
         }
         return false;

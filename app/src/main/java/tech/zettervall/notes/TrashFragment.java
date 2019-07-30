@@ -64,9 +64,6 @@ public class TrashFragment extends BaseListFragment {
         return rootView;
     }
 
-    /**
-     * Subscribe Observers.
-     */
     @Override
     public void subscribeObservers() {
         mTrashViewModel.getTrash().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
@@ -78,9 +75,6 @@ public class TrashFragment extends BaseListFragment {
         });
     }
 
-    /**
-     * Reload Observers, primarily for when user changes sorting.
-     */
     @Override
     public void refreshObservers(@Nullable String query) {
         mTrashViewModel.getTrash().removeObservers(getViewLifecycleOwner());

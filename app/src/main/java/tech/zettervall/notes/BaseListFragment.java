@@ -35,29 +35,17 @@ public abstract class BaseListFragment extends Fragment
 
     private static final String TAG = BaseListFragment.class.getSimpleName();
     protected ListFragmentClickListener callback;
-    private SharedPreferences mSharedPreferences;
-
     // Adapter
     protected LinearLayoutManager mLayoutManager;
     protected RecyclerView mRecyclerView;
     protected NoteAdapter mNoteAdapter;
-
     // Common Views
     protected FloatingActionButton mFab;
     protected TextView emptyTextView;
-
+    private SharedPreferences mSharedPreferences;
     // Used for SearchView to restore state on configuration changes
     private boolean mSearchIconified;
     private String mSearchQuery;
-
-    /**
-     * Callback interface for sending data back to Activity.
-     */
-    public interface ListFragmentClickListener {
-        void onNoteClick(Note note);
-
-        void onFragmentFabClick(boolean setFavorite);
-    }
 
     @Nullable
     @Override
@@ -77,24 +65,25 @@ public abstract class BaseListFragment extends Fragment
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-
-
     /**
-     * Implement in Fragment.
+     * IMPLEMENT IN FRAGMENT.
+     * Click event for NoteAdapter.
      */
     @Override
     public void onNoteClick(int index) {
     }
 
     /**
-     * Implement in Fragment.
+     * IMPLEMENT IN FRAGMENT.
+     * Subscribe Observers.
      */
     @Override
     public void subscribeObservers() {
     }
 
     /**
-     * Implement in Fragment.
+     * IMPLEMENT IN FRAGMENT.
+     * Reload Observers, primarily for when user changes sorting.
      */
     @Override
     public void refreshObservers(@Nullable String query) {
@@ -270,5 +259,14 @@ public abstract class BaseListFragment extends Fragment
             throw new ClassCastException(context.toString() +
                     " must implement 'ListFragmentClickListener'");
         }
+    }
+
+    /**
+     * Callback interface for sending data back to Activity.
+     */
+    public interface ListFragmentClickListener {
+        void onNoteClick(Note note);
+
+        void onFragmentFabClick(boolean setFavorite);
     }
 }

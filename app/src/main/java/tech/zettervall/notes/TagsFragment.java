@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,18 +16,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
-
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.adapters.TagAdapter;
-import tech.zettervall.notes.adapters.TagSelectAdapter;
-import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.TagListViewModel;
@@ -114,9 +105,6 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         return rootView;
     }
 
-    /**
-     * Subscribe Observers.
-     */
     @Override
     public void subscribeObservers() {
         mTagListViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<PagedList<Tag>>() {

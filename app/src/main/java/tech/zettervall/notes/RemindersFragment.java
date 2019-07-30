@@ -10,10 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -25,10 +22,6 @@ public class RemindersFragment extends BaseListFragment {
 
     private static final String TAG = RemindersFragment.class.getSimpleName();
     private RemindersViewModel mRemindersViewModel;
-    private LinearLayoutManager mLayoutManager;
-    private NoteAdapter mNoteAdapter;
-    private RecyclerView mRecyclerView;
-    private FloatingActionButton mFab;
 
     @Nullable
     @Override
@@ -81,9 +74,6 @@ public class RemindersFragment extends BaseListFragment {
         return rootView;
     }
 
-    /**
-     * Subscribe Observers.
-     */
     @Override
     public void subscribeObservers() {
         mRemindersViewModel.getReminders().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
@@ -95,9 +85,6 @@ public class RemindersFragment extends BaseListFragment {
         });
     }
 
-    /**
-     * Reload Observers, primarily for when user changes sorting.
-     */
     @Override
     public void refreshObservers(@Nullable String query) {
         mRemindersViewModel.getReminders().removeObservers(getViewLifecycleOwner());

@@ -1,7 +1,6 @@
 package tech.zettervall.notes;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
@@ -23,7 +22,7 @@ public class NoteActivity extends BaseActivity {
         // Set ToolBar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
@@ -31,9 +30,9 @@ public class NoteActivity extends BaseActivity {
         // Set Fragments
         if (savedInstanceState == null) {
             if (getIntent().getExtras() != null) { // Clicked Note or new Note from Favorites Fragment
-                if(getIntent().getExtras().getBoolean(Constants.NOTE_FAVORITE)) {
+                if (getIntent().getExtras().getBoolean(Constants.NOTE_FAVORITE)) {
                     setNoteFragment(getNoteFragment(null, true));
-                } else if(getIntent().getExtras().getParcelable(Constants.NOTE) != null) {
+                } else if (getIntent().getExtras().getParcelable(Constants.NOTE) != null) {
                     Note note = Parcels.unwrap(getIntent().getExtras().getParcelable(Constants.NOTE));
                     setNoteFragment(getNoteFragment(note, false));
                 } else {
@@ -44,22 +43,16 @@ public class NoteActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_note, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
             case R.id.action_favoritize:
-                // Implemented in Fragment
+                // IMPLEMENT IN FRAGMENT
                 break;
             case R.id.action_delete:
-                // Implemented in Fragment
+                // IMPLEMENT IN FRAGMENT
                 break;
         }
         return false;

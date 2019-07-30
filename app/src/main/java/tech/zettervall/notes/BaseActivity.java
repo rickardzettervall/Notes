@@ -1,6 +1,5 @@
 package tech.zettervall.notes;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -50,13 +49,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     /**
      * Get NoteFragment.
-     * @param note Clicked Note to send to Fragment, set null for new Note
+     *
+     * @param note        Clicked Note to send to Fragment, set null for new Note
      * @param setFavorite Determines if the new Note should be a favorite on creation
      */
     public NoteFragment getNoteFragment(@Nullable Note note, boolean setFavorite) {
         NoteFragment noteFragment = new NoteFragment();
         Bundle bundle = new Bundle();
-        if(note != null) {
+        if (note != null) {
             bundle.putParcelable(Constants.NOTE, Parcels.wrap(note));
         } else {
             bundle.putBoolean(Constants.NOTE_FAVORITE, setFavorite);

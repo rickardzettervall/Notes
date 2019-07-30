@@ -74,9 +74,6 @@ public class AllNotesFragment extends BaseListFragment {
         return rootView;
     }
 
-    /**
-     * Subscribe Observers.
-     */
     @Override
     public void subscribeObservers() {
         mNoteListViewModel.getNotes().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
@@ -88,9 +85,6 @@ public class AllNotesFragment extends BaseListFragment {
         });
     }
 
-    /**
-     * Reload Observers, primarily for when user changes sorting.
-     */
     @Override
     public void refreshObservers(@Nullable String query) {
         mNoteListViewModel.getNotes().removeObservers(getViewLifecycleOwner());
