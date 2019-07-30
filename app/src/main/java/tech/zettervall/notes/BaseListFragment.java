@@ -30,10 +30,11 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 
-public abstract class BaseListFragment extends Fragment implements NoteAdapter.OnNoteClickListener {
+public abstract class BaseListFragment extends Fragment
+        implements NoteAdapter.OnNoteClickListener, ListObservers {
 
     private static final String TAG = BaseListFragment.class.getSimpleName();
-    protected NoteListFragmentClickListener callback;
+    protected ListFragmentClickListener callback;
     private SharedPreferences mSharedPreferences;
 
     // Adapter
@@ -52,10 +53,10 @@ public abstract class BaseListFragment extends Fragment implements NoteAdapter.O
     /**
      * Callback interface for sending data back to Activity.
      */
-    public interface NoteListFragmentClickListener {
+    public interface ListFragmentClickListener {
         void onNoteClick(Note note);
 
-        void onNoteListFragmentFabClick(boolean setFavorite);
+        void onFragmentFabClick(boolean setFavorite);
     }
 
     @Nullable
@@ -76,6 +77,8 @@ public abstract class BaseListFragment extends Fragment implements NoteAdapter.O
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+
+
     /**
      * Implement in Fragment.
      */
@@ -86,15 +89,15 @@ public abstract class BaseListFragment extends Fragment implements NoteAdapter.O
     /**
      * Implement in Fragment.
      */
+    @Override
     public void subscribeObservers() {
-
     }
 
     /**
      * Implement in Fragment.
      */
+    @Override
     public void refreshObservers(@Nullable String query) {
-
     }
 
     @Override
@@ -262,10 +265,10 @@ public abstract class BaseListFragment extends Fragment implements NoteAdapter.O
         super.onAttach(context);
         // Force Activity to implement callback interface
         try {
-            callback = (NoteListFragmentClickListener) context;
+            callback = (ListFragmentClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() +
-                    " must implement 'NoteListFragmentClickListener'");
+                    " must implement 'ListFragmentClickListener'");
         }
     }
 }
