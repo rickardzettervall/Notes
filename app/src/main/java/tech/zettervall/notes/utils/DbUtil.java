@@ -21,7 +21,7 @@ public abstract class DbUtil {
         Future<T> future = executorService.submit(callable);
         T obj = null;
         try {
-            obj = future.get(3000, TimeUnit.MILLISECONDS);
+            obj = future.get(3, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
             future.cancel(true);
