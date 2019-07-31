@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="tech.zettervall.notes.NoteActivity">
+
     <!-- Restore -->
     <item
         android:id="@+id/action_restore"
@@ -9,6 +10,7 @@
         android:orderInCategory="10"
         android:title="@string/action_restore"
         app:showAsAction="ifRoom" />
+
     <!-- Delete -->
     <item
         android:id="@+id/action_delete"

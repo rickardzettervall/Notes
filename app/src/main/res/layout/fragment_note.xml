@@ -16,9 +16,9 @@
                 android:layout_height="wrap_content"
                 tools:context="tech.zettervall.notes.NoteActivity">
 
-                <!-- Headline -->
+                <!-- Title -->
                 <EditText
-                    android:id="@+id/title_tv"
+                    android:id="@+id/fragment_note_title_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
 
                 <!-- Text -->
                 <EditText
-                    android:id="@+id/text_tv"
+                    android:id="@+id/fragment_note_text_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -44,9 +44,9 @@
                     android:hint="@string/hint_text"
                     android:inputType="textMultiLine"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
-                    app:layout_constraintEnd_toEndOf="@+id/title_tv"
-                    app:layout_constraintStart_toStartOf="@+id/title_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/title_tv" />
+                    app:layout_constraintEnd_toEndOf="@+id/fragment_note_title_textview"
+                    app:layout_constraintStart_toStartOf="@+id/fragment_note_title_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_note_title_textview" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -57,11 +57,11 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_tv">
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_note_text_textview">
 
                     <!-- Reminder Layout -->
                     <LinearLayout
-                        android:id="@+id/reminder_ll"
+                        android:id="@+id/fragment_note_reminder_linearlayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -70,7 +70,7 @@
 
                         <!-- Reminder text -->
                         <TextView
-                            android:id="@+id/reminder_tv"
+                            android:id="@+id/fragment_note_reminder_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
@@ -81,7 +81,7 @@
 
                         <!-- Reminder removal -->
                         <Button
-                            android:id="@+id/reminder_remove_button"
+                            android:id="@+id/fragment_note_reminder_remove_button"
                             android:layout_width="wrap_content"
                             android:layout_height="42dp"
                             android:text="@string/remove" />
@@ -90,7 +90,7 @@
 
                     <!-- Tags -->
                     <TextView
-                        android:id="@+id/tags_tv"
+                        android:id="@+id/fragment_note_tags_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -107,14 +107,14 @@
 
                         <!-- Last updated -->
                         <TextView
-                            android:id="@+id/updated_tv"
+                            android:id="@+id/fragment_note_updated_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="@string/tools_date_updated" />
 
                         <!-- Creation date -->
                         <TextView
-                            android:id="@+id/created_tv"
+                            android:id="@+id/fragment_note_created_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="@string/tools_date_created" />
@@ -127,9 +127,9 @@
 
         </ScrollView>
 
-        <!-- FAB -->
+        <!-- FAB (Only visible in Tablet) -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fragment_note_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

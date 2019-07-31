@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- All Notes -->
     <item
         android:id="@+id/nav_all_notes"
         android:icon="@drawable/ic_note"
         android:title="@string/action_all_notes" />
 
+    <!-- Favorites -->
     <item
-        android:id="@+id/nav_favories"
+        android:id="@+id/nav_favorites"
         android:icon="@drawable/ic_star"
         android:title="@string/action_favorites" />
 
+    <!-- Reminders -->
     <item
         android:id="@+id/nav_reminders"
         android:icon="@drawable/ic_reminder"
         android:title="@string/action_reminders" />
 
+    <!-- Tags -->
     <item
         android:id="@+id/nav_tags"
         android:icon="@drawable/ic_tag"
         android:title="@string/action_tags" />
 
+    <!-- Trash -->
     <item
         android:id="@+id/nav_trash"
         android:icon="@drawable/ic_trash"
         android:title="@string/action_trash" />
 
+    <!-- Settings -->
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings" />
 
+    <!-- Theme -->
     <item android:title="@string/theme">
         <menu>
+
+            <!-- Change Them -->
             <item
                 android:id="@+id/nav_change_theme"
                 android:icon="@drawable/ic_brightness"

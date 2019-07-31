@@ -35,9 +35,9 @@ public class AllNotesFragment extends BaseListFragment {
         mAllNotesFragmentViewModel = ViewModelProviders.of(this).get(AllNotesFragmentViewModel.class);
 
         // Find Views
-        mRecyclerView = rootView.findViewById(R.id.notes_list_rv);
-        mFab = rootView.findViewById(R.id.notes_list_fab);
-        emptyTextView = rootView.findViewById(R.id.notes_list_is_empty_tv);
+        mRecyclerView = rootView.findViewById(R.id.fragment_notelist_recyclerview);
+        mFab = rootView.findViewById(R.id.fragment_notelist_fab);
+        emptyTextView = rootView.findViewById(R.id.fragment_notelist_is_empty_textview);
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);

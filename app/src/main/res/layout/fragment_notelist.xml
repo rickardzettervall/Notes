@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notes_list_rv"
+        android:id="@+id/fragment_notelist_recyclerview"
         style="@style/RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />
 
+    <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/notes_list_fab"
+        android:id="@+id/fragment_notelist_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -24,14 +26,12 @@
 
     <!-- Empty informer -->
     <TextView
-        android:id="@+id/notes_list_is_empty_tv"
+        android:id="@+id/fragment_notelist_is_empty_textview"
         style="@style/EmptyInformer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/list_is_empty"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:visibility="gone"
         tools:visibility="visible" />
 
 </RelativeLayout>

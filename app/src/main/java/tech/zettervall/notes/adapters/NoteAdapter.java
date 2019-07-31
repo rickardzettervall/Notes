@@ -58,31 +58,31 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
         if (note != null) {
             if (note.getTitle().isEmpty() && !note.isFavorite() && !(note.notificationEpoch > 0)) {
                 // Hide title field when empty
-                holder.mTitleLayout.setVisibility(View.GONE);
+                holder.mTitleLinearLayout.setVisibility(View.GONE);
             } else {
-                holder.mTitleLayout.setVisibility(View.VISIBLE);
-                holder.mHeadlineTv.setText(note.getTitle());
+                holder.mTitleLinearLayout.setVisibility(View.VISIBLE);
+                holder.mTitleTextView.setText(note.getTitle());
             }
 
             if (note.getText().isEmpty()) { // Hide text field when empty
-                holder.mTextTv.setVisibility(View.GONE);
+                holder.mTextTextView.setVisibility(View.GONE);
             } else {
-                holder.mTextTv.setVisibility(View.VISIBLE);
-                holder.mTextTv.setText(note.getText());
+                holder.mTextTextView.setVisibility(View.VISIBLE);
+                holder.mTextTextView.setText(note.getText());
             }
 
             // Favorite
             if (note.isFavorite()) {
-                holder.mFavorite.setVisibility(View.VISIBLE);
+                holder.mFavoriteImageView.setVisibility(View.VISIBLE);
             } else {
-                holder.mFavorite.setVisibility(View.GONE);
+                holder.mFavoriteImageView.setVisibility(View.GONE);
             }
 
             // Reminder
             if (note.getNotificationEpoch() > 0) {
-                holder.mReminder.setVisibility(View.VISIBLE);
+                holder.mReminderImageView.setVisibility(View.VISIBLE);
             } else {
-                holder.mReminder.setVisibility(View.GONE);
+                holder.mReminderImageView.setVisibility(View.GONE);
             }
         }
     }
@@ -99,19 +99,19 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
      */
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mHeadlineTv, mTextTv;
-        private ImageView mFavorite, mReminder;
-        private LinearLayout mTitleLayout;
+        private TextView mTitleTextView, mTextTextView;
+        private ImageView mFavoriteImageView, mReminderImageView;
+        private LinearLayout mTitleLinearLayout;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
 
             // Find Views
-            mHeadlineTv = itemView.findViewById(R.id.title_tv);
-            mTextTv = itemView.findViewById(R.id.text_tv);
-            mFavorite = itemView.findViewById(R.id.favorite_iv);
-            mReminder = itemView.findViewById(R.id.reminder_iv);
-            mTitleLayout = itemView.findViewById(R.id.title_layout);
+            mTitleTextView = itemView.findViewById(R.id.fragment_note_title_textview);
+            mTextTextView = itemView.findViewById(R.id.fragment_note_text_textview);
+            mFavoriteImageView = itemView.findViewById(R.id.list_note_favorite_imageview);
+            mReminderImageView = itemView.findViewById(R.id.list_note_reminder_imageview);
+            mTitleLinearLayout = itemView.findViewById(R.id.list_note_title_linearlayout);
 
             // Set OnClickListener
             itemView.setOnClickListener(this);

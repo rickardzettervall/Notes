@@ -59,18 +59,18 @@ public class TagSelectAdapter extends RecyclerView.Adapter<TagSelectAdapter.View
 
         /* Disable CheckBox click function. Checked state is set below
          * programmatically when user clicks anywhere on the adapter row. */
-        holder.tag_cb.setClickable(false);
+        holder.mTagCheckBox.setClickable(false);
 
         // Set CheckBox
         if (mCheckedTags[position]) {
-            holder.tag_cb.setChecked(true);
+            holder.mTagCheckBox.setChecked(true);
         } else {
-            holder.tag_cb.setChecked(false);
+            holder.mTagCheckBox.setChecked(false);
         }
 
         // Set title
         String tagString = "#" + tag.getTag();
-        holder.tag_tv.setText(tagString);
+        holder.mTagTextView.setText(tagString);
     }
 
     @Override
@@ -90,13 +90,13 @@ public class TagSelectAdapter extends RecyclerView.Adapter<TagSelectAdapter.View
      */
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private CheckBox tag_cb;
-        private TextView tag_tv;
+        private CheckBox mTagCheckBox;
+        private TextView mTagTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tag_cb = itemView.findViewById(R.id.list_tag_selecter_cb);
-            tag_tv = itemView.findViewById(R.id.list_tag_selecter_tv);
+            mTagCheckBox = itemView.findViewById(R.id.list_tag_select_checkbox);
+            mTagTextView = itemView.findViewById(R.id.list_tag_select_textview);
             itemView.setOnClickListener(this);
         }
 

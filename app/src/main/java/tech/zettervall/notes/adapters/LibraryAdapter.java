@@ -39,8 +39,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     public void onBindViewHolder(@NonNull LibraryAdapter.ViewHolder holder, int position) {
         final Library currentLibrary = libraries.get(position);
         if (currentLibrary != null) {
-            holder.title_tv.setText(currentLibrary.getTitle());
-            holder.description_tv.setText(currentLibrary.getDescription());
+            holder.mTitleTextView.setText(currentLibrary.getTitle());
+            holder.mDescriptionTextView.setText(currentLibrary.getDescription());
         }
     }
 
@@ -51,12 +51,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView title_tv, description_tv;
+        private TextView mTitleTextView, mDescriptionTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            title_tv = itemView.findViewById(R.id.title_tv);
-            description_tv = itemView.findViewById(R.id.description_tv);
+            mTitleTextView = itemView.findViewById(R.id.fragment_note_title_textview);
+            mDescriptionTextView = itemView.findViewById(R.id.description_tv);
             itemView.setOnClickListener(this);
         }
 

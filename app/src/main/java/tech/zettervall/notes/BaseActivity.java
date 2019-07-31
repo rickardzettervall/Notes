@@ -115,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
      */
     public void setNoteFragment(NoteFragment noteFragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_note, noteFragment, Constants.FRAGMENT_NOTE)
+                .replace(R.id.activity_note_framelayout, noteFragment, Constants.FRAGMENT_NOTE)
                 .commit();
     }
 
@@ -129,7 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                     startActivity(new Intent(this, MainActivity.class));
                 }
                 break;
-            case R.id.nav_favories: // Set Fragment or launch activity when outside MainActivity
+            case R.id.nav_favorites: // Set Fragment or launch activity when outside MainActivity
                 if (this instanceof MainActivity) {
                     setFavoritesFragment(new FavoritesFragment());
                 } else {

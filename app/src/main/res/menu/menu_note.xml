@@ -2,24 +2,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="tech.zettervall.notes.NoteActivity">
+
+    <!-- Favoritize -->
     <item
         android:id="@+id/action_favoritize"
         android:icon="@drawable/ic_star_border"
         android:orderInCategory="10"
         android:title="@string/action_favoritize"
         app:showAsAction="ifRoom" />
+
+    <!-- Tags -->
     <item
         android:id="@+id/action_tags"
         android:icon="@drawable/ic_tag"
         android:orderInCategory="20"
         android:title="@string/action_tags"
         app:showAsAction="ifRoom" />
+
+    <!-- Reminder -->
     <item
         android:id="@+id/action_reminder"
         android:icon="@drawable/ic_reminder"
         android:orderInCategory="30"
         android:title="@string/action_reminder"
         app:showAsAction="ifRoom" />
+
+    <!-- Delete -->
     <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_delete"

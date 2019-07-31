@@ -97,26 +97,26 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Set GUI fields
-        mDataBinding.titleTv.setText(mNote.getTitle());
-        mDataBinding.textTv.setText(mNote.getText());
-        mDataBinding.createdTv.setText(getString(R.string.creation_date,
+        mDataBinding.fragmentNoteTitleTextview.setText(mNote.getTitle());
+        mDataBinding.fragmentNoteTextTextview.setText(mNote.getText());
+        mDataBinding.fragmentNoteCreatedTextview.setText(getString(R.string.creation_date,
                 mNote.getCreationString(getActivity())));
         if (mNote.getModifiedEpoch() != -1) {
-            mDataBinding.updatedTv.setText(getString(R.string.modified_date,
+            mDataBinding.fragmentNoteUpdatedTextview.setText(getString(R.string.modified_date,
                     mNote.getModifiedString(getActivity())));
         } else {
-            mDataBinding.updatedTv.setVisibility(View.GONE);
+            mDataBinding.fragmentNoteUpdatedTextview.setVisibility(View.GONE);
         }
 
         // Disable editing for trashed Notes
         if (mNote.isTrash()) {
-            mDataBinding.titleTv.setEnabled(false);
-            mDataBinding.textTv.setEnabled(false);
+            mDataBinding.fragmentNoteTitleTextview.setEnabled(false);
+            mDataBinding.fragmentNoteTextTextview.setEnabled(false);
         }
 
         // Hide / Show FAB depending on device
         if (mIsTablet) {
-            mDataBinding.fab.setOnClickListener(new View.OnClickListener() {
+            mDataBinding.fragmentNoteFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     saveNote();
@@ -124,7 +124,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 }
             });
         } else {
-            mDataBinding.fab.hide();
+            mDataBinding.fragmentNoteFab.hide();
         }
 
         // Set title
@@ -136,7 +136,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
         // Set focus on text field if user has set title
         if (!mNote.getTitle().isEmpty()) {
-            mDataBinding.textTv.requestFocus();
+            mDataBinding.fragmentNoteTextTextview.requestFocus();
         }
 
         // Set Tags TextView
@@ -150,20 +150,20 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      */
     private void showReminder(final Context context, long notificationEpoch) {
         if (notificationEpoch > 0) {
-            mDataBinding.reminderLl.setVisibility(View.VISIBLE);
-            mDataBinding.reminderTv.setText(getString(R.string.reminder_set,
+            mDataBinding.fragmentNoteReminderLinearlayout.setVisibility(View.VISIBLE);
+            mDataBinding.fragmentNoteReminderTextview.setText(getString(R.string.reminder_set,
                     DateTimeUtil.getDateStringFromEpoch(notificationEpoch, context)));
-            mDataBinding.reminderRemoveButton.setOnClickListener(new View.OnClickListener() {
+            mDataBinding.fragmentNoteReminderRemoveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDataBinding.reminderLl.setVisibility(View.GONE);
+                    mDataBinding.fragmentNoteReminderLinearlayout.setVisibility(View.GONE);
                     cancelReminderJob();
                     Toast.makeText(context, getString(R.string.reminder_removed),
                             Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            mDataBinding.reminderLl.setVisibility(View.GONE);
+            mDataBinding.fragmentNoteReminderLinearlayout.setVisibility(View.GONE);
         }
     }
 
@@ -173,8 +173,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      * @param isFavorite Set favorite on creation
      */
     private Note newNote(boolean isFavorite) {
-        return new Note(mDataBinding.titleTv.getText().toString(),
-                mDataBinding.textTv.getText().toString(),
+        return new Note(mDataBinding.fragmentNoteTitleTextview.getText().toString(),
+                mDataBinding.fragmentNoteTextTextview.getText().toString(),
                 new ArrayList<Tag>(),
                 DateTimeUtil.getCurrentEpoch(),
                 -1,
@@ -189,11 +189,11 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      */
     private void saveNote() {
         mNote.setTrash(mTrash);
-        if (!mDataBinding.titleTv.getText().toString().equals(mNote.getTitle()) ||
-                !mDataBinding.textTv.getText().toString().equals(mNote.getText())) {
+        if (!mDataBinding.fragmentNoteTitleTextview.getText().toString().equals(mNote.getTitle()) ||
+                !mDataBinding.fragmentNoteTextTextview.getText().toString().equals(mNote.getText())) {
             // Change Note title/text and update modified time stamp
-            mNote.setTitle(mDataBinding.titleTv.getText().toString());
-            mNote.setText(mDataBinding.textTv.getText().toString());
+            mNote.setTitle(mDataBinding.fragmentNoteTitleTextview.getText().toString());
+            mNote.setText(mDataBinding.fragmentNoteTextTextview.getText().toString());
             mNote.setModifiedEpoch(DateTimeUtil.getCurrentEpoch());
         }
 
@@ -211,7 +211,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private void updateTagsUi() {
         StringBuilder tags = new StringBuilder();
         if(!mNote.getTags().isEmpty()) {
-            mDataBinding.tagsTv.setVisibility(View.VISIBLE);
+            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
             for (int i = 0; i < mNote.getTags().size(); i++) {
                 tags.append("#").append(mNote.getTags().get(i).getTag());
                 if (i < mNote.getTags().size() - 1) {
@@ -219,9 +219,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 }
             }
         } else {
-            mDataBinding.tagsTv.setVisibility(View.GONE);
+            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.GONE);
         }
-        mDataBinding.tagsTv.setText(tags.toString());
+        mDataBinding.fragmentNoteTagsTextview.setText(tags.toString());
     }
 
     /**
@@ -406,7 +406,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_select, null);
 
                 // Set Adapter / LayoutManager
-                RecyclerView recyclerView = dialogView.findViewById(R.id.tags_select_list_rv);
+                RecyclerView recyclerView = dialogView.findViewById(R.id.dialog_tag_select_list_recyclerview);
                 LinearLayoutManager layoutManager = RecyclerViewUtil.getDefaultLinearLayoutManager(getActivity());
                 mTagSelectAdapter = new TagSelectAdapter(this, mNoteFragmentViewModel.getTags());
                 recyclerView.setAdapter(mTagSelectAdapter);

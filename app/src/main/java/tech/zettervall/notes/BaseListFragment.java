@@ -152,20 +152,20 @@ public abstract class BaseListFragment extends Fragment
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_sort, null);
 
                 // Sort type (RadioGroup)
-                RadioGroup sortTypeGroup = dialogView.findViewById(R.id.sort_type_rg);
+                RadioGroup sortTypeGroup = dialogView.findViewById(R.id.dialog_sort_type_radiogroup);
                 // Restore choice
                 int sortTypeChecked = mSharedPreferences.getInt(Constants.SORT_TYPE_KEY,
                         Constants.SORT_TYPE_DEFAULT);
                 int checkedRadioButton = 0;
                 switch (sortTypeChecked) {
                     case Constants.SORT_TYPE_ALPHABETICALLY:
-                        checkedRadioButton = R.id.sort_type_alphabetically_rb;
+                        checkedRadioButton = R.id.dialog_sort_type_alphabetically_radiobutton;
                         break;
                     case Constants.SORT_TYPE_CREATION_DATE:
-                        checkedRadioButton = R.id.sort_type_creation_date_rb;
+                        checkedRadioButton = R.id.dialog_sort_type_creation_date_radiobutton;
                         break;
                     case Constants.SORT_TYPE_MODIFIED_DATE:
-                        checkedRadioButton = R.id.sort_type_modified_date_rb;
+                        checkedRadioButton = R.id.dialog_sort_type_modified_date_radiobutton;
                         break;
                 }
                 sortTypeGroup.check(checkedRadioButton);
@@ -174,17 +174,17 @@ public abstract class BaseListFragment extends Fragment
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         switch (checkedId) {
-                            case R.id.sort_type_alphabetically_rb: // Alphabetically
+                            case R.id.dialog_sort_type_alphabetically_radiobutton: // Alphabetically
                                 mSharedPreferences.edit()
                                         .putInt(Constants.SORT_TYPE_KEY,
                                                 Constants.SORT_TYPE_ALPHABETICALLY).apply();
                                 break;
-                            case R.id.sort_type_creation_date_rb: // Creation date
+                            case R.id.dialog_sort_type_creation_date_radiobutton: // Creation date
                                 mSharedPreferences.edit()
                                         .putInt(Constants.SORT_TYPE_KEY,
                                                 Constants.SORT_TYPE_CREATION_DATE).apply();
                                 break;
-                            case R.id.sort_type_modified_date_rb: // Modified date
+                            case R.id.dialog_sort_type_modified_date_radiobutton: // Modified date
                                 mSharedPreferences.edit()
                                         .putInt(Constants.SORT_TYPE_KEY,
                                                 Constants.SORT_TYPE_MODIFIED_DATE).apply();
@@ -197,7 +197,7 @@ public abstract class BaseListFragment extends Fragment
                 });
 
                 // Sort with favorites on top (Checkbox)
-                CheckBox sortFavoritesOnTop = dialogView.findViewById(R.id.sort_favorites_ontop_cb);
+                CheckBox sortFavoritesOnTop = dialogView.findViewById(R.id.dialog_sort_favorites_on_top_checkbox);
                 boolean sortFavoritesBool = mSharedPreferences.getBoolean(
                         Constants.SORT_FAVORITES_ON_TOP_KEY,
                         Constants.SORT_FAVORITES_ON_TOP_DEFAULT);

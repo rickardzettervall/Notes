@@ -42,8 +42,8 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         mTagsFragmentViewModel = ViewModelProviders.of(this).get(TagsFragmentViewModel.class);
 
         // Find Views
-        mRecyclerView = rootView.findViewById(R.id.tags_list_rv);
-        mFab = rootView.findViewById(R.id.tags_list_fab);
+        mRecyclerView = rootView.findViewById(R.id.fragment_taglist_recyclerview);
+        mFab = rootView.findViewById(R.id.fragment_taglist_fab);
 
         // Set Adapter / LayoutManager / Decoration
         mTagAdapter = new TagAdapter(this);
@@ -76,7 +76,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
-                                        EditText newTag = dialogView.findViewById(R.id.new_tag_edittext);
+                                        EditText newTag = dialogView.findViewById(R.id.dialog_tag_new_edittext);
                                         String str = newTag.getText().toString()
                                                 .replaceAll("#", "");
                                         mTagsFragmentViewModel.insertTag(new Tag(str));
