@@ -21,21 +21,26 @@ public abstract class DbUtil {
         Future<T> future = executorService.submit(callable);
         T obj = null;
         try {
-            obj = future.get();
+            obj = future.get(3000, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             e.printStackTrace();
+            future.cancel(true);
         }
+        shutdownExecutorService(executorService);
+        return obj;
+    }
 
-        // Shutdown ExecutorService
-        executorService.shutdown();
+    /**
+     * Shutdown ExecutorService.
+     */
+    private static void shutdownExecutorService(ExecutorService service) {
+        service.shutdown();
         try {
-            if (!executorService.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                executorService.shutdownNow();
+            if (!service.awaitTermination(300, TimeUnit.MILLISECONDS)) {
+                service.shutdownNow();
             }
         } catch (InterruptedException e) {
-            executorService.shutdownNow();
+            service.shutdownNow();
         }
-
-        return obj;
     }
 }
