@@ -65,6 +65,8 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
      */
     public interface OnTagClickListener {
         void onTagClick(int index);
+
+        void onTagDeleteClick(int index);
     }
 
     /**
@@ -80,15 +82,23 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
 
             // Find Views
             mTagTextView = itemView.findViewById(R.id.list_tag_title_textview);
-            mRemoveImageView = itemView.findViewById(R.id.list_tag_remove_imageview);
+            mRemoveImageView = itemView.findViewById(R.id.list_tag_delete_imageview);
 
             // Set OnClickListener
             itemView.setOnClickListener(this);
+            mRemoveImageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            mOnTagClickListener.onTagClick(getAdapterPosition());
+            switch (v.getId()) {
+                case R.id.list_tag_root:
+                    mOnTagClickListener.onTagClick(getAdapterPosition());
+                    break;
+                case R.id.list_tag_delete_imageview:
+                    mOnTagClickListener.onTagDeleteClick(getAdapterPosition());
+                    break;
+            }
         }
     }
 }
