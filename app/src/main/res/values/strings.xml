@@ -68,6 +68,9 @@
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
     <string name="action_tag_new">New Tag</string>
+    <string name="action_tag_edit">Edit Tag</string>
+    <string name="action_tag_delete_title">Delete Tag</string>
+    <string name="action_tag_delete_message">This deletes the tag and remove it from all associated Notes.</string>
 
     <!-- Sorting -->
     <string name="sort_by">Sort notes</string>
@@ -103,6 +106,8 @@
     <string name="title_activity_settings">Settings</string>
     <string name="cont_favorite">Favorite</string>
     <string name="cont_reminder">Reminder</string>
+    <string name="cont_tag_title">Tag title</string>
+    <string name="cont_tag_delete">Delete tag</string>
 
     <!-- LibrariesUtil -->
     <string name="library_parceler" translatable="false">Parceler</string>
