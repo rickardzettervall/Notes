@@ -213,7 +213,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         if(!mNote.getTags().isEmpty()) {
             mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
             for (int i = 0; i < mNote.getTags().size(); i++) {
-                tags.append("#").append(mNote.getTags().get(i).getTag());
+                tags.append("#").append(mNote.getTags().get(i).getTitle());
                 if (i < mNote.getTags().size() - 1) {
                     tags.append(" ");
                 }

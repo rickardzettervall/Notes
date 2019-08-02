@@ -32,7 +32,7 @@ public class AllNotesFragmentViewModel extends AndroidViewModel {
     }
 
     public void setNotes(@Nullable String query) {
-        mNotes = new LivePagedListBuilder<>(mNoteRepository.getAllNotes(query),
+        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotesPagedList(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 }

@@ -55,7 +55,7 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
     public void onBindViewHolder(@NonNull TagViewHolder holder, int position) {
         Tag tag = getItem(position);
         if (tag != null) {
-            String tagString = "#" + tag.getTag();
+            String tagString = "#" + tag.getTitle();
             holder.mTagTextView.setText(tagString);
         }
     }

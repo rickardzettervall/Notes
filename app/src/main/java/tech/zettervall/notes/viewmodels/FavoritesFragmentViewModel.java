@@ -32,7 +32,7 @@ public class FavoritesFragmentViewModel extends AndroidViewModel {
     }
 
     public void setNotes(@Nullable String query) {
-        mFavorites = new LivePagedListBuilder<>(mNoteRepository.getAllFavoritizedNotes(query),
+        mFavorites = new LivePagedListBuilder<>(mNoteRepository.getFavoritizedNotesPagedList(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 }

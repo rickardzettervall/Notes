@@ -32,7 +32,7 @@ public class TrashFragmentViewModel extends AndroidViewModel {
     }
 
     public void setNotes(@Nullable String query) {
-        mTrash = new LivePagedListBuilder<>(mNoteRepository.getAllTrashedNotes(query),
+        mTrash = new LivePagedListBuilder<>(mNoteRepository.getTrashedNotesPagedList(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 

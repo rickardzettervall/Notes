@@ -29,6 +29,6 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setNote(int noteID) {
-        this.mNotificationNote = mNoteRepository.getNote(noteID);
+        this.mNotificationNote = mNoteRepository.getNoteLiveData(noteID);
     }
 }

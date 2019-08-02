@@ -69,7 +69,7 @@ public class TagSelectAdapter extends RecyclerView.Adapter<TagSelectAdapter.View
         }
 
         // Set title
-        String tagString = "#" + tag.getTag();
+        String tagString = "#" + tag.getTitle();
         holder.mTagTextView.setText(tagString);
     }
 

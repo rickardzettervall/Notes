@@ -37,7 +37,7 @@ public class NotificationJobService extends JobService {
 
         // Reset Note Notification
         NoteRepository noteRepository = NoteRepository.getInstance(getApplication());
-        Note note = noteRepository.getNoteRaw(noteID);
+        Note note = noteRepository.getNote(noteID);
         if (note != null) {
             note.setNotificationEpoch(-1);
             noteRepository.updateNote(note);

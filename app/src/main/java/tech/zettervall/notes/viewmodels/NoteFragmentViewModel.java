@@ -42,6 +42,6 @@ public class NoteFragmentViewModel extends AndroidViewModel {
      * Get all Tags in List, used in Dialog when selecting Tags for a Note.
      */
     public List<Tag> getTags() {
-        return mTagRepository.getTagsRaw();
+        return mTagRepository.getTagsList();
     }
 }

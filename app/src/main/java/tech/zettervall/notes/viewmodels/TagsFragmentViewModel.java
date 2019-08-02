@@ -29,7 +29,7 @@ public class TagsFragmentViewModel extends AndroidViewModel {
         super(application);
         mTagRepository = TagRepository.getInstance(application);
         mNoteRepository = NoteRepository.getInstance(application);
-        mTags = new LivePagedListBuilder<>(mTagRepository.getTags(),
+        mTags = new LivePagedListBuilder<>(mTagRepository.getTagsPagedList(),
                 Constants.TAG_LIST_PAGE_SIZE).build();
     }
 
@@ -48,7 +48,7 @@ public class TagsFragmentViewModel extends AndroidViewModel {
      */
     public void deleteTag(Tag tag) {
         // Remove tag from Notes
-        List<Note> notes = mNoteRepository.getAllNotesByTagRaw(tag);
+        List<Note> notes = mNoteRepository.getNotesList(tag);
         for (Note note : notes) {
             List<Tag> tags = note.getTags();
             tags.remove(tag);
