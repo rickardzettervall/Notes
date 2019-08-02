@@ -48,7 +48,7 @@ public class TagsFragmentViewModel extends AndroidViewModel {
      */
     public void deleteTag(Tag tag) {
         // Remove tag from Notes
-        List<Note> notes = mNoteRepository.getNotesList(tag);
+        List<Note> notes = mNoteRepository.getNotesList(tag.getId());
         for (Note note : notes) {
             List<Tag> tags = note.getTags();
             tags.remove(tag);
