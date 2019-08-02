@@ -282,6 +282,19 @@ public class NoteRepository {
     }
 
     /**
+     * Update existing Notes.
+     */
+    public void updateNotes(final Note[] notes) {
+        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Updating Notes[id:" + Arrays.toString(notes) + "] in db..");
+                mNoteDao.updateNotes(notes);
+            }
+        });
+    }
+
+    /**
      * Delete existing Note.
      */
     public void deleteNote(final Note note) {

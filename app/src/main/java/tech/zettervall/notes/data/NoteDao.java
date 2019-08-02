@@ -62,6 +62,10 @@ public interface NoteDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateNote(Note note);
 
+    // Update multiple Notes
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateNotes(Note[] notes);
+
     // Delete Note
     @Delete
     void deleteNote(Note note);
