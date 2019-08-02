@@ -15,7 +15,7 @@ import tech.zettervall.notes.models.Tag;
 
 /**
  * Data Access Object (DAO) for interacting with Tag table.
- * Allows fetching data as List/POJO, LiveData and PageList.
+ * Allows fetching data as POJO, List, LiveData and PageList.
  */
 @Dao
 public interface TagDao {
@@ -44,9 +44,9 @@ public interface TagDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertTag(Tag tag);
 
-    // Insert multiple Tags
+    // Insert multiple Tags and return ID's
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTags(Tag[] tags);
+    long[] insertTags(Tag[] tags);
 
     // Update Tag
     @Update(onConflict = OnConflictStrategy.REPLACE)
