@@ -175,7 +175,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private Note newNote(boolean isFavorite) {
         return new Note(mDataBinding.fragmentNoteTitleTextview.getText().toString(),
                 mDataBinding.fragmentNoteTextTextview.getText().toString(),
-                new ArrayList<Tag>(),
+                new ArrayList<Integer>(),
                 DateTimeUtil.getCurrentEpoch(),
                 -1,
                 -1,
@@ -209,19 +209,22 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      * Update Tags TextView.
      */
     private void updateTagsUi() {
-        StringBuilder tags = new StringBuilder();
-        if(!mNote.getTags().isEmpty()) {
+        StringBuilder tagsString = new StringBuilder();
+        if (!mNote.getTagIDs().isEmpty()) {
             mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
-            for (int i = 0; i < mNote.getTags().size(); i++) {
-                tags.append("#").append(mNote.getTags().get(i).getTitle());
-                if (i < mNote.getTags().size() - 1) {
-                    tags.append(" ");
+            List<Tag> tags = mNoteFragmentViewModel.getTags();
+            for (int i = 0; i < tags.size(); i++) {
+                if (mNote.getTagIDs().contains(tags.get(i).getId())) {
+                    tagsString.append("#").append(tags.get(i).getTitle());
+                }
+                if (i < mNote.getTagIDs().size() - 1) {
+                    tagsString.append(" ");
                 }
             }
         } else {
             mDataBinding.fragmentNoteTagsTextview.setVisibility(View.GONE);
         }
-        mDataBinding.fragmentNoteTagsTextview.setText(tags.toString());
+        mDataBinding.fragmentNoteTagsTextview.setText(tagsString.toString());
     }
 
     /**
@@ -369,17 +372,17 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      */
     @Override
     public void onTagClick(int index) {
-        List<Tag> noteTags = mNote.getTags();
+        List<Integer> noteTags = mNote.getTagIDs();
         if (mTagSelectAdapter.getCheckedTags()[index]) { // Uncheck
             mTagSelectAdapter.setCheckedState(index, false);
-            noteTags.remove(mTagSelectAdapter.getTags().get(index)); // Remove Tag
+            noteTags.remove(mTagSelectAdapter.getTags().get(index).getId()); // Remove Tag
         } else { // Check
             mTagSelectAdapter.setCheckedState(index, true);
-            noteTags.add(mTagSelectAdapter.getTags().get(index)); // Add Tag
+            noteTags.add(mTagSelectAdapter.getTags().get(index).getId()); // Add Tag
         }
 
         // Update Note Tags
-        mNote.setTags(noteTags);
+        mNote.setTagIDs(noteTags);
 
         // Set Tags TextView
         updateTagsUi();
@@ -413,9 +416,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 recyclerView.setLayoutManager(layoutManager);
 
                 // Pre-check CheckBoxes for used Tags
-                if (!mNote.getTags().isEmpty()) {
+                if (!mNote.getTagIDs().isEmpty()) {
                     for (int i = 0; i < mTagSelectAdapter.getTags().size(); i++) {
-                        if (mNote.getTags().contains(mTagSelectAdapter.getTags().get(i))) {
+                        if (mNote.getTagIDs().contains(mTagSelectAdapter.getTags().get(i).getId())) {
                             mTagSelectAdapter.setCheckedState(i, true);
                         }
                     }
