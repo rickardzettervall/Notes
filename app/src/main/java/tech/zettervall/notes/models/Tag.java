@@ -19,13 +19,13 @@ public class Tag {
      * DB column names.
      */
     public static final String idColumnName = "_id";
-    public static final String tagColumnName = "tag";
+    public static final String tagColumnName = "title";
 
     @ColumnInfo(name = idColumnName)
     @PrimaryKey(autoGenerate = true)
     public int _id;
     @ColumnInfo(name = tagColumnName)
-    public String tag;
+    public String title;
 
     /**
      * Empty Constructor for Parcel.
@@ -38,16 +38,16 @@ public class Tag {
      * Constructor new Tag Objects.
      */
     @Ignore
-    public Tag(String tag) {
-        this.tag = tag;
+    public Tag(String title) {
+        this.title = title;
     }
 
     /**
      * Constructor for Room.
      */
-    public Tag(int _id, String tag) {
+    public Tag(int _id, String title) {
         this._id = _id;
-        this.tag = tag;
+        this.title = title;
     }
 
     public int getId() {
@@ -58,12 +58,12 @@ public class Tag {
         this._id = _id;
     }
 
-    public String getTag() {
-        return tag;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -79,14 +79,14 @@ public class Tag {
             return false;
         }
         Tag tag = (Tag) obj;
-        return _id == tag.getId() && this.tag.equals(tag.getTag());
+        return _id == tag.getId() && this.title.equals(tag.getTitle());
     }
 
     @Override
     public String toString() {
         return "Tag{" +
                 "_id=" + _id +
-                ", tag='" + tag + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 }
