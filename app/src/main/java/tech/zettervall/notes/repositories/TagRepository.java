@@ -39,9 +39,7 @@ public class TagRepository {
     }
 
     /**
-     * Get all Tags in PagedList LiveData.
-     *
-     * @return All Tags in PagedList LiveData
+     * Get all Tags as PagedList LiveData.
      */
     public DataSource.Factory<Integer, Tag> getTagsPagedList() {
         Log.d(TAG, "Retrieving all Tags from db..");
@@ -49,9 +47,7 @@ public class TagRepository {
     }
 
     /**
-     * Get all Tags in LiveData.
-     *
-     * @return All Tags in LiveData
+     * Get all Tags as LiveData.
      */
     public LiveData<List<Tag>> getTagsLiveData() {
         Log.d(TAG, "Retrieving all Tags from db..");
@@ -59,9 +55,7 @@ public class TagRepository {
     }
 
     /**
-     * Get all Tags in List.
-     *
-     * @return List of all Tags
+     * Get all Tags as List.
      */
     public List<Tag> getTagsList() {
         Log.d(TAG, "Retrieving all Tags from db..");
@@ -74,10 +68,7 @@ public class TagRepository {
     }
 
     /**
-     * Get a specific Tag as LiveData based on ID.
-     *
-     * @param tagID ID of Tag
-     * @return Tag in LiveData
+     * Get a specific Tag as LiveData based on Tag ID.
      */
     public LiveData<Tag> getTagLiveData(int tagID) {
         Log.d(TAG, "Retrieving Tag[id:" + tagID + "] from db..");
@@ -85,10 +76,7 @@ public class TagRepository {
     }
 
     /**
-     * Get a specific Tag based on ID.
-     *
-     * @param tagID ID of Tag
-     * @return Tag
+     * Get a specific Tag based on Tag ID.
      */
     public Tag getTag(final int tagID) {
         Log.d(TAG, "Retrieving Tag[id:" + tagID + "] from db..");
@@ -101,10 +89,7 @@ public class TagRepository {
     }
 
     /**
-     * Insert new Tag into DB and return rowID (tagID).
-     *
-     * @param tag New Tag to insert
-     * @return tagID
+     * Insert new Tag into DB and return Tag ID.
      */
     public long insertTag(final Tag tag) {
         long tagID = DbUtil.rawDB(new Callable<Long>() {
@@ -118,9 +103,7 @@ public class TagRepository {
     }
 
     /**
-     * Update an existing Tag.
-     *
-     * @param tag Tag Object to update
+     * Update existing Tag.
      */
     public void updateTag(final Tag tag) {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
@@ -133,9 +116,7 @@ public class TagRepository {
     }
 
     /**
-     * Delete an existing Tag.
-     *
-     * @param tag Tag Object to delete
+     * Delete existing Tag.
      */
     public void deleteTag(final Tag tag) {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
