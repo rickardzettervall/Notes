@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.AppExecutor;
-import tech.zettervall.notes.data.typeconverters.TagTypeConverter;
+import tech.zettervall.notes.data.typeconverters.IntegerListTypeConverter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 
@@ -21,7 +21,7 @@ import tech.zettervall.notes.models.Tag;
  * IMPORTANT!! Increment version number when changing any entity class.
  */
 @Database(entities = {Note.class, Tag.class}, version = 6)
-@TypeConverters(TagTypeConverter.class)
+@TypeConverters(IntegerListTypeConverter.class)
 public abstract class NoteDb extends RoomDatabase {
 
     private static final String TAG = NoteDb.class.getSimpleName();
