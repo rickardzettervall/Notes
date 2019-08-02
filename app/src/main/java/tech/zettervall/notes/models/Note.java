@@ -44,7 +44,7 @@ public class Note {
     @ColumnInfo(name = textColumnName)
     public String text;
     @ColumnInfo(name = tagsColumnName)
-    public List<Tag> tags;
+    public List<Integer> tags;
     @ColumnInfo(name = creationEpochColumnName)
     public long creationEpoch;
     @ColumnInfo(name = modifiedEpochColumnName)
@@ -67,7 +67,7 @@ public class Note {
      * Constructor for new Note Objects.
      */
     @Ignore
-    public Note(String title, String text, @NonNull List<Tag> tags, long creationEpoch,
+    public Note(String title, String text, @NonNull List<Integer> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this.title = setFirstCharUpperCase(title);
         this.text = setFirstCharUpperCase(text);
@@ -82,7 +82,7 @@ public class Note {
     /**
      * Constructor for Room.
      */
-    public Note(int _id, String title, String text, @NonNull List<Tag> tags, long creationEpoch,
+    public Note(int _id, String title, String text, @NonNull List<Integer> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this._id = _id;
         this.title = setFirstCharUpperCase(title);
@@ -126,11 +126,11 @@ public class Note {
         this.text = setFirstCharUpperCase(text);
     }
 
-    public List<Tag> getTags() {
+    public List<Integer> getTagIDs() {
         return new ArrayList<>(tags);
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTagIDs(List<Integer> tags) {
         this.tags = tags;
     }
 
