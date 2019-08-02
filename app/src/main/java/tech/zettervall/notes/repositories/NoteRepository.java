@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -18,7 +19,6 @@ import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.data.NoteDao;
 import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.utils.DbUtil;
 
 public class NoteRepository {
@@ -79,7 +79,7 @@ public class NoteRepository {
      * @param onlyFavorites  Selects only favorites
      * @param favoritesOnTop Sort with favorites on top
      * @param searchQuery    Search String input from user, use null for no query
-     * @return Complete SQL query String ready to be used with RawQuery in Room
+     * @return Complete SQL query String ready to be used with RawQuery in DAO
      */
     private String queryBuilder(int sortType, int sortDirection, boolean trash,
                                 boolean onlyFavorites, boolean onlyReminders,
@@ -147,123 +147,101 @@ public class NoteRepository {
     }
 
     /**
-     * Get all Notes from the db as DataSource.
+     * Get all Notes from the db as PagedList LiveData.
      *
      * @param query Search String, use null to not search
-     * @return DataSource containing all Notes matching query
      */
-    public DataSource.Factory<Integer, Note> getAllNotes(@Nullable String query) {
+    public DataSource.Factory<Integer, Note> getNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all Notes matching query..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
                 false, false, false, getSortFavoritesOnTop(), query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
-        return mNoteDao.getNotes(sqlQuery);
+        return mNoteDao.getNotesPagedList(sqlQuery);
     }
 
     /**
-     * Get all Notes matching tag from the db as DataSource.
-     *
-     * @param tag Tag to query Notes with
-     * @return DataSource containing all Notes containing tag
+     * Get all Notes which have Tag ID as PagedList LiveData.
      */
-    public DataSource.Factory<Integer, Note> getAllNotesByTag(Tag tag) {
+    public DataSource.Factory<Integer, Note> getNotesPagedList(final int tagID) {
         Log.d(TAG, "Retrieving all Notes matching tag..");
-        return mNoteDao.getNotesByTag(tag);
+        return mNoteDao.getNotesPagedList(String.valueOf(tagID));
     }
 
     /**
-     * Get all Notes matching tag in plain List,
-     * this is used when deleting a tag.
-     *
-     * @param tag Tag to query Notes with
-     * @return List of Notes
+     * Get all Notes as List based on Tag ID.
      */
-    public List<Note> getAllNotesByTagRaw(final Tag tag) {
+    public List<Note> getNotesList(final int tagID) {
         Log.d(TAG, "Retrieving Notes matching tag from db..");
         return DbUtil.rawDB(new Callable<List<Note>>() {
             @Override
             public List<Note> call() {
-                return mNoteDao.getNotesByTagRaw(tag);
+                return mNoteDao.getNotesList(String.valueOf(tagID));
             }
         });
     }
 
     /**
-     * Get all trashed Notes from the db as DataSource.
+     * Get all trashed Notes from the db as PagedList LiveData.
      *
      * @param query Search String, use null to not search
-     * @return DataSource containing all trashed Notes
      */
-    public DataSource.Factory<Integer, Note> getAllTrashedNotes(@Nullable String query) {
+    public DataSource.Factory<Integer, Note> getTrashedNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all trashed Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
                 true, false, false, false, query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
-        return mNoteDao.getNotes(sqlQuery);
+        return mNoteDao.getNotesPagedList(sqlQuery);
     }
 
     /**
-     * Get all favoritized Notes from the db as DataSource.
+     * Get all favoritized Notes from the db as PagedList LiveData.
      *
      * @param query Search String, use null to not search
-     * @return DataSource containing all favoritized Notes
      */
-    public DataSource.Factory<Integer, Note> getAllFavoritizedNotes(@Nullable String query) {
+    public DataSource.Factory<Integer, Note> getFavoritizedNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all favoritized Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
                 false, true, false, false, query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
-        return mNoteDao.getNotes(sqlQuery);
+        return mNoteDao.getNotesPagedList(sqlQuery);
     }
 
     /**
-     * Get all reminder Notes from the db as DataSource.
+     * Get all reminder Notes from the db as PagedList LiveData.
      *
      * @param query Search String, use null to not search
-     * @return DataSource containing all reminder Notes
      */
-    public DataSource.Factory<Integer, Note> getAllReminderNotes(@Nullable String query) {
+    public DataSource.Factory<Integer, Note> getReminderNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all reminder Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
                 false, false, true, getSortFavoritesOnTop(), query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
-        return mNoteDao.getNotes(sqlQuery);
+        return mNoteDao.getNotesPagedList(sqlQuery);
     }
 
     /**
-     * Get single Note based on unique _id.
-     *
-     * @param _id Db _id
-     * @return LiveData Object containing a Note
+     * Get a specific Note as LiveData based on Note ID.
      */
-    public LiveData<Note> getNote(int _id) {
-        Log.d(TAG, "Retrieving Note[id:" + _id + "] from db..");
-        return mNoteDao.getNote(_id);
+    public LiveData<Note> getNoteLiveData(final int noteID) {
+        Log.d(TAG, "Retrieving Note[id:" + noteID + "] from db..");
+        return mNoteDao.getNoteLiveData(noteID);
     }
 
     /**
-     * Get single Note based on unique _id in regular Object form, this is
-     * primarily used for notification to fetch the Note and to reset the
-     * notificationEpoch.
-     *
-     * @param _id Db _id
-     * @return Note Object
+     * Get a specific Note based on Note ID.
      */
-    public Note getNoteRaw(final int _id) {
-        Log.d(TAG, "Retrieving Note[id:" + _id + "] from db..");
+    public Note getNote(final int noteID) {
+        Log.d(TAG, "Retrieving Note[id:" + noteID + "] from db..");
         return DbUtil.rawDB(new Callable<Note>() {
             @Override
             public Note call() {
-                return mNoteDao.getNoteRaw(_id);
+                return mNoteDao.getNote(noteID);
             }
         });
     }
 
     /**
-     * Insert a single Note into db.
-     *
-     * @param note Note Object to be inserted
-     * @return ID of inserted Note
+     * Insert new Note into db and return Note ID.
      */
     public long insertNote(final Note note) {
         long noteID = DbUtil.rawDB(new Callable<Long>() {
@@ -272,14 +250,26 @@ public class NoteRepository {
                 return mNoteDao.insertNote(note);
             }
         });
-        Log.d(NoteRepository.TAG, "Inserted Note[id:" + noteID + "] into db..");
+        Log.d(TAG, "Inserted Note[id:" + noteID + "] into db..");
         return noteID;
     }
 
     /**
-     * Update an existing Note.
-     *
-     * @param note Note Object to update
+     * Insert multiple Notes into db and return array with Note ID's.
+     */
+    public long[] insertNotes(final Note[] notes) {
+        long[] noteIDs = DbUtil.rawDB(new Callable<long[]>() {
+            @Override
+            public long[] call() {
+                return mNoteDao.insertNotes(notes);
+            }
+        });
+        Log.d(TAG, "Inserted Notes[id's:" + Arrays.toString(noteIDs) + "] into db..");
+        return noteIDs;
+    }
+
+    /**
+     * Update existing Note.
      */
     public void updateNote(final Note note) {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
@@ -292,9 +282,7 @@ public class NoteRepository {
     }
 
     /**
-     * Delete an existing Note.
-     *
-     * @param note Note Object to delete
+     * Delete existing Note.
      */
     public void deleteNote(final Note note) {
         AppExecutor.getExecutor().diskIO().execute(new Runnable() {
