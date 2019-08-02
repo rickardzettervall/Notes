@@ -20,7 +20,7 @@ import tech.zettervall.notes.models.Tag;
  * Room Database.
  * IMPORTANT!! Increment version number when changing any entity class.
  */
-@Database(entities = {Note.class, Tag.class}, version = 6)
+@Database(entities = {Note.class, Tag.class}, version = 7)
 @TypeConverters(IntegerListTypeConverter.class)
 public abstract class NoteDb extends RoomDatabase {
 
