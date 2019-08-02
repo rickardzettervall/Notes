@@ -15,28 +15,37 @@ import tech.zettervall.notes.models.Tag;
 
 /**
  * Data Access Object (DAO) for interacting with Tag table.
+ * Allows fetching data as List/POJO, LiveData and PageList.
  */
 @Dao
 public interface TagDao {
 
-    // Get all Tags (sorted alphabetically)
-    @Query("SELECT * FROM tags ORDER BY tag ASC")
-    DataSource.Factory<Integer, Tag> getTags();
+    // Get all Tags as PagedList (sorted alphabetically)
+    @Query("SELECT * FROM tags ORDER BY title ASC")
+    DataSource.Factory<Integer, Tag> getTagsPagedList();
 
-    // Get all Tags (Raw) (sorted alphabetically)
-    @Query("SELECT * FROM tags ORDER BY tag ASC")
-    List<Tag> getTagsRaw();
+    // Get all Tags as LiveData (sorted alphabetically)
+    @Query("SELECT * FROM tags ORDER BY title ASC")
+    LiveData<List<Tag>> getTagsLiveData();
 
-    // Get specific Tag based on ID
-    @Query("SELECT * FROM tags WHERE _id IS :id")
-    LiveData<Tag> getTag(int id);
+    // Get all Tags as List (sorted alphabetically)
+    @Query("SELECT * FROM tags ORDER BY title ASC")
+    List<Tag> getTagsList();
 
-    // Insert Tag and return the ID
+    // Get Tag as LiveData based on ID
+    @Query("SELECT * FROM tags WHERE _id IS :tagID")
+    LiveData<Tag> getTagLiveData(int tagID);
+
+    // Get Tag based on ID
+    @Query("SELECT * FROM tags WHERE _id IS :tagID")
+    Tag getTag(int tagID);
+
+    // Insert Tag and return ID
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertTag(Tag tag);
 
     // Insert multiple Tags
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTags(Tag[] tags);
 
     // Update Tag

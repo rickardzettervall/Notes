@@ -39,39 +39,65 @@ public class TagRepository {
     }
 
     /**
-     * Get all Tags in PagedList LiveData format.
+     * Get all Tags in PagedList LiveData.
      *
      * @return All Tags in PagedList LiveData
      */
-    public DataSource.Factory<Integer, Tag> getTags() {
-        Log.d(TAG, "Retrieving Tags from db..");
-        return mTagDao.getTags();
+    public DataSource.Factory<Integer, Tag> getTagsPagedList() {
+        Log.d(TAG, "Retrieving all Tags from db..");
+        return mTagDao.getTagsPagedList();
     }
 
     /**
-     * Get all Tags in plain List.
+     * Get all Tags in LiveData.
+     *
+     * @return All Tags in LiveData
+     */
+    public LiveData<List<Tag>> getTagsLiveData() {
+        Log.d(TAG, "Retrieving all Tags from db..");
+        return mTagDao.getTagsLiveData();
+    }
+
+    /**
+     * Get all Tags in List.
      *
      * @return List of all Tags
      */
-    public List<Tag> getTagsRaw() {
-        Log.d(TAG, "Retrieving Tags from db..");
+    public List<Tag> getTagsList() {
+        Log.d(TAG, "Retrieving all Tags from db..");
         return DbUtil.rawDB(new Callable<List<Tag>>() {
             @Override
             public List<Tag> call() {
-                return mTagDao.getTagsRaw();
+                return mTagDao.getTagsList();
             }
         });
     }
 
     /**
+     * Get a specific Tag as LiveData based on ID.
+     *
+     * @param tagID ID of Tag
+     * @return Tag in LiveData
+     */
+    public LiveData<Tag> getTagLiveData(int tagID) {
+        Log.d(TAG, "Retrieving Tag[id:" + tagID + "] from db..");
+        return mTagDao.getTagLiveData(tagID);
+    }
+
+    /**
      * Get a specific Tag based on ID.
      *
-     * @param _id ID of Tag
-     * @return Tag in LiveData format
+     * @param tagID ID of Tag
+     * @return Tag
      */
-    public LiveData<Tag> getTag(int _id) {
-        Log.d(TAG, "Retrieving Tag[id:" + _id + "] from db..");
-        return mTagDao.getTag(_id);
+    public Tag getTag(final int tagID) {
+        Log.d(TAG, "Retrieving Tag[id:" + tagID + "] from db..");
+        return DbUtil.rawDB(new Callable<Tag>() {
+            @Override
+            public Tag call() {
+                return mTagDao.getTag(tagID);
+            }
+        });
     }
 
     /**
