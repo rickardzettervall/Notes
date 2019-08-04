@@ -55,7 +55,9 @@ public abstract class NoteDb extends RoomDatabase {
                                 }
                             });
                         }
-                    }).build();
+                    })
+                            .addMigrations(DbMigration.MIGRATION_5_7)
+                            .build();
                 }
             }
         }
