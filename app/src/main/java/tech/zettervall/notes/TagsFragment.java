@@ -141,27 +141,25 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
 
     @Override
     public void onTagClick(int index) {
-
         final Tag tag = mTagAdapter.getCurrentList().get(index);
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_edit, null);
         final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_edit_edittext);
-
         tagTitleEditText.setText(tag.getTitle());
-
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        // todo: 1. search all notes and remove the tag
-                        // todo: 2. update the tag and insert it into all the notes which had prev tag
+                        // Update Tag
+                        Tag updatedTag = tag;
+                        updatedTag.setTitle(tagTitleEditText.getText().toString());
+                        mTagsFragmentViewModel.updateTag(updatedTag);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
                 }
             }
         };
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.action_tag_edit));
         builder.setView(dialogView);

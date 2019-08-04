@@ -41,6 +41,10 @@ public class TagsFragmentViewModel extends AndroidViewModel {
         mTagRepository.insertTag(tag);
     }
 
+    public void updateTag(Tag tag) {
+        mTagRepository.updateTag(tag);
+    }
+
     /**
      * Delete Tag and clear the tag from all Notes.
      *
