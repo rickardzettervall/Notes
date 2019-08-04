@@ -8,6 +8,8 @@ import androidx.room.PrimaryKey;
 
 import org.parceler.Parcel;
 
+import tech.zettervall.notes.utils.StringUtil;
+
 /**
  * Tag which can be applied to Notes to allow user specified labeling.
  */
@@ -39,7 +41,7 @@ public class Tag {
      */
     @Ignore
     public Tag(String title) {
-        this.title = title;
+        this.title = StringUtil.setFirstCharUpperCase(title);
     }
 
     /**
@@ -47,7 +49,7 @@ public class Tag {
      */
     public Tag(int _id, String title) {
         this._id = _id;
-        this.title = title;
+        this.title = StringUtil.setFirstCharUpperCase(title);
     }
 
     public int getId() {
@@ -63,7 +65,7 @@ public class Tag {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = StringUtil.setFirstCharUpperCase(title);
     }
 
     /**

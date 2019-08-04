@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.zettervall.notes.utils.DateTimeUtil;
+import tech.zettervall.notes.utils.StringUtil;
 
 /**
  * Note which is stored in Room DB.
@@ -69,8 +70,8 @@ public class Note {
     @Ignore
     public Note(String title, String text, @NonNull List<Integer> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
-        this.title = setFirstCharUpperCase(title);
-        this.text = setFirstCharUpperCase(text);
+        this.title = StringUtil.setFirstCharUpperCase(title);
+        this.text = StringUtil.setFirstCharUpperCase(text);
         this.tags = tags;
         this.creationEpoch = creationEpoch;
         this.modifiedEpoch = modifiedEpoch;
@@ -85,21 +86,14 @@ public class Note {
     public Note(int _id, String title, String text, @NonNull List<Integer> tags, long creationEpoch,
                 long modifiedEpoch, long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this._id = _id;
-        this.title = setFirstCharUpperCase(title);
-        this.text = setFirstCharUpperCase(text);
+        this.title = StringUtil.setFirstCharUpperCase(title);
+        this.text = StringUtil.setFirstCharUpperCase(text);
         this.tags = tags;
         this.creationEpoch = creationEpoch;
         this.modifiedEpoch = modifiedEpoch;
         this.notificationEpoch = notificationEpoch;
         this.isTrash = isTrash;
         this.isFavorite = isFavorite;
-    }
-
-    /**
-     * Set first char in a String to uppercase.
-     */
-    private String setFirstCharUpperCase(@NonNull String str) {
-        return !str.isEmpty() ? str.substring(0, 1).toUpperCase() + str.substring(1) : str;
     }
 
     public int getId() {
@@ -115,7 +109,7 @@ public class Note {
     }
 
     public void setTitle(String title) {
-        this.title = setFirstCharUpperCase(title);
+        this.title = StringUtil.setFirstCharUpperCase(title);
     }
 
     public String getText() {
@@ -123,7 +117,7 @@ public class Note {
     }
 
     public void setText(String text) {
-        this.text = setFirstCharUpperCase(text);
+        this.text = StringUtil.setFirstCharUpperCase(text);
     }
 
     public List<Integer> getTagIDs() {
