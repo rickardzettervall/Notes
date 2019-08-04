@@ -171,6 +171,9 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        // Hide unused menu items
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_sort).setVisible(false);
     }
 
     @Override
