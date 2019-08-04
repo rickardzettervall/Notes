@@ -1,7 +1,7 @@
 # Android Notes App (WIP)
 Android app for writing down notes and saving them locally.
 
-<strong><h3>Features:</strong> (some not yet implemented)</h3>
+<strong><h3>Features</strong> (some not yet implemented)</h3>
 - Uses Room database to store notes / tags.
 - Fragments to (only) show all notes, favorites, reminders (notes which have reminder set), trash.
 - Sets date and time formatting depending on user country, user can also override this in settings activity.
@@ -14,8 +14,8 @@ Android app for writing down notes and saving them locally.
 - Add tags to notes to allow user specific sorting.
 - Favoritize notes.
 
-<strong><h3>Screen Captures:</h3></strong>
+<strong><h3>Screen Captures</h3></strong>
 
 
-<strong><h3>License:</h3></strong>
+<strong><h3>License</h3></strong>
 This project is generally licensed under the Apache License 2.0 with the exception that you must site credit to the original author of the project - see <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a> for more details.
