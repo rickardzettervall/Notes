@@ -372,17 +372,18 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      */
     @Override
     public void onTagClick(int index) {
-        List<Integer> noteTags = mNote.getTagIDs();
+        List<Integer> noteTagIDs = mNote.getTagIDs();
+        Integer clickedTagID = mTagSelectAdapter.getTags().get(index).getId();
         if (mTagSelectAdapter.getCheckedTags()[index]) { // Uncheck
             mTagSelectAdapter.setCheckedState(index, false);
-            noteTags.remove(mTagSelectAdapter.getTags().get(index).getId()); // Remove Tag
+            noteTagIDs.remove(clickedTagID); // Remove Tag
         } else { // Check
             mTagSelectAdapter.setCheckedState(index, true);
-            noteTags.add(mTagSelectAdapter.getTags().get(index).getId()); // Add Tag
+            noteTagIDs.add(clickedTagID); // Add Tag
         }
 
         // Update Note Tags
-        mNote.setTagIDs(noteTags);
+        mNote.setTagIDs(noteTagIDs);
 
         // Set Tags TextView
         updateTagsUi();
