@@ -10,7 +10,7 @@ import tech.zettervall.notes.data.DbMigration;
 /**
  * Converts List of Integers to String in the format Num,Num,Num,
  */
-public class IntegerListTypeConverter {
+public abstract class IntegerListTypeConverter {
 
     /**
      * @throws NumberFormatException Occurs when db is upgraded from 5 to 7. Because of
