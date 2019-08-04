@@ -14,7 +14,8 @@ public abstract class IntegerListTypeConverter {
 
     /**
      * @throws NumberFormatException Occurs when db is upgraded from 5 to 7. Because of
-     *                               the old way a Tag was stored, in this case a special migration method will be used.
+     *                               the old way a Tag was stored, in this case a special migration
+     *                               method will be used.
      */
     @TypeConverter
     public static List<Integer> stringToIntegerList(String data) throws NumberFormatException {
