@@ -2,6 +2,7 @@
 Android app for writing down notes and saving them locally.
 
 <h3><strong>Features</strong> (some not yet implemented)</h3>
+
 - Uses Room database to store notes / tags.
 - Fragments to (only) show all notes, favorites, reminders (notes which have reminder set), trash.
 - Sets date and time formatting depending on user country, user can also override this in settings activity.
@@ -18,6 +19,7 @@ Android app for writing down notes and saving them locally.
 
 
 <strong><h3>License</h3></strong>
+
 Copyright 2019 Rickard Zettervall
 
 Licensed under the Apache License, Version 2.0 (the "License");
