@@ -22,23 +22,23 @@ import tech.zettervall.notes.models.Tag;
  */
 @Database(entities = {Note.class, Tag.class}, version = 7)
 @TypeConverters(IntegerListTypeConverter.class)
-public abstract class NoteDb extends RoomDatabase {
+public abstract class AppDb extends RoomDatabase {
 
-    private static final String TAG = NoteDb.class.getSimpleName();
+    private static final String TAG = AppDb.class.getSimpleName();
     private static final String DB_NAME = "notes_db";
-    private static NoteDb INSTANCE;
+    private static AppDb INSTANCE;
 
     /**
      * Room Db instance.
      */
-    public static NoteDb getInstance(final Context context) {
+    public static AppDb getInstance(final Context context) {
         if (INSTANCE == null) {
-            synchronized (NoteDb.class) {
+            synchronized (AppDb.class) {
                 if (INSTANCE == null) {
                     Log.d(TAG, "Creating new db instance..");
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),
-                            NoteDb.class,
+                            AppDb.class,
                             DB_NAME
                     ).addCallback(new Callback() {
                         @Override

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import tech.zettervall.notes.AppExecutor;
-import tech.zettervall.notes.data.NoteDb;
+import tech.zettervall.notes.data.AppDb;
 import tech.zettervall.notes.data.TagDao;
 import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.utils.DbUtil;
@@ -22,7 +22,7 @@ public class TagRepository {
     private TagDao mTagDao;
 
     private TagRepository(Application application) {
-        NoteDb db = NoteDb.getInstance(application.getApplicationContext());
+        AppDb db = AppDb.getInstance(application.getApplicationContext());
         mTagDao = db.tagDao();
     }
 

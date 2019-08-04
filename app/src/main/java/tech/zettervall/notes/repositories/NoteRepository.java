@@ -16,8 +16,8 @@ import java.util.concurrent.Callable;
 
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.Constants;
+import tech.zettervall.notes.data.AppDb;
 import tech.zettervall.notes.data.NoteDao;
-import tech.zettervall.notes.data.NoteDb;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.DbUtil;
 
@@ -29,7 +29,7 @@ public class NoteRepository {
     private SharedPreferences mSharedPreferences;
 
     private NoteRepository(Application application) {
-        NoteDb db = NoteDb.getInstance(application.getApplicationContext());
+        AppDb db = AppDb.getInstance(application.getApplicationContext());
         mNoteDao = db.noteDao();
         mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(application.getApplicationContext());
