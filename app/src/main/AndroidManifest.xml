@@ -17,6 +17,7 @@
             android:label="@string/action_about" />
         <activity
             android:name="tech.zettervall.notes.SettingsActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/action_settings" />
         <activity
             android:name="tech.zettervall.notes.NoteActivity"
