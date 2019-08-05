@@ -9,6 +9,9 @@
 
     <!-- Generic -->
     <string name="remove">Remove</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="about">About</string>
 
     <!-- Note -->
     <string name="note">Note</string>
@@ -135,5 +138,15 @@
     <string name="delete_all_notes">Delete all notes</string>
     <string name="delete_all_notes_key" translatable="false">delete_all_notes</string>
     <string name="delete_all_notes_desc">Warning! This will completely remove all your saved notes from the database.</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_vibrate_key" translatable="false">notifications_vibration_key</string>
+    <string name="notifications_vibrate_title">Vibrate on notifications</string>
+    <string name="about_simplenotes_key" translatable="false">about_simplenotes_key</string>
+
+    <!-- About -->
+    <string name="about_built_by">This app was built by Rickard Zettervall, is open source and you can view the code over at &lt;a href=\"https://github.com/rickardzettervall/notes/\">github&lt;/a>.</string>
+    <string name="about_app_icon">The app launch icon is made by &lt;a href=\"https://www.freepik.com/\" title=\"Freepik\">Freepik&lt;/a> from &lt;a href=\"https://www.flaticon.com/\" title=\"Flaticon\">www.flaticon.com&lt;/a> and is licensed by &lt;a href=\"http://creativecommons.org/licenses/by/3.0/\" title=\"Creative
+Commons BY 3.0\">CC 3.0 BY&lt;/a>.</string>
+    <string name="about_libraries">These external libraries were used when building this app: &lt;a href=\"https://github.com/johncarl81/parceler/\">Parceler&lt;/a>, &lt;a href=\"https://site.mockito.org/\">Mockito&lt;/a>, &lt;a href=\"https://github.com/junit-team/junit5/\">Junit5 Jupiter&lt;/a>.</string>
 
 </resources>
