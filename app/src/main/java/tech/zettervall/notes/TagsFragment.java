@@ -151,9 +151,8 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         // Update Tag
-                        Tag updatedTag = tag;
-                        updatedTag.setTitle(tagTitleEditText.getText().toString());
-                        mTagsFragmentViewModel.updateTag(updatedTag);
+                        tag.setTitle(tagTitleEditText.getText().toString());
+                        mTagsFragmentViewModel.updateTag(tag);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;

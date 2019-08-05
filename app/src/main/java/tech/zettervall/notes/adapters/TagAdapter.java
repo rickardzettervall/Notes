@@ -32,8 +32,7 @@ public class TagAdapter extends PagedListAdapter<Tag, TagAdapter.TagViewHolder> 
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Tag oldItem, @NonNull Tag newItem) {
-                    // Check Tag class equals method for more information.
-                    return oldItem.equals(newItem);
+                    return false;
                 }
             };
     private OnTagClickListener mOnTagClickListener;

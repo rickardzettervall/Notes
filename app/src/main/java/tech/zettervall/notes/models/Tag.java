@@ -1,6 +1,5 @@
 package tech.zettervall.notes.models;
 
-import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -66,22 +65,6 @@ public class Tag {
 
     public void setTitle(String title) {
         this.title = StringUtil.setFirstCharUpperCase(title);
-    }
-
-    /**
-     * Compare contents for diff check in Adapter,
-     * determines whether to update the item in adapter.
-     *
-     * @param obj Tag to compare to this
-     * @return true when contents are the same
-     */
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Tag tag = (Tag) obj;
-        return _id == tag.getId() && this.title.equals(tag.getTitle());
     }
 
     @Override
