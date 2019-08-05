@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="@dimen/dialog_padding"
     android:orientation="vertical">
 
     <RadioGroup
         android:id="@+id/dialog_sort_type_radiogroup"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        android:layout_height="wrap_content">
 
         <RadioButton
             android:id="@+id/dialog_sort_type_alphabetically_radiobutton"
@@ -34,9 +34,7 @@
         android:id="@+id/dialog_sort_favorites_on_top_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/sort_by_favorites_top" />
 
 </LinearLayout>
