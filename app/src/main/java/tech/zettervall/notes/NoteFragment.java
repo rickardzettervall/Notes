@@ -53,7 +53,7 @@ import static android.content.Context.JOB_SCHEDULER_SERVICE;
 public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
-    private boolean mTrash, mDeleted, mIsTablet;
+    private boolean mTrash, mIsTrash, mFinalDeletion, mRestore, mIsTablet;
     private long mReminderDateTimeEpoch;
     private FragmentNoteBinding mDataBinding;
     private NoteFragmentViewModel mNoteFragmentViewModel;
@@ -127,8 +127,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             mDataBinding.fragmentNoteFab.hide();
         }
 
-        // Set title
+        // Set title / trashed state
         if (mNote.isTrash()) {
+            mIsTrash = true;
             getActivity().setTitle(R.string.note_trash);
             // Hide keyboard
             KeyboardUtil.hideKeyboard(getActivity());
@@ -203,28 +204,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 !mNote.getText().isEmpty()) { // New Note
             mNote.setId((int) mNoteFragmentViewModel.insertNote(mNote));
         }
-    }
-
-    /**
-     * Update Tags TextView.
-     */
-    private void updateTagsUi() {
-        StringBuilder tagsString = new StringBuilder();
-        if (!mNote.getTagIDs().isEmpty()) {
-            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
-            List<Tag> tags = mNoteFragmentViewModel.getTags();
-            for (int i = 0; i < tags.size(); i++) {
-                if (mNote.getTagIDs().contains(tags.get(i).getId())) {
-                    tagsString.append("#").append(tags.get(i).getTitle());
-                }
-                if (i < mNote.getTagIDs().size() - 1) {
-                    tagsString.append(" ");
-                }
-            }
-        } else {
-            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.GONE);
-        }
-        mDataBinding.fragmentNoteTagsTextview.setText(tagsString.toString());
     }
 
     /**
@@ -322,12 +301,12 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     }
 
     /**
-     * Save / Trash Note.
+     * Save / Trash / Restore Note.
      */
     @Override
     public void onPause() {
         super.onPause();
-        if (!mDeleted) {
+        if (!mFinalDeletion && !mIsTrash) {
             if (!mTrash) { // SAVE
                 saveNote();
             } else if (mNote != null) { // TRASH
@@ -343,6 +322,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         getString(R.string.note_trashed);
                 Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
             }
+        } else if (mIsTrash && mRestore) { // Restore trashed Note
+            mNote.setTrash(false);
+            mNoteFragmentViewModel.updateNote(mNote);
         }
     }
 
@@ -389,6 +371,28 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         updateTagsUi();
     }
 
+    /**
+     * Update Tags TextView.
+     */
+    private void updateTagsUi() {
+        StringBuilder tagsString = new StringBuilder();
+        if (!mNote.getTagIDs().isEmpty() && mNote.getTagIDs().size() > 0) {
+            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
+            List<Tag> tags = mNoteFragmentViewModel.getTags();
+            for (int i = 0; i < tags.size(); i++) {
+                if (mNote.getTagIDs().contains(tags.get(i).getId())) {
+                    tagsString.append("#").append(tags.get(i).getTitle());
+                }
+                if (i < mNote.getTagIDs().size() - 1) {
+                    tagsString.append(" ");
+                }
+            }
+        } else {
+            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.GONE);
+        }
+        mDataBinding.fragmentNoteTagsTextview.setText(tagsString.toString());
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -430,12 +434,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 builder.setView(dialogView);
                 builder.setPositiveButton(R.string.confirm_done, null);
                 builder.show();
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        saveNote();
-                    }
-                });
                 break;
             case R.id.action_reminder:
                 dateTimePicker();
@@ -451,7 +449,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                                             mTrash = true;
                                         } else { // TRASHED (final deletion)
                                             mNoteFragmentViewModel.deleteNote(mNote);
-                                            mDeleted = true;
+                                            mFinalDeletion = true;
                                             String message = !mNote.getTitle().isEmpty() ?
                                                     getString(R.string.note_deleted_detailed,
                                                             mNote.getTitle()) :
@@ -487,6 +485,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         mTrash = false;
+                                        mRestore = true;
                                         if (!mIsTablet) { // PHONE
                                             getActivity().finish();
                                         } else { // TABLET
