@@ -29,7 +29,7 @@ public abstract class DbMigration {
     };
 
     /**
-     * Converts the old Tags JSON String to List, can handle up to 9999 Tags.
+     * Converts the old Tags JSON String to List.
      */
     public static List<Integer> MIGRATION_5_7_FIX(String oldTagString) {
         /* Example of old Tags String:
@@ -46,7 +46,7 @@ public abstract class DbMigration {
         List<Integer> values = new ArrayList<>();
         for (int i : indexes) {
             StringBuilder digitString = new StringBuilder();
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 10; j++) {
                 if (Character.isDigit(oldTagString.charAt(i + j))) {
                     digitString.append(oldTagString.charAt(i + j));
                 }
