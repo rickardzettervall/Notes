@@ -1,17 +1,21 @@
 package tech.zettervall.notes;
 
-import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
 
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.repositories.NoteRepository;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -19,6 +23,11 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        // Set Home menu item
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Create Settings Fragment
         getSupportFragmentManager()
@@ -33,45 +42,60 @@ public class SettingsActivity extends AppCompatActivity {
     public static class SettingsFragment extends PreferenceFragmentCompat implements
             Preference.OnPreferenceClickListener {
 
+        private SharedPreferences mSharedPreferences;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.preferences, rootKey);
 
-            Preference deleteAllNotesPreference = findPreference(getString(R.string.delete_all_notes_key));
-            Preference insertDummyData = findPreference(getString(R.string.insert_dummy_data_key));
-            deleteAllNotesPreference.setOnPreferenceClickListener(this);
-            insertDummyData.setOnPreferenceClickListener(this);
+            mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+            // About
+            Preference about = findPreference(getString(R.string.about_simplenotes_key));
+            about.setOnPreferenceClickListener(this);
+
+//            SwitchPreference notificationsVibrate = findPreference(getString(R.string.notifications_vibrate_key));
+//            notificationsVibrate.setOnPreferenceClickListener(this);
         }
 
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            if (preference == findPreference(getString(R.string.delete_all_notes_key))) {
-                DialogInterface.OnClickListener dialogClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        NoteRepository.getInstance(getActivity().getApplication())
-                                                .deleteAllNotes();
-                                        Toast.makeText(getActivity(),
-                                                getString(R.string.all_notes_deleted),
-                                                Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        break;
-                                }
-                            }
-                        };
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage(getString(R.string.confirm_deletion))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
+            if (preference == findPreference(getString(R.string.notifications_vibrate_key))) {
+                ((SwitchPreference) preference).setSwitchTextOn(R.string.enabled);
+                ((SwitchPreference) preference).setSwitchTextOff(R.string.disabled);
+//                mSharedPreferences.edit().putBoolean(Constants.NOTIFICATIONS_ENABLE_VIBRATION_KEY)
                 return true;
             } else if (preference == findPreference(getString(R.string.insert_dummy_data_key))) {
                 // DEPRECATED
                 // DEPRECATED
                 // DEPRECATED
+            } else if (preference == findPreference(getString(R.string.about_simplenotes_key))) {
+                // Inflate View
+                View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
+
+                // Set HTML link for 'built by'
+                ((TextView) dialogView.findViewById(R.id.dialog_about_built_by_textview))
+                        .setMovementMethod(LinkMovementMethod.getInstance());
+                ((TextView) dialogView.findViewById(R.id.dialog_about_built_by_textview))
+                        .setText(Html.fromHtml(getString(R.string.about_built_by)));
+
+                // Set HTML link for 'libraries'
+                ((TextView) dialogView.findViewById(R.id.dialog_about_libraries_textview))
+                        .setMovementMethod(LinkMovementMethod.getInstance());
+                ((TextView) dialogView.findViewById(R.id.dialog_about_libraries_textview))
+                        .setText(Html.fromHtml(getString(R.string.about_libraries)));
+
+                // Set HTML link for 'app icon'
+                ((TextView) dialogView.findViewById(R.id.dialog_about_app_icon_textview))
+                        .setMovementMethod(LinkMovementMethod.getInstance());
+                ((TextView) dialogView.findViewById(R.id.dialog_about_app_icon_textview))
+                        .setText(Html.fromHtml(getString(R.string.about_app_icon)));
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getString(R.string.app_name));
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.confirm_done, null);
+                builder.show();
             }
             return false;
         }
