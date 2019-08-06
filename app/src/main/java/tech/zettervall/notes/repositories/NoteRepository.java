@@ -188,7 +188,7 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getTrashedNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all trashed Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                true, false, false, false, query);
+                true, false, false, getSortFavoritesOnTop(), query);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotesPagedList(sqlQuery);
     }
