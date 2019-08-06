@@ -20,7 +20,7 @@ Android app for writing down notes and saving them locally.
 
 <strong><h3>License</h3></strong>
 
-Copyright 2019 Rickard Zettervall
+Copyright 2019, Rickard Zettervall.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this project except in compliance with the License.
