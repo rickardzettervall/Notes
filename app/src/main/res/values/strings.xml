@@ -12,6 +12,7 @@
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
     <string name="about">About</string>
+    <string name="general">General</string>
 
     <!-- Note -->
     <string name="note">Note</string>
@@ -129,19 +130,30 @@
     <string name="data">Data</string>
 
     <!-- Preferences -->
-    <string name="enable_dark_theme">Enable Dark Theme</string>
-    <string name="enable_dark_theme_key" translatable="false">enable_dark_theme</string>
-    <string name="enable_dark_theme_desc">Restart App to apply this change.</string>
-    <string name="insert_dummy_data">Insert dummy data</string>
-    <string name="insert_dummy_data_key">insert_dummy_data</string>
-    <string name="insert_dummy_data_desc">Adds 10 Notes to the database for testing purposes.</string>
-    <string name="delete_all_notes">Delete all notes</string>
-    <string name="delete_all_notes_key" translatable="false">delete_all_notes</string>
-    <string name="delete_all_notes_desc">Warning! This will completely remove all your saved notes from the database.</string>
+    <string name="dark_theme_title">Dark Theme</string>
+    <string name="dark_theme_summary">Change app theme to dark.</string>
+    <string name="dark_theme_key" translatable="false">dark_theme</string>
     <string name="notifications">Notifications</string>
-    <string name="notifications_vibrate_key" translatable="false">notifications_vibration_key</string>
+    <string name="notifications_vibrate_key" translatable="false">notifications_vibration</string>
     <string name="notifications_vibrate_title">Vibrate on notifications</string>
-    <string name="about_simplenotes_key" translatable="false">about_simplenotes_key</string>
+    <string name="about_simplenotes_key" translatable="false">about_simplenotes</string>
+    <string name="sort_favorites_on_top_title">Favorites on top</string>
+    <string name="sort_favorites_on_top_summary">Places your favoritized notes on top of all lists.</string>
+    <string name="sort_favorites_on_top_key" translatable="false">sort_favorites_on_top</string>
+    <string name="time_24_key"></string>
+    <string name="time_24_title">Use 24h</string>
+    <string name="time_24_summary">Overrides your locale settings and use 24h time format.</string>
+
+    <!--// SharedPreferences-->
+    <!--public static final String SORT_FAVORITES_ON_TOP_KEY = "sort_favorites_on_top";-->
+    <!--public static final boolean SORT_FAVORITES_ON_TOP_DEFAULT = false;-->
+    <!--public static final String NOTIFICATIONS_ENABLE_LIGHTS_KEY = "notifications_enable_lights";-->
+    <!--public static final boolean NOTIFICATIONS_ENABLE_LIGHTS_DEFAULT = false;-->
+    <!--public static final String NOTIFICATIONS_LIGHT_COLOR_KEY = "notifications_light_color";-->
+    <!--public static final int NOTIFICATION_COLOR_RED = Color.RED;-->
+    <!--public static final int NOTIFICATION_COLOR_GREEN = Color.GREEN;-->
+    <!--public static final int NOTIFICATION_COLOR_BLUE = Color.BLUE;-->
+    <!--public static final int NOTIFICATION_COLOR_DEFAULT = NOTIFICATION_COLOR_GREEN;-->
 
     <!-- About -->
     <string name="about_built_by">This app was built by Rickard Zettervall, is open source and you can view the code over at &lt;a href=\"https://github.com/rickardzettervall/notes/\">github&lt;/a>.</string>
