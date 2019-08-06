@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEnableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(getString(R.string.enable_dark_theme_key), false);
+                .getBoolean(getString(R.string.dark_theme_key), false);
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Set Theme
@@ -163,11 +163,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
             case R.id.nav_change_theme:
                 if (mEnableDarkTheme) {
                     PreferenceManager.getDefaultSharedPreferences(this)
-                            .edit().putBoolean(getString(R.string.enable_dark_theme_key), false)
+                            .edit().putBoolean(getString(R.string.dark_theme_key), false)
                             .apply();
                 } else {
                     PreferenceManager.getDefaultSharedPreferences(this)
-                            .edit().putBoolean(getString(R.string.enable_dark_theme_key), true)
+                            .edit().putBoolean(getString(R.string.dark_theme_key), true)
                             .apply();
                 }
                 setTheme();
