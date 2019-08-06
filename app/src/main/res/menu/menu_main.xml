@@ -10,7 +10,7 @@
         android:orderInCategory="10"
         android:title="@string/action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="always|collapseActionView" />
 
     <!-- Sort -->
     <item
