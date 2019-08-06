@@ -113,14 +113,6 @@
     <string name="cont_tag_title">Tag title</string>
     <string name="cont_tag_delete">Delete tag</string>
 
-    <!-- LibrariesUtil -->
-    <string name="library_parceler" translatable="false">Parceler</string>
-    <string name="library_parceler_desc">A code generation library that generates the Android Parcelable boilerplate source code.</string>
-    <string name="library_parceler_url" translatable="false">https://github.com/johncarl81/parceler</string>
-    <string name="library_mockito" translatable="false">Mockito</string>
-    <string name="library_mockito_desc">Framework which allows the creation of test objects (mock objects) in automated unit tests for the purpose of test-driven development (TDD) or behavior-driven development (BDD).</string>
-    <string name="library_mockito_url" translatable="false">https://site.mockito.org/</string>
-
     <!-- Pre defined Tags -->
     <string name="tag_personal">Personal</string>
     <string name="tag_work">Work</string>
@@ -159,6 +151,6 @@
     <string name="about_built_by">This app was built by Rickard Zettervall, is open source and you can view the code over at &lt;a href=\"https://github.com/rickardzettervall/notes/\">github&lt;/a>.</string>
     <string name="about_app_icon">The app launch icon is made by &lt;a href=\"https://www.freepik.com/\" title=\"Freepik\">Freepik&lt;/a> from &lt;a href=\"https://www.flaticon.com/\" title=\"Flaticon\">www.flaticon.com&lt;/a> and is licensed by &lt;a href=\"http://creativecommons.org/licenses/by/3.0/\" title=\"Creative
 Commons BY 3.0\">CC 3.0 BY&lt;/a>.</string>
-    <string name="about_libraries">These external libraries were used when building this app: &lt;a href=\"https://github.com/johncarl81/parceler/\">Parceler&lt;/a>, &lt;a href=\"https://site.mockito.org/\">Mockito&lt;/a>, &lt;a href=\"https://github.com/junit-team/junit5/\">Junit5 Jupiter&lt;/a>.</string>
+    <string name="about_libraries">These external libraries were used when building this app: &lt;a href=\"https://github.com/johncarl81/parceler/\">Parceler&lt;/a>, &lt;a href=\"https://site.mockito.org/\">Mockito&lt;/a>, &lt;a href=\"https://github.com/junit-team/junit5/\">Junit5&lt;/a>.</string>
 
 </resources>
