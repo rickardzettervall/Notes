@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textStyle="bold"
-        tools:text="1" />
+        tools:text="999" />
 
 </RelativeLayout>

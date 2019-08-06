@@ -119,27 +119,34 @@ public class MainActivity extends BaseActivity implements
         mMainActivityViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
-                mAllNotesCounterTextView.setText(String.valueOf(notes.size()));
+                mAllNotesCounterTextView.setText(getNotesCounterValue(notes.size()));
             }
         });
         mMainActivityViewModel.getFavorites().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
-                mFavoritesCounterTextView.setText(String.valueOf(notes.size()));
+                mFavoritesCounterTextView.setText(getNotesCounterValue(notes.size()));
             }
         });
         mMainActivityViewModel.getReminders().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
-                mRemindersCounterTextView.setText(String.valueOf(notes.size()));
+                mRemindersCounterTextView.setText(getNotesCounterValue(notes.size()));
             }
         });
         mMainActivityViewModel.getTrash().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
-                mTrashCounterTextView.setText(String.valueOf(notes.size()));
+                mTrashCounterTextView.setText(getNotesCounterValue(notes.size()));
             }
         });
+    }
+
+    /**
+     * Ensure counter can't go above 999.
+     */
+    private String getNotesCounterValue(int count) {
+        return count > 999 ? "999" : String.valueOf(count);
     }
 
     /**
