@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -36,6 +38,24 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            /* Don't use finish() here because MainActivity needs to be reloaded
+             * when user changes theme. */
+            startActivity(new Intent(this, MainActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        /* Don't use finish() here because MainActivity needs to be reloaded
+         * when user changes theme. */
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     /**
      * Settings Fragment
      */
@@ -50,6 +70,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+            // Dark Theme
+            Preference darkTheme = findPreference(getString(R.string.dark_theme_key));
+            darkTheme.setOnPreferenceClickListener(this);
+
             // About
             Preference about = findPreference(getString(R.string.about_simplenotes_key));
             about.setOnPreferenceClickListener(this);
@@ -60,15 +84,19 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            if (preference == findPreference(getString(R.string.notifications_vibrate_key))) {
+            if (preference == findPreference(getString(R.string.dark_theme_key))) {
+                boolean setDarkTheme = mSharedPreferences.getBoolean(getString(R.string.dark_theme_key), false);
+                if (setDarkTheme) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+                getActivity().recreate();
+            } else if (preference == findPreference(getString(R.string.notifications_vibrate_key))) {
                 ((SwitchPreference) preference).setSwitchTextOn(R.string.enabled);
                 ((SwitchPreference) preference).setSwitchTextOff(R.string.disabled);
 //                mSharedPreferences.edit().putBoolean(Constants.NOTIFICATIONS_ENABLE_VIBRATION_KEY)
                 return true;
-            } else if (preference == findPreference(getString(R.string.insert_dummy_data_key))) {
-                // DEPRECATED
-                // DEPRECATED
-                // DEPRECATED
             } else if (preference == findPreference(getString(R.string.about_simplenotes_key))) {
                 // Inflate View
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
@@ -99,15 +127,5 @@ public class SettingsActivity extends AppCompatActivity {
             }
             return false;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
