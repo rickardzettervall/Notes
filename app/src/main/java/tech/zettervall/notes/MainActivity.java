@@ -2,8 +2,8 @@ package tech.zettervall.notes;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.navigation.NavigationView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,8 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import com.google.android.material.navigation.NavigationView;
 
 import org.parceler.Parcels;
 
@@ -65,7 +64,7 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Clicked Notification
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constants.NOTE_ID)) {
             int noteID = getIntent().getIntExtra(Constants.NOTE_ID, 0);
 
             // Initialize ViewModel and set Note
