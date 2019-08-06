@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- All Notes -->
     <item
         android:id="@+id/nav_all_notes"
         android:icon="@drawable/ic_note"
-        android:title="@string/action_all_notes" />
+        android:title="@string/action_all_notes"
+        app:actionLayout="@layout/nav_view_counter" />
 
     <!-- Favorites -->
     <item
         android:id="@+id/nav_favorites"
         android:icon="@drawable/ic_star"
-        android:title="@string/action_favorites" />
+        android:title="@string/action_favorites"
+        app:actionLayout="@layout/nav_view_counter" />
 
     <!-- Reminders -->
     <item
         android:id="@+id/nav_reminders"
         android:icon="@drawable/ic_reminder"
-        android:title="@string/action_reminders" />
+        android:title="@string/action_reminders"
+        app:actionLayout="@layout/nav_view_counter" />
 
     <!-- Tags -->
     <item
@@ -29,7 +33,8 @@
     <item
         android:id="@+id/nav_trash"
         android:icon="@drawable/ic_trash"
-        android:title="@string/action_trash" />
+        android:title="@string/action_trash"
+        app:actionLayout="@layout/nav_view_counter" />
 
     <!-- Settings -->
     <item

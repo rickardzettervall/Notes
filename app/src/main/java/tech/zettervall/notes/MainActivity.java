@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -12,6 +13,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -30,10 +32,16 @@ public class MainActivity extends BaseActivity implements
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
     private MainActivityViewModel mMainActivityViewModel;
+    private TextView mAllNotesCounterTextView, mFavoritesCounterTextView, mRemindersCounterTextView,
+            mTrashCounterTextView;
+    private boolean startedByNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize ViewModel
+        mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         // Set ContentView
         setContentView(R.layout.activity_main);
@@ -42,6 +50,20 @@ public class MainActivity extends BaseActivity implements
         mToolbar = findViewById(R.id.toolbar);
         mNavDrawerLayout = findViewById(R.id.drawer_layout);
         mNavView = findViewById(R.id.nav_view);
+        MenuItem allNotesItem = mNavView.getMenu().findItem(R.id.nav_all_notes),
+                favoritesItem = mNavView.getMenu().findItem(R.id.nav_favorites),
+                remindersItem = mNavView.getMenu().findItem(R.id.nav_reminders),
+                trashItem = mNavView.getMenu().findItem(R.id.nav_trash);
+        mAllNotesCounterTextView = allNotesItem.getActionView()
+                .findViewById(R.id.nav_view_counter_textview);
+        mFavoritesCounterTextView = favoritesItem.getActionView()
+                .findViewById(R.id.nav_view_counter_textview);
+        mRemindersCounterTextView = remindersItem.getActionView()
+                .findViewById(R.id.nav_view_counter_textview);
+        mTrashCounterTextView = trashItem.getActionView()
+                .findViewById(R.id.nav_view_counter_textview);
+
+
 
         // Set ToolBar
         setSupportActionBar(mToolbar);
@@ -67,9 +89,9 @@ public class MainActivity extends BaseActivity implements
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constants.NOTE_ID)) {
             int noteID = getIntent().getIntExtra(Constants.NOTE_ID, 0);
 
-            // Initialize ViewModel and set Note
-            mMainActivityViewModel =
-                    ViewModelProviders.of(this).get(MainActivityViewModel.class);
+            startedByNotification = true;
+
+            // Set Note
             mMainActivityViewModel.setNote(noteID);
 
             // Observer
@@ -85,6 +107,39 @@ public class MainActivity extends BaseActivity implements
                 }
             });
         }
+
+        // Subscribe Observers
+        subscribeObservers();
+    }
+
+    /**
+     * Observers for updating number of notes in each navigation view catergory.
+     */
+    private void subscribeObservers() {
+        mMainActivityViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
+            @Override
+            public void onChanged(PagedList<Note> notes) {
+                mAllNotesCounterTextView.setText(String.valueOf(notes.size()));
+            }
+        });
+        mMainActivityViewModel.getFavorites().observe(this, new Observer<PagedList<Note>>() {
+            @Override
+            public void onChanged(PagedList<Note> notes) {
+                mFavoritesCounterTextView.setText(String.valueOf(notes.size()));
+            }
+        });
+        mMainActivityViewModel.getReminders().observe(this, new Observer<PagedList<Note>>() {
+            @Override
+            public void onChanged(PagedList<Note> notes) {
+                mRemindersCounterTextView.setText(String.valueOf(notes.size()));
+            }
+        });
+        mMainActivityViewModel.getTrash().observe(this, new Observer<PagedList<Note>>() {
+            @Override
+            public void onChanged(PagedList<Note> notes) {
+                mTrashCounterTextView.setText(String.valueOf(notes.size()));
+            }
+        });
     }
 
     /**
@@ -161,7 +216,7 @@ public class MainActivity extends BaseActivity implements
         super.onPause();
         /* This observer is only needed once (when user clicks the notification),
          * therefor we remove it directly after it's used. */
-        if (mMainActivityViewModel != null) {
+        if (startedByNotification) {
             mMainActivityViewModel.getNotificationNote().removeObservers(this);
         }
     }
