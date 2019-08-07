@@ -66,6 +66,19 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
+     * Get NotesByTagFragment with Bundle.
+     *
+     * @param tagID TagID to bundle into Fragment
+     */
+    public NotesByTagFragment getNotesByTagFragment(int tagID) {
+        NotesByTagFragment notesByTagFragment = new NotesByTagFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.TAG_ID, tagID);
+        notesByTagFragment.setArguments(bundle);
+        return notesByTagFragment;
+    }
+
+    /**
      * Set AllNotesFragment.
      */
     public void setNoteListFragment(AllNotesFragment allNotesFragment) {
@@ -116,6 +129,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public void setNoteFragment(NoteFragment noteFragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_note_framelayout, noteFragment, Constants.FRAGMENT_NOTE)
+                .commit();
+    }
+
+    /**
+     * Set NotesByTagFragment.
+     */
+    public void setNotesByTagFragment(NotesByTagFragment notesByTagFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_list, notesByTagFragment, Constants.FRAGMENT_NOTES_BY_TAG)
                 .commit();
     }
 

@@ -157,15 +157,23 @@ public class MainActivity extends BaseActivity implements
     /**
      * Update Navigation Drawer SubMenu of Tags
      */
-    private void updateTagCounters(List<Tag> tags) {
+    private void updateTagCounters(final List<Tag> tags) {
         mTagsItem.getSubMenu().clear();
-        for (Tag tag : tags) {
+        for (final Tag tag : tags) {
             String tagString = "#" + tag.getTitle();
             MenuItem menuItem = mTagsItem.getSubMenu().add(tagString)
                     .setActionView(R.layout.nav_view_counter);
             TextView counterTextView = menuItem.getActionView()
                     .findViewById(R.id.nav_view_counter_textview);
             counterTextView.setText(String.valueOf(mNotesTagsCount.get(tag.getId())));
+            menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    setNotesByTagFragment(getNotesByTagFragment(tag.getId()));
+                    mNavDrawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+            });
         }
     }
 

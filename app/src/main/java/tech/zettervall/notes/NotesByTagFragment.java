@@ -22,6 +22,7 @@ public class NotesByTagFragment extends BaseListFragment {
 
     private static final String TAG = AllNotesFragment.class.getSimpleName();
     private NotesByTagFragmentViewModel mNotesByTagFragmentViewModel;
+    private int mTagID;
 
     @Nullable
     @Override
@@ -31,8 +32,15 @@ public class NotesByTagFragment extends BaseListFragment {
 
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
+        // Get TagID
+        if (getArguments() != null) {
+            mTagID = getArguments().getInt(Constants.TAG_ID);
+        }
+
         // Initialize ViewModel
         mNotesByTagFragmentViewModel = ViewModelProviders.of(this).get(NotesByTagFragmentViewModel.class);
+
+        mNotesByTagFragmentViewModel.setNotes(mTagID, null);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.fragment_notelist_recyclerview);
@@ -88,7 +96,7 @@ public class NotesByTagFragment extends BaseListFragment {
     @Override
     public void refreshObservers(@Nullable String query) {
         mNotesByTagFragmentViewModel.getNotes().removeObservers(getViewLifecycleOwner());
-        mNotesByTagFragmentViewModel.setNotes(query);
+        mNotesByTagFragmentViewModel.setNotes(mTagID, query);
         subscribeObservers();
     }
 

@@ -11,6 +11,9 @@ public abstract class Constants {
     public static final String NOTE_TEXT = "note_text"; // Used for Notifications
     public static final String NOTE_FAVORITE = "note_favorite"; // New Note in Favorites List
 
+    // Tag
+    public static final String TAG_ID = "tag_id";
+
     // Fragment
     public static final String FRAGMENT_NOTELIST = "fragment_notelist";
     public static final String FRAGMENT_FAVORITES = "fragment_favorites";
@@ -18,6 +21,7 @@ public abstract class Constants {
     public static final String FRAGMENT_TAGS = "fragment_tags";
     public static final String FRAGMENT_TRASH = "fragment_trash";
     public static final String FRAGMENT_NOTE = "fragment_note";
+    public static final String FRAGMENT_NOTES_BY_TAG = "fragment_notes_by_tag";
 
     // Time
     public static final String TIME_SELECTOR = "time_selector";
