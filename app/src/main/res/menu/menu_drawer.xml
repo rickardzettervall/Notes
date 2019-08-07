@@ -23,6 +23,13 @@
         android:title="@string/action_reminders"
         app:actionLayout="@layout/nav_view_counter" />
 
+    <!-- Tags (Header + SubMenu) -->
+    <item
+        android:id="@+id/nav_tags_header"
+        android:title="@string/action_tags">
+        <menu />
+    </item>
+
     <!-- Tags -->
     <item
         android:id="@+id/nav_tags"
@@ -33,25 +40,12 @@
     <item
         android:id="@+id/nav_trash"
         android:icon="@drawable/ic_trash"
-        android:title="@string/action_trash"
-        app:actionLayout="@layout/nav_view_counter" />
+        android:title="@string/action_trash" />
 
     <!-- Settings -->
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings" />
-
-    <!-- Theme -->
-    <item android:title="@string/theme">
-        <menu>
-
-            <!-- Change Theme -->
-            <item
-                android:id="@+id/nav_change_theme"
-                android:icon="@drawable/ic_brightness_dark"
-                android:title="@string/action_switch_theme_dark" />
-        </menu>
-    </item>
 
 </menu>

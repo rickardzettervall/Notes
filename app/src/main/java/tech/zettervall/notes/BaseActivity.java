@@ -160,19 +160,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             case R.id.nav_settings: // Launch Activity
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.nav_change_theme:
-                if (mEnableDarkTheme) {
-                    PreferenceManager.getDefaultSharedPreferences(this)
-                            .edit().putBoolean(getString(R.string.dark_theme_key), false)
-                            .apply();
-                } else {
-                    PreferenceManager.getDefaultSharedPreferences(this)
-                            .edit().putBoolean(getString(R.string.dark_theme_key), true)
-                            .apply();
-                }
-                setTheme();
-                recreate();
-                break;
         }
         return true;
     }

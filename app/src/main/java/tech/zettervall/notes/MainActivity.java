@@ -2,6 +2,7 @@ package tech.zettervall.notes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -19,8 +20,11 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.parceler.Parcels;
 
+import java.util.List;
+
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.viewmodels.MainActivityViewModel;
 
 public class MainActivity extends BaseActivity implements
@@ -32,9 +36,10 @@ public class MainActivity extends BaseActivity implements
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
     private MainActivityViewModel mMainActivityViewModel;
-    private TextView mAllNotesCounterTextView, mFavoritesCounterTextView, mRemindersCounterTextView,
-            mTrashCounterTextView;
+    SparseIntArray mNotesTagsCount = new SparseIntArray();
+    private TextView mAllNotesCounterTextView, mFavoritesCounterTextView, mRemindersCounterTextView;
     private boolean startedByNotification;
+    private MenuItem mTagsItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +57,14 @@ public class MainActivity extends BaseActivity implements
         mNavView = findViewById(R.id.nav_view);
         MenuItem allNotesItem = mNavView.getMenu().findItem(R.id.nav_all_notes),
                 favoritesItem = mNavView.getMenu().findItem(R.id.nav_favorites),
-                remindersItem = mNavView.getMenu().findItem(R.id.nav_reminders),
-                trashItem = mNavView.getMenu().findItem(R.id.nav_trash);
+                remindersItem = mNavView.getMenu().findItem(R.id.nav_reminders);
+        mTagsItem = mNavView.getMenu().findItem(R.id.nav_tags_header);
         mAllNotesCounterTextView = allNotesItem.getActionView()
                 .findViewById(R.id.nav_view_counter_textview);
         mFavoritesCounterTextView = favoritesItem.getActionView()
                 .findViewById(R.id.nav_view_counter_textview);
         mRemindersCounterTextView = remindersItem.getActionView()
                 .findViewById(R.id.nav_view_counter_textview);
-        mTrashCounterTextView = trashItem.getActionView()
-                .findViewById(R.id.nav_view_counter_textview);
-
-
 
         // Set ToolBar
         setSupportActionBar(mToolbar);
@@ -92,7 +93,7 @@ public class MainActivity extends BaseActivity implements
             startedByNotification = true;
 
             // Set Note
-            mMainActivityViewModel.setNote(noteID);
+            mMainActivityViewModel.setNotificationNote(noteID);
 
             // Observer
             mMainActivityViewModel.getNotificationNote().observe(this, new Observer<Note>() {
@@ -113,13 +114,24 @@ public class MainActivity extends BaseActivity implements
     }
 
     /**
-     * Observers for updating number of notes in each navigation view catergory.
+     * Observers for updating number of notes in each navigation view category.
      */
     private void subscribeObservers() {
         mMainActivityViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mAllNotesCounterTextView.setText(getNotesCounterValue(notes.size()));
+                mNotesTagsCount.clear();
+                for (int i = 0; i < notes.size(); i++) {
+                    try {
+                        for (Integer j : notes.get(i).getTagIDs()) {
+                            mNotesTagsCount.put(j, mNotesTagsCount.get(j) + 1);
+                        }
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+                updateTagCounters(mMainActivityViewModel.getTagsList());
             }
         });
         mMainActivityViewModel.getFavorites().observe(this, new Observer<PagedList<Note>>() {
@@ -134,12 +146,27 @@ public class MainActivity extends BaseActivity implements
                 mRemindersCounterTextView.setText(getNotesCounterValue(notes.size()));
             }
         });
-        mMainActivityViewModel.getTrash().observe(this, new Observer<PagedList<Note>>() {
+        mMainActivityViewModel.getTags().observe(this, new Observer<PagedList<Tag>>() {
             @Override
-            public void onChanged(PagedList<Note> notes) {
-                mTrashCounterTextView.setText(getNotesCounterValue(notes.size()));
+            public void onChanged(PagedList<Tag> tags) {
+                updateTagCounters(tags);
             }
         });
+    }
+
+    /**
+     * Update Navigation Drawer SubMenu of Tags
+     */
+    private void updateTagCounters(List<Tag> tags) {
+        mTagsItem.getSubMenu().clear();
+        for (Tag tag : tags) {
+            String tagString = "#" + tag.getTitle();
+            MenuItem menuItem = mTagsItem.getSubMenu().add(tagString)
+                    .setActionView(R.layout.nav_view_counter);
+            TextView counterTextView = menuItem.getActionView()
+                    .findViewById(R.id.nav_view_counter_textview);
+            counterTextView.setText(String.valueOf(mNotesTagsCount.get(tag.getId())));
+        }
     }
 
     /**
