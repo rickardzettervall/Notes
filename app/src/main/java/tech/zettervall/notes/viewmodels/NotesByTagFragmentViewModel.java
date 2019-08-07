@@ -24,15 +24,14 @@ public class NotesByTagFragmentViewModel extends AndroidViewModel {
     public NotesByTagFragmentViewModel(@NonNull Application application) {
         super(application);
         mNoteRepository = NoteRepository.getInstance(application);
-        setNotes(null);
     }
 
     public LiveData<PagedList<Note>> getNotes() {
         return mNotes;
     }
 
-    public void setNotes(@Nullable String query) {
-        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotesPagedList(query),
+    public void setNotes(int tagID, @Nullable String query) {
+        mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotesPagedList(tagID, query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 }
