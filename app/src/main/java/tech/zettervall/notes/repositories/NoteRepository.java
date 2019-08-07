@@ -79,11 +79,13 @@ public class NoteRepository {
      * @param onlyFavorites  Selects only favorites
      * @param favoritesOnTop Sort with favorites on top
      * @param searchQuery    Search String input from user, use null for no query
+     * @param tagID          Only get Notes which has this Tag, use null for no Tag
      * @return Complete SQL query String ready to be used with RawQuery in DAO
      */
     private String queryBuilder(int sortType, int sortDirection, boolean trash,
                                 boolean onlyFavorites, boolean onlyReminders,
-                                boolean favoritesOnTop, @Nullable String searchQuery) {
+                                boolean favoritesOnTop, @Nullable String searchQuery,
+                                @Nullable Integer tagID) {
         // SQL query
         StringBuilder query = new StringBuilder("SELECT * FROM notes WHERE ");
 
@@ -96,6 +98,7 @@ public class NoteRepository {
         final String remindersQuery = " AND " + Note.notificationEpochColumnName + " > 0";
         final String sortDirectionQuery = sortDirection == Constants.SORT_DIRECTION_ASC ?
                 "ASC" : "DESC";
+        final String tagIdQuery = " AND " + Note.tagsColumnName + " LIKE '%' || '" + tagID + "' || '%'";
 
         // Only show trashed Notes?
         query.append(Note.trashColumnName).append(" = ").append(trashVal);
@@ -105,6 +108,11 @@ public class NoteRepository {
             query.append(favoritesQuery);
         } else if (onlyReminders) {
             query.append(remindersQuery);
+        }
+
+        // Only show Notes matching tagID?
+        if (tagID != null) {
+            query.append(tagIdQuery);
         }
 
         // User query
@@ -154,7 +162,7 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all Notes matching query..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                false, false, false, getSortFavoritesOnTop(), query);
+                false, false, false, getSortFavoritesOnTop(), query, null);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotesPagedList(sqlQuery);
     }
@@ -162,9 +170,13 @@ public class NoteRepository {
     /**
      * Get all Notes which have Tag ID as PagedList LiveData.
      */
-    public DataSource.Factory<Integer, Note> getNotesPagedList(final int tagID) {
-        Log.d(TAG, "Retrieving all Notes matching tag..");
-        return mNoteDao.getNotesPagedList(String.valueOf(tagID));
+    public DataSource.Factory<Integer, Note> getNotesPagedList(final int tagID,
+                                                               final @Nullable String query) {
+        Log.d(TAG, "Retrieving all Notes matching tag + query..");
+        String queryString = queryBuilder(getSortType(), getSortDirection(),
+                false, false, false, getSortFavoritesOnTop(), query, tagID);
+        SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
+        return mNoteDao.getNotesPagedList(sqlQuery);
     }
 
     /**
@@ -188,7 +200,7 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getTrashedNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all trashed Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                true, false, false, getSortFavoritesOnTop(), query);
+                true, false, false, getSortFavoritesOnTop(), query, null);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotesPagedList(sqlQuery);
     }
@@ -201,7 +213,7 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getFavoritizedNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all favoritized Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                false, true, false, false, query);
+                false, true, false, false, query, null);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotesPagedList(sqlQuery);
     }
@@ -214,7 +226,7 @@ public class NoteRepository {
     public DataSource.Factory<Integer, Note> getReminderNotesPagedList(final @Nullable String query) {
         Log.d(TAG, "Retrieving all reminder Notes..");
         String queryString = queryBuilder(getSortType(), getSortDirection(),
-                false, false, true, getSortFavoritesOnTop(), query);
+                false, false, true, getSortFavoritesOnTop(), query, null);
         SimpleSQLiteQuery sqlQuery = new SimpleSQLiteQuery(queryString);
         return mNoteDao.getNotesPagedList(sqlQuery);
     }
