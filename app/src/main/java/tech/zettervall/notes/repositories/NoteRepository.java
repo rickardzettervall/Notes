@@ -103,7 +103,7 @@ public class NoteRepository {
         // Only show trashed Notes?
         query.append(Note.trashColumnName).append(" = ").append(trashVal);
 
-        // Only show favoritized Notes?
+        // Only show favoritized or Reminder Notes?
         if (onlyFavorites) {
             query.append(favoritesQuery);
         } else if (onlyReminders) {
@@ -115,14 +115,28 @@ public class NoteRepository {
             query.append(tagIdQuery);
         }
 
-        // User query
+        /* User query
+         * IMPORTANT: Apply onlyFavorites, onlyReminders and tagID here again because
+         * the search is done on two columns (title and text) and must be separated
+         * by an 'OR'.
+         */
         if (searchQuery != null) {
             query.append(" AND ").append(Note.titleColumnName).append(" LIKE '%' || '")
                     .append(searchQuery).append("' || '%' OR ").append(Note.trashColumnName)
                     .append(" = ").append(trashVal);
+
+            // Only show favoritized or Reminder Notes?
             if (onlyFavorites) {
                 query.append(favoritesQuery);
+            } else if (onlyReminders) {
+                query.append(remindersQuery);
             }
+
+            // Only show Notes matching tagID?
+            if (tagID != null) {
+                query.append(tagIdQuery);
+            }
+
             query.append(" AND ").append(Note.textColumnName).append(" LIKE '%' || '")
                     .append(searchQuery).append("' || '%'");
         }
