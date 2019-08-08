@@ -12,9 +12,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.parceler.Parcels;
+
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.NotesByTagFragmentViewModel;
 
@@ -22,7 +25,7 @@ public class NotesByTagFragment extends BaseListFragment {
 
     private static final String TAG = AllNotesFragment.class.getSimpleName();
     private NotesByTagFragmentViewModel mNotesByTagFragmentViewModel;
-    private int mTagID;
+    private Tag mTag;
 
     @Nullable
     @Override
@@ -34,13 +37,12 @@ public class NotesByTagFragment extends BaseListFragment {
 
         // Get TagID
         if (getArguments() != null) {
-            mTagID = getArguments().getInt(Constants.TAG_ID);
+            mTag = Parcels.unwrap(getArguments().getParcelable((Constants.TAG)));
         }
 
         // Initialize ViewModel
         mNotesByTagFragmentViewModel = ViewModelProviders.of(this).get(NotesByTagFragmentViewModel.class);
-
-        mNotesByTagFragmentViewModel.setNotes(mTagID, null);
+        mNotesByTagFragmentViewModel.setNotes(mTag.getId(), null);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.fragment_notelist_recyclerview);
@@ -74,7 +76,7 @@ public class NotesByTagFragment extends BaseListFragment {
         });
 
         // Set title
-        getActivity().setTitle(R.string.action_all_notes);
+        getActivity().setTitle(mTag.getTitle());
 
         // Subscribe Observers
         subscribeObservers();
@@ -96,7 +98,7 @@ public class NotesByTagFragment extends BaseListFragment {
     @Override
     public void refreshObservers(@Nullable String query) {
         mNotesByTagFragmentViewModel.getNotes().removeObservers(getViewLifecycleOwner());
-        mNotesByTagFragmentViewModel.setNotes(mTagID, query);
+        mNotesByTagFragmentViewModel.setNotes(mTag.getId(), query);
         subscribeObservers();
     }
 
