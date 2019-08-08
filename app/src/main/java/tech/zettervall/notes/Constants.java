@@ -12,6 +12,7 @@ public abstract class Constants {
     public static final String NOTE_FAVORITE = "note_favorite"; // New Note in Favorites List
 
     // Tag
+    public static final String TAG = "tag";
     public static final String TAG_ID = "tag_id";
 
     // Fragment

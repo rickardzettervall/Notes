@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity implements
             menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    setNotesByTagFragment(getNotesByTagFragment(tag.getId()));
+                    setNotesByTagFragment(getNotesByTagFragment(tag));
                     mNavDrawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }

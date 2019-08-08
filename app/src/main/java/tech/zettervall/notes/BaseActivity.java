@@ -16,6 +16,7 @@ import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 
 /**
  * Base Activity with commonly used methods.
@@ -68,12 +69,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
     /**
      * Get NotesByTagFragment with Bundle.
      *
-     * @param tagID TagID to bundle into Fragment
+     * @param tag Tag to bundle into Fragment
      */
-    public NotesByTagFragment getNotesByTagFragment(int tagID) {
+    public NotesByTagFragment getNotesByTagFragment(Tag tag) {
         NotesByTagFragment notesByTagFragment = new NotesByTagFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(Constants.TAG_ID, tagID);
+        bundle.putParcelable(Constants.TAG, Parcels.wrap(tag));
         notesByTagFragment.setArguments(bundle);
         return notesByTagFragment;
     }
