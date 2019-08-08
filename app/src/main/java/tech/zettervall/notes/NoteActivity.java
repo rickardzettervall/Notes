@@ -9,6 +9,7 @@ import org.parceler.Parcels;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 
 public class NoteActivity extends BaseActivity {
 
@@ -29,12 +30,16 @@ public class NoteActivity extends BaseActivity {
 
         // Set Fragments
         if (savedInstanceState == null) {
-            if (getIntent().getExtras() != null) { // Clicked Note or new Note from Favorites Fragment
-                if (getIntent().getExtras().getBoolean(Constants.NOTE_FAVORITE)) {
-                    setNoteFragment(getNoteFragment(null, true));
-                } else if (getIntent().getExtras().getParcelable(Constants.NOTE) != null) {
-                    Note note = Parcels.unwrap(getIntent().getExtras().getParcelable(Constants.NOTE));
-                    setNoteFragment(getNoteFragment(note, false));
+            if (getIntent().getExtras() != null) { // Clicked Note or new Note from Favorites/NotesByTag Fragment
+                Note note = Parcels.unwrap(getIntent().getExtras().getParcelable(Constants.NOTE));
+                Tag tag = Parcels.unwrap(getIntent().getExtras().getParcelable(Constants.TAG));
+                boolean favorite = getIntent().getExtras().getBoolean(Constants.NOTE_FAVORITE);
+                if (favorite) { // FAB clicked in FavoritesFragment
+                    setNoteFragment(getNoteFragment(null, true, null));
+                } else if (tag != null) { // FAB clicked in NotesByTagFragment
+                    setNoteFragment(getNoteFragment(null, false, tag));
+                } else if (note != null) { // Note clicked in any Fragment
+                    setNoteFragment(getNoteFragment(note, false, null));
                 } else {
                     setNoteFragment(new NoteFragment());
                 }

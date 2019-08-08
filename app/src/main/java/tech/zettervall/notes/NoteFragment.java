@@ -80,14 +80,19 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         // Get Note
         if (savedInstanceState != null) { // Existing Note but configuration changed
             mNote = Parcels.unwrap(savedInstanceState.getParcelable(Constants.NOTE));
-        } else if (getArguments() != null) { // Clicked Note or new Note from Favorites Fragment
-            if (getArguments().getBoolean(Constants.NOTE_FAVORITE)) {
-                mNote = newNote(true);
-            } else {
-                mNote = Parcels.unwrap(getArguments().getParcelable(Constants.NOTE));
+        } else if (getArguments() != null) { // Clicked Note or new Note from Favorites/NotesByTag Fragment
+            Note note = Parcels.unwrap(getArguments().getParcelable(Constants.NOTE));
+            Tag tag = Parcels.unwrap(getArguments().getParcelable(Constants.TAG));
+            boolean favorite = getArguments().getBoolean(Constants.NOTE_FAVORITE);
+            if (favorite) { // FAB clicked in FavoritesFragment
+                mNote = newNote(true, null);
+            } else if (tag != null) { // FAB clicked in NotesByTagFragment
+                mNote = newNote(false, tag);
+            } else if (note != null) { // Note clicked in any Fragment
+                mNote = note;
             }
         } else { // New Note
-            mNote = newNote(false);
+            mNote = newNote(false, null);
         }
 
         // Show Reminder
@@ -172,11 +177,16 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      * Create new Note.
      *
      * @param isFavorite Set favorite on creation
+     * @param tag        Set Tag
      */
-    private Note newNote(boolean isFavorite) {
+    private Note newNote(boolean isFavorite, @Nullable Tag tag) {
+        List<Integer> tagIDs = new ArrayList<>();
+        if (tag != null) {
+            tagIDs.add(tag.getId());
+        }
         return new Note(mDataBinding.fragmentNoteTitleTextview.getText().toString(),
                 mDataBinding.fragmentNoteTextTextview.getText().toString(),
-                new ArrayList<Integer>(),
+                tagIDs,
                 DateTimeUtil.getCurrentEpoch(),
                 -1,
                 -1,

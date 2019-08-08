@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -188,12 +189,14 @@ public class MainActivity extends BaseActivity implements
      * Create new Note.
      *
      * @param setFavorite when true, Note will be favorite on creation
+     * @param tag         Used to set Tag for Note on creation
      */
     @Override
-    public void onFragmentFabClick(boolean setFavorite) {
+    public void onFragmentFabClick(boolean setFavorite, @Nullable Tag tag) {
         if (!mIsTablet) { // PHONE
             Intent intent = new Intent(this, NoteActivity.class);
             intent.putExtra(Constants.NOTE_FAVORITE, setFavorite);
+            intent.putExtra(Constants.TAG, Parcels.wrap(tag));
             startActivity(intent);
         } else { // TABLET
             setNoteFragment(new NoteFragment());

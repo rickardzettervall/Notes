@@ -53,14 +53,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
      *
      * @param note        Clicked Note to send to Fragment, set null for new Note
      * @param setFavorite Determines if the new Note should be a favorite on creation
+     * @param tag         Used to set Tag for Note on creation
      */
-    public NoteFragment getNoteFragment(@Nullable Note note, boolean setFavorite) {
+    public NoteFragment getNoteFragment(@Nullable Note note, boolean setFavorite, @Nullable Tag tag) {
         NoteFragment noteFragment = new NoteFragment();
         Bundle bundle = new Bundle();
         if (note != null) {
             bundle.putParcelable(Constants.NOTE, Parcels.wrap(note));
         } else {
             bundle.putBoolean(Constants.NOTE_FAVORITE, setFavorite);
+            bundle.putParcelable(Constants.TAG, Parcels.wrap(tag));
         }
         noteFragment.setArguments(bundle);
         return noteFragment;

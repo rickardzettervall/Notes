@@ -29,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.models.Tag;
 
 public abstract class BaseListFragment extends Fragment
         implements NoteAdapter.OnNoteClickListener, ListObservers {
@@ -267,6 +268,6 @@ public abstract class BaseListFragment extends Fragment
     public interface ListFragmentClickListener {
         void onNoteClick(Note note);
 
-        void onFragmentFabClick(boolean setFavorite);
+        void onFragmentFabClick(boolean setFavorite, @Nullable Tag tag);
     }
 }

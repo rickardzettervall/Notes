@@ -61,7 +61,7 @@ public class FavoritesFragment extends BaseListFragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onFragmentFabClick(true);
+                callback.onFragmentFabClick(true, null);
             }
         });
 

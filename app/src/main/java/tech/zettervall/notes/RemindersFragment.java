@@ -61,7 +61,7 @@ public class RemindersFragment extends BaseListFragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onFragmentFabClick(false);
+                callback.onFragmentFabClick(false, null);
             }
         });
 
