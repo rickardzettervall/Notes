@@ -29,6 +29,16 @@ public abstract class DbMigration {
     };
 
     /**
+     * Migration of db version 7 -> 8.
+     */
+    public static Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // No change to db but the way Tags (String) are stored in a Note was changed.
+        }
+    };
+
+    /**
      * Converts the old Tags JSON String to List.
      */
     public static List<Integer> MIGRATION_5_7_FIX(String oldTagString) {
@@ -52,6 +62,23 @@ public abstract class DbMigration {
                 }
             }
             values.add(Integer.valueOf(digitString.toString()));
+        }
+        return values;
+    }
+
+    /**
+     * Converts the old Tags String to List.
+     */
+    public static List<Integer> MIGRATION_7_8_FIX(String oldTagString) {
+        ArrayList<Integer> values = new ArrayList<>();
+        StringBuilder digit = new StringBuilder();
+        for (int i = 0; i < oldTagString.length(); i++) {
+            if (Character.isDigit(oldTagString.charAt(i))) {
+                digit.append(oldTagString.charAt(i));
+            } else {
+                values.add(Integer.valueOf(digit.toString()));
+                digit.delete(0, digit.length());
+            }
         }
         return values;
     }

@@ -98,7 +98,8 @@ public class NoteRepository {
         final String remindersQuery = " AND " + Note.notificationEpochColumnName + " > 0";
         final String sortDirectionQuery = sortDirection == Constants.SORT_DIRECTION_ASC ?
                 "ASC" : "DESC";
-        final String tagIdQuery = " AND " + Note.tagsColumnName + " LIKE '%' || '" + tagID + "' || '%'";
+        final String tagIdString = "\"" + tagID + "\"";
+        final String tagIdQuery = " AND " + Note.tagsColumnName + " LIKE '%' || '" + tagIdString + "' || '%'";
 
         // Only show trashed Notes?
         query.append(Note.trashColumnName).append(" = ").append(trashVal);
