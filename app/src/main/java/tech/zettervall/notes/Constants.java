@@ -58,4 +58,7 @@ public abstract class Constants {
     public static final int NOTIFICATION_COLOR_DEFAULT = NOTIFICATION_COLOR_GREEN;
     public static final String NOTIFICATIONS_ENABLE_VIBRATION_KEY = "notification_enable_vibration";
     public static final boolean NOTIFICATIONS_ENABLE_VIBRATION_DEFAULT = false;
+
+    // Google Play Store Page
+    public static final String GOOGLE_PLAY_STORE_PAGE = "https://play.google.com/store/dev?id=5541068057061037845";
 }

@@ -2,6 +2,7 @@ package tech.zettervall.notes;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -74,9 +75,13 @@ public class SettingsActivity extends AppCompatActivity {
             Preference darkTheme = findPreference(getString(R.string.dark_theme_key));
             darkTheme.setOnPreferenceClickListener(this);
 
-            // About
-            Preference about = findPreference(getString(R.string.about_simplenotes_key));
-            about.setOnPreferenceClickListener(this);
+            // About (Other Apps)
+            Preference aboutOtherApps = findPreference(getString(R.string.about_apps_key));
+            aboutOtherApps.setOnPreferenceClickListener(this);
+
+            // About (App)
+            Preference aboutApp = findPreference(getString(R.string.about_simplenotes_key));
+            aboutApp.setOnPreferenceClickListener(this);
 
 //            SwitchPreference notificationsVibrate = findPreference(getString(R.string.notifications_vibrate_key));
 //            notificationsVibrate.setOnPreferenceClickListener(this);
@@ -97,6 +102,12 @@ public class SettingsActivity extends AppCompatActivity {
                 ((SwitchPreference) preference).setSwitchTextOff(R.string.disabled);
 //                mSharedPreferences.edit().putBoolean(Constants.NOTIFICATIONS_ENABLE_VIBRATION_KEY)
                 return true;
+            } else if (preference == findPreference(getString(R.string.about_apps_key))) {
+                Uri devPages = Uri.parse(Constants.GOOGLE_PLAY_STORE_PAGE);
+                Intent intent = new Intent(Intent.ACTION_VIEW, devPages);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
             } else if (preference == findPreference(getString(R.string.about_simplenotes_key))) {
                 // Inflate View
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);

@@ -135,6 +135,9 @@
     <string name="time_24_key"></string>
     <string name="time_24_title">Use 24h</string>
     <string name="time_24_summary">Overrides your locale settings and use 24h time format.</string>
+    <string name="about_apps_key">about_apps</string>
+    <string name="about_apps_title">Google Play</string>
+    <string name="about_apps_summary">Try my other Apps</string>
 
     <!--// SharedPreferences-->
     <!--public static final String SORT_FAVORITES_ON_TOP_KEY = "sort_favorites_on_top";-->
