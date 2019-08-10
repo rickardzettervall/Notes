@@ -199,7 +199,11 @@ public class MainActivity extends BaseActivity implements
             intent.putExtra(Constants.TAG, Parcels.wrap(tag));
             startActivity(intent);
         } else { // TABLET
-            setNoteFragment(new NoteFragment());
+            if (setFavorite || tag != null) {
+                setNoteFragment(getNoteFragment(null, setFavorite, tag));
+            } else {
+                setNoteFragment(new NoteFragment());
+            }
         }
     }
 
