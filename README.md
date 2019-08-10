@@ -17,6 +17,9 @@ Android app for writing down notes and saving them locally.
 
 <strong><h3>Screen Captures</h3></strong>
 
+<img src="https://i.imgur.com/zsVeASC.png" width="32%"> <img src="https://i.imgur.com/uoiD80E.png" width="32%"> <img src="https://i.imgur.com/WLjaqy9.png" width="32%">
+
+<img src="https://i.imgur.com/faU1yRs.png">
 
 <strong><h3>License</h3></strong>
 
