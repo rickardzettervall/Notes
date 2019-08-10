@@ -9,5 +9,5 @@
         android:icon="@drawable/ic_clear"
         android:orderInCategory="90"
         android:title="@string/action_empty_trash"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>
