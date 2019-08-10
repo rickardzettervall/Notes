@@ -125,7 +125,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 @Override
                 public void onClick(View v) {
                     saveNote();
-                    Toast.makeText(getActivity(), "Note saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.note_saved), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

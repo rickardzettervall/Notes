@@ -26,6 +26,7 @@
     <string name="note_restored_detailed">\'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' restored</string>
     <string name="note_favorites_added">Added to favorites</string>
     <string name="note_favorites_removed">Removed from favorites</string>
+    <string name="note_saved">Note saved</string>
 
     <!-- Date -->
     <string name="today">Today</string>
