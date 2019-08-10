@@ -1,7 +1,7 @@
-# Android Notes App (WIP)
-Android app for writing down notes and saving them locally.
+# Android Notes App
+Android app built with MVVM architecture for writing down notes and saving them locally.
 
-<h3><strong>Features</strong> (some not yet implemented)</h3>
+<h3><strong>Features</strong></h3>
 
 - Uses Room database to store notes / tags.
 - Fragments to (only) show all notes, favorites, reminders (notes which have reminder set), trash.
@@ -19,7 +19,7 @@ Android app for writing down notes and saving them locally.
 
 <img src="https://i.imgur.com/zsVeASC.png" width="32%"> <img src="https://i.imgur.com/uoiD80E.png" width="32%"> <img src="https://i.imgur.com/WLjaqy9.png" width="32%">
 
-<img src="https://i.imgur.com/faU1yRs.png">
+<img src="https://i.imgur.com/faU1yRs.png" width="97%">
 
 <strong><h3>License</h3></strong>
 
