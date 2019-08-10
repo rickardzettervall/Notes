@@ -54,7 +54,7 @@ import static android.content.Context.JOB_SCHEDULER_SERVICE;
 public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
-    private boolean mTrash, mIsTrash, mFinalDeletion, mRestore, mIsTablet;
+    private boolean mTrash, mFinalDeletion, mRestore, mIsTablet;
     private long mReminderDateTimeEpoch;
     private FragmentNoteBinding mDataBinding;
     private NoteFragmentViewModel mNoteFragmentViewModel;
@@ -133,9 +133,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             mDataBinding.fragmentNoteFab.hide();
         }
 
-        // Set title / trashed state
+        // Set title
         if (!mIsTablet && mNote.isTrash()) {
-            mIsTrash = true;
             getActivity().setTitle(R.string.note_trash);
             // Hide keyboard
             KeyboardUtil.hideKeyboard(getActivity());
@@ -315,15 +314,15 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     }
 
     /**
-     * Save / Trash / Restore Note.
+     * Save / Trash / Restore / Delete Note.
      */
     @Override
     public void onPause() {
         super.onPause();
-        if (!mFinalDeletion && !mIsTrash) {
-            if (!mTrash) { // SAVE
+        if (!mNote.isTrash()) { // Not Trashed
+            if (!mTrash) { // Don't trash, just save
                 saveNote();
-            } else if (mNote != null) { // TRASH
+            } else { // Trash Note
                 mNote.setTrash(true);
                 mNoteFragmentViewModel.updateNote(mNote);
                 // Remove notification
@@ -336,9 +335,13 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         getString(R.string.note_trashed);
                 Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
             }
-        } else if (mIsTrash && mRestore) { // Restore trashed Note
-            mNote.setTrash(false);
-            mNoteFragmentViewModel.updateNote(mNote);
+        } else { // Trashed Note
+            if (mFinalDeletion) { // Final deletion
+                mNoteFragmentViewModel.deleteNote(mNote);
+            } else if (mRestore) { // Restore trashed note
+                mNote.setTrash(false);
+                mNoteFragmentViewModel.updateNote(mNote);
+            }
         }
     }
 
@@ -482,10 +485,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
-                                        if (!mNote.isTrash()) {
+                                        if (!mNote.isTrash()) { // Regular Note, trash it
                                             mTrash = true;
-                                        } else { // TRASHED (final deletion)
-                                            mNoteFragmentViewModel.deleteNote(mNote);
+                                        } else { // Already trashed Note, Final deletion!
                                             mFinalDeletion = true;
                                             String message = !mNote.getTitle().isEmpty() ?
                                                     getString(R.string.note_deleted_detailed,
