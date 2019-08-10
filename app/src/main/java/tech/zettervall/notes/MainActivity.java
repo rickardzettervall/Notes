@@ -210,8 +210,7 @@ public class MainActivity extends BaseActivity implements
             intent.putExtra(Constants.NOTE, Parcels.wrap(note));
             startActivity(intent);
         } else { // TABLET
-            // TODO: FIX TABLET VERSION LATER
-//            setNoteFragment(getNoteFragmentWithBundledNote(note.getId()));
+            setNoteFragment(getNoteFragment(note, false, null));
         }
     }
 
