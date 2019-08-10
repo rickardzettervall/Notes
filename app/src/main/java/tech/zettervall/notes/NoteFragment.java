@@ -146,6 +146,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             mDataBinding.fragmentNoteTextTextview.requestFocus();
         }
 
+        // Tags sanity check
+        tagsSanityCheck();
+
         // Set Tags TextView
         updateTagsUi();
 
@@ -383,12 +386,29 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     }
 
     /**
+     * Check that no old tags persist in Note.
+     */
+    private void tagsSanityCheck() {
+        List<Integer> tagsIdListNote = mNote.getTagIDs();
+        List<Integer> tagsIdListDb = new ArrayList<>();
+        List<Tag> tagsList = mNoteFragmentViewModel.getTags();
+        for (Tag tag : tagsList) {
+            tagsIdListDb.add(tag.getId());
+        }
+        for (int tagID : tagsIdListNote) {
+            if (!tagsIdListDb.contains(tagID)) {
+                tagsIdListNote.remove(tagID);
+            }
+        }
+        mNote.setTagIDs(tagsIdListNote);
+    }
+
+    /**
      * Update Tags TextView.
      */
     private void updateTagsUi() {
         StringBuilder tagsString = new StringBuilder();
         if (!mNote.getTagIDs().isEmpty()) {
-            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
             List<Tag> tags = mNoteFragmentViewModel.getTags();
             List<String> tagTitles = new ArrayList<>();
             for (Tag tag : tags) {
@@ -403,10 +423,11 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                     tagsString.append(" ");
                 }
             }
+            mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
+            mDataBinding.fragmentNoteTagsTextview.setText(tagsString.toString());
         } else {
             mDataBinding.fragmentNoteTagsTextview.setVisibility(View.GONE);
         }
-        mDataBinding.fragmentNoteTagsTextview.setText(tagsString.toString());
     }
 
     @Override
