@@ -7,7 +7,7 @@
     <item
         android:id="@+id/action_restore"
         android:icon="@drawable/ic_restore"
-        android:orderInCategory="10"
+        android:orderInCategory="99"
         android:title="@string/action_restore"
         app:showAsAction="ifRoom" />
 
