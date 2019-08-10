@@ -55,7 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
      * @param setFavorite Determines if the new Note should be a favorite on creation
      * @param tag         Used to set Tag for Note on creation
      */
-    public NoteFragment getNoteFragment(@Nullable Note note, boolean setFavorite, @Nullable Tag tag) {
+    public static NoteFragment getNoteFragment(@Nullable Note note, boolean setFavorite, @Nullable Tag tag) {
         NoteFragment noteFragment = new NoteFragment();
         Bundle bundle = new Bundle();
         if (note != null) {

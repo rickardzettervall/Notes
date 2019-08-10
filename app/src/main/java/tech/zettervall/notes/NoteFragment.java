@@ -470,7 +470,13 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                                         if (!mIsTablet) { // PHONE
                                             getActivity().finish();
                                         } else { // TABLET
-                                            // TODO: What happens for tablet users?
+                                            onPause();
+                                            // Reload with new Fragment
+                                            getActivity().getSupportFragmentManager().beginTransaction()
+                                                    .replace(R.id.activity_note_framelayout,
+                                                            new NoteFragment(),
+                                                            Constants.FRAGMENT_NOTE)
+                                                    .commit();
                                         }
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
@@ -499,7 +505,13 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                                         if (!mIsTablet) { // PHONE
                                             getActivity().finish();
                                         } else { // TABLET
-                                            // TODO: What happens for tablet users?
+                                            onPause();
+                                            // Reload Fragment
+                                            getActivity().getSupportFragmentManager().beginTransaction()
+                                                    .replace(R.id.activity_note_framelayout,
+                                                            BaseActivity.getNoteFragment(mNote, false, null),
+                                                            Constants.FRAGMENT_NOTE)
+                                                    .commit();
                                         }
                                         String message = !mNote.getTitle().isEmpty() ?
                                                 getString(R.string.note_restored_detailed,
