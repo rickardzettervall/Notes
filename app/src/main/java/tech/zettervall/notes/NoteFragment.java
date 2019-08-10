@@ -133,7 +133,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         }
 
         // Set title / trashed state
-        if (mNote.isTrash()) {
+        if (!mIsTablet && mNote.isTrash()) {
             mIsTrash = true;
             getActivity().setTitle(R.string.note_trash);
             // Hide keyboard
