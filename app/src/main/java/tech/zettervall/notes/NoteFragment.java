@@ -32,6 +32,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import tech.zettervall.mNotes.R;
@@ -386,14 +387,19 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      */
     private void updateTagsUi() {
         StringBuilder tagsString = new StringBuilder();
-        if (!mNote.getTagIDs().isEmpty() && mNote.getTagIDs().size() > 0) {
+        if (!mNote.getTagIDs().isEmpty()) {
             mDataBinding.fragmentNoteTagsTextview.setVisibility(View.VISIBLE);
             List<Tag> tags = mNoteFragmentViewModel.getTags();
-            for (int i = 0; i < tags.size(); i++) {
-                if (mNote.getTagIDs().contains(tags.get(i).getId())) {
-                    tagsString.append("#").append(tags.get(i).getTitle());
+            List<String> tagTitles = new ArrayList<>();
+            for (Tag tag : tags) {
+                if (mNote.getTagIDs().contains(tag.getId())) {
+                    tagTitles.add(tag.getTitle());
                 }
-                if (i < mNote.getTagIDs().size() - 1) {
+            }
+            Collections.sort(tagTitles);
+            for (int i = 0; i < tagTitles.size(); i++) {
+                tagsString.append("#").append(tagTitles.get(i));
+                if (i < tagTitles.size() - 1) {
                     tagsString.append(" ");
                 }
             }
