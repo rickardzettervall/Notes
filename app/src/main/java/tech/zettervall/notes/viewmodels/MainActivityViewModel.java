@@ -18,7 +18,8 @@ import tech.zettervall.notes.repositories.TagRepository;
 
 /**
  * ViewModel for MainActivity.
- * Used for when user clicks a notification, this fetches the
+ * Used for updating Navigation Drawer note counters and also
+ * for when user clicks a notification, this fetches the
  * clicked Note based on ID received from the notification.
  */
 public class MainActivityViewModel extends AndroidViewModel {
@@ -42,7 +43,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         mReminders = new LivePagedListBuilder<>(mNoteRepository.getReminderNotesPagedList(null),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
         mTags = new LivePagedListBuilder<>(mTagRepository.getTagsPagedList(),
-                Constants.NOTE_LIST_PAGE_SIZE).build();
+                Constants.TAG_LIST_PAGE_SIZE).build();
     }
 
     public LiveData<Note> getNotificationNote() {

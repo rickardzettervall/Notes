@@ -365,7 +365,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     }
 
     /**
-     * CLick event for Tag Adapter within AlertDialog for selecting Tags.
+     * Click event for Tag Adapter within AlertDialog for selecting Tags.
      *
      * @param index Index of clicked Tag
      */
