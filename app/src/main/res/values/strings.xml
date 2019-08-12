@@ -126,30 +126,19 @@
     <string name="dark_theme_title">Dark Theme</string>
     <string name="dark_theme_summary">Change app theme to dark.</string>
     <string name="dark_theme_key" translatable="false">dark_theme</string>
-    <string name="notifications">Notifications</string>
-    <string name="notifications_vibrate_key" translatable="false">notifications_vibration</string>
-    <string name="notifications_vibrate_title">Vibrate on notifications</string>
     <string name="about_simplenotes_key" translatable="false">about_simplenotes</string>
     <string name="sort_favorites_on_top_title">Favorites on top</string>
     <string name="sort_favorites_on_top_summary">Places your favoritized notes on top of all lists.</string>
     <string name="sort_favorites_on_top_key" translatable="false">sort_favorites_on_top</string>
-    <string name="time_24_key"></string>
-    <string name="time_24_title">Use 24h</string>
-    <string name="time_24_summary">Overrides your locale settings and use 24h time format.</string>
+    <string name="time_24_key">time_24</string>
+    <string name="time_24_title">Military time (24H)</string>
+    <string name="time_24_summary">Override your locale settings and use the military time format.</string>
     <string name="about_apps_key">about_apps</string>
     <string name="about_apps_title">Google Play</string>
     <string name="about_apps_summary">Try my other Apps</string>
 
-    <!--// SharedPreferences-->
-    <!--public static final String SORT_FAVORITES_ON_TOP_KEY = "sort_favorites_on_top";-->
-    <!--public static final boolean SORT_FAVORITES_ON_TOP_DEFAULT = false;-->
-    <!--public static final String NOTIFICATIONS_ENABLE_LIGHTS_KEY = "notifications_enable_lights";-->
-    <!--public static final boolean NOTIFICATIONS_ENABLE_LIGHTS_DEFAULT = false;-->
-    <!--public static final String NOTIFICATIONS_LIGHT_COLOR_KEY = "notifications_light_color";-->
-    <!--public static final int NOTIFICATION_COLOR_RED = Color.RED;-->
-    <!--public static final int NOTIFICATION_COLOR_GREEN = Color.GREEN;-->
-    <!--public static final int NOTIFICATION_COLOR_BLUE = Color.BLUE;-->
-    <!--public static final int NOTIFICATION_COLOR_DEFAULT = NOTIFICATION_COLOR_GREEN;-->
+    <!-- Notifications -->
+    <string name="notification_channel_reminders_title">Reminders</string>
 
     <!-- About -->
     <string name="about_built_by">This app was built by Rickard Zettervall, is open source and you can view the code over at &lt;a href=\"https://github.com/rickardzettervall/notes/\">github&lt;/a>.</string>

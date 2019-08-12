@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.preference.SwitchPreference;
 
 import tech.zettervall.mNotes.R;
 
@@ -82,9 +81,6 @@ public class SettingsActivity extends AppCompatActivity {
             // About (App)
             Preference aboutApp = findPreference(getString(R.string.about_simplenotes_key));
             aboutApp.setOnPreferenceClickListener(this);
-
-//            SwitchPreference notificationsVibrate = findPreference(getString(R.string.notifications_vibrate_key));
-//            notificationsVibrate.setOnPreferenceClickListener(this);
         }
 
         @Override
@@ -97,11 +93,6 @@ public class SettingsActivity extends AppCompatActivity {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
                 getActivity().recreate();
-            } else if (preference == findPreference(getString(R.string.notifications_vibrate_key))) {
-                ((SwitchPreference) preference).setSwitchTextOn(R.string.enabled);
-                ((SwitchPreference) preference).setSwitchTextOff(R.string.disabled);
-//                mSharedPreferences.edit().putBoolean(Constants.NOTIFICATIONS_ENABLE_VIBRATION_KEY)
-                return true;
             } else if (preference == findPreference(getString(R.string.about_apps_key))) {
                 Uri devPages = Uri.parse(Constants.GOOGLE_PLAY_STORE_PAGE);
                 Intent intent = new Intent(Intent.ACTION_VIEW, devPages);

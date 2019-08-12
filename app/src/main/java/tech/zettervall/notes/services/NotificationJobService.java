@@ -5,12 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.PersistableBundle;
-import android.preference.PreferenceManager;
 
 import androidx.core.app.NotificationCompat;
 
@@ -26,8 +24,7 @@ import tech.zettervall.notes.repositories.NoteRepository;
 public class NotificationJobService extends JobService {
 
     private static final String TAG = NotificationJobService.class.getSimpleName();
-    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
-    private static final String PRIMARY_CHANNEL_NAME = "Primary Notification Channel";
+    private static final String PRIMARY_CHANNEL_ID = "reminders_notification_channel";
     private NotificationManager mNotificationManager;
 
     @Override
@@ -43,7 +40,7 @@ public class NotificationJobService extends JobService {
             noteRepository.updateNote(note);
 
             // Create Notification channel
-            createNotificationChannel(getApplicationContext());
+            createNotificationChannel();
 
             // Intent for when user clicks the Notification
             Intent intent = new Intent(this, MainActivity.class);
@@ -71,13 +68,13 @@ public class NotificationJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        return true;
+        return true; // Return true so that if the job fails, it's rescheduled
     }
 
     /**
      * Creates a Notification channel, for OREO and higher.
      */
-    private void createNotificationChannel(Context context) {
+    private void createNotificationChannel() {
 
         // Define notification manager object.
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -87,22 +84,11 @@ public class NotificationJobService extends JobService {
 
             // Create the NotificationChannel with all the parameters.
             NotificationChannel notificationChannel = new NotificationChannel
-                    (PRIMARY_CHANNEL_ID, PRIMARY_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+                    (PRIMARY_CHANNEL_ID, getString(R.string.notification_channel_reminders_title), NotificationManager.IMPORTANCE_HIGH);
 
-            SharedPreferences sharedPreferences =
-                    PreferenceManager.getDefaultSharedPreferences(context);
-
-            // Set lights and vibration depending on user settings
-            notificationChannel.enableLights(sharedPreferences.getBoolean(
-                    Constants.NOTIFICATIONS_ENABLE_LIGHTS_KEY,
-                    Constants.NOTIFICATIONS_ENABLE_LIGHTS_DEFAULT));
-            notificationChannel.setLightColor(sharedPreferences.getInt(
-                    Constants.NOTIFICATIONS_LIGHT_COLOR_KEY,
-                    Constants.NOTIFICATION_COLOR_DEFAULT));
-            notificationChannel.enableVibration(sharedPreferences.getBoolean(
-                    Constants.NOTIFICATIONS_ENABLE_VIBRATION_KEY,
-                    Constants.NOTIFICATIONS_ENABLE_VIBRATION_DEFAULT
-            ));
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.BLUE);
+            notificationChannel.enableVibration(true);
 
             mNotificationManager.createNotificationChannel(notificationChannel);
         }

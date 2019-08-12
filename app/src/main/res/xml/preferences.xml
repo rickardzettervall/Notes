@@ -33,16 +33,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/notifications">
-
-        <SwitchPreference
-            app:icon="@drawable/ic_vibration"
-            app:key="@string/notifications_vibrate_key"
-            app:summary="@string/disabled"
-            app:title="@string/notifications_vibrate_title" />
-
-    </PreferenceCategory>
-
     <PreferenceCategory app:title="@string/about">
 
         <Preference
