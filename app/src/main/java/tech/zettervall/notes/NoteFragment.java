@@ -346,6 +346,15 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        // Reset Notification Epoch if it has passed
+        if (DateTimeUtil.getCurrentEpoch() > mNote.getNotificationEpoch()) {
+            mNote.setNotificationEpoch(-1);
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(Constants.NOTE, Parcels.wrap(mNote));
         super.onSaveInstanceState(outState);

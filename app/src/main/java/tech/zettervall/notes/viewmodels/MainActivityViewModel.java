@@ -73,8 +73,4 @@ public class MainActivityViewModel extends AndroidViewModel {
     public List<Tag> getTagsList() {
         return mTagRepository.getTagsList();
     }
-
-    public void updateNote(Note note) {
-        mNoteRepository.updateNote(note);
-    }
 }
