@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.Constants;
 
 public abstract class DateTimeUtil {
 
@@ -95,23 +94,22 @@ public abstract class DateTimeUtil {
     public static boolean use24h(Context context) {
 
         // Get user preferences
-        int timeSelector = PreferenceManager.getDefaultSharedPreferences(context).
-                getInt(Constants.TIME_SELECTOR, 0);
+        boolean overrideLocale = PreferenceManager.getDefaultSharedPreferences(context).
+                getBoolean(context.getString(R.string.time_24_key), false);
+
+        // Return early because of user override
+        if (overrideLocale) {
+            return true;
+        }
 
         // Countries with AM/PM clock
         Locale[] amPmCountries = {Locale.US, Locale.CANADA, Locale.CANADA_FRENCH};
-
-        boolean use24h = true;
         for (Locale i : amPmCountries) { // Check if system preferences are a AM/PM country
             if (Locale.getDefault().getDisplayCountry().equals(i.getDisplayCountry())) {
-                use24h = false;
-                break;
+                return false;
             }
         }
-        if (timeSelector == Constants.TIME_12) {
-            use24h = false;
-        }
 
-        return use24h;
+        return true;
     }
 }
