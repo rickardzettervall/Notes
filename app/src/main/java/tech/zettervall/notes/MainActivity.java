@@ -26,6 +26,7 @@ import java.util.List;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
+import tech.zettervall.notes.utils.DateTimeUtil;
 import tech.zettervall.notes.viewmodels.MainActivityViewModel;
 
 public class MainActivity extends BaseActivity implements
@@ -37,7 +38,7 @@ public class MainActivity extends BaseActivity implements
     private DrawerLayout mNavDrawerLayout;
     private NavigationView mNavView;
     private MainActivityViewModel mMainActivityViewModel;
-    SparseIntArray mNotesTagsCount = new SparseIntArray();
+    private SparseIntArray mNotesTagsCount = new SparseIntArray();
     private TextView mAllNotesCounterTextView, mFavoritesCounterTextView, mRemindersCounterTextView;
     private boolean startedByNotification;
     private MenuItem mTagsItem;
@@ -125,6 +126,13 @@ public class MainActivity extends BaseActivity implements
                 mNotesTagsCount.clear();
                 for (int i = 0; i < notes.size(); i++) {
                     try {
+                        // Check if any Note has Notification Epoch which has passed, and remove it
+                        if (DateTimeUtil.getCurrentEpoch() > notes.get(i).getNotificationEpoch()) {
+                            Note note = notes.get(i);
+                            note.setNotificationEpoch(-1);
+                            mMainActivityViewModel.updateNote(note);
+                        }
+                        // Get number of Notes in each Tag category and put them into SparseIntArray
                         for (Integer j : notes.get(i).getTagIDs()) {
                             mNotesTagsCount.put(j, mNotesTagsCount.get(j) + 1);
                         }
