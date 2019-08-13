@@ -7,13 +7,14 @@ import java.util.ArrayList;
 
 import tech.zettervall.notes.utils.DateTimeUtil;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class NoteTest {
 
     private String title1, title2, text1, text2;
     private long creationEpoch, modifiedEpoch_1, modifiedEpoch_2, notificationEpoch;
-    private ArrayList<Tag> tags;
+    private ArrayList<Integer> tagIDs;
 
     /**
      * Set fields which will be used in various tests.
@@ -28,7 +29,7 @@ public class NoteTest {
         modifiedEpoch_1 = DateTimeUtil.getCurrentEpoch();
         modifiedEpoch_2 = DateTimeUtil.getCurrentEpoch() + 1000L;
         notificationEpoch = -1;
-        tags = new ArrayList<>();
+        tagIDs = new ArrayList<>();
     }
 
     /**
@@ -36,7 +37,7 @@ public class NoteTest {
      */
     @Test
     public void isTitleAndText_upperCased_returnTrue() {
-        Note note = new Note(1, title1, text1, tags, creationEpoch,
+        Note note = new Note(1, title1, text1, tagIDs, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
 
         assertEquals(note.getTitle(), title2);
@@ -49,9 +50,9 @@ public class NoteTest {
      */
     @Test
     public void isNotesEqual_identical_returnTrue() {
-        Note note1 = new Note(1, title1, text1, tags, creationEpoch,
+        Note note1 = new Note(1, title1, text1, tagIDs, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
-        Note note2 = new Note(1, title1, text1, tags, creationEpoch,
+        Note note2 = new Note(1, title1, text1, tagIDs, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
 
         assertEquals(note1, note2);
@@ -63,9 +64,9 @@ public class NoteTest {
      */
     @Test
     public void isNotesEqual_updated_returnFalse() {
-        Note note1 = new Note(1, title1, text1, tags, creationEpoch,
+        Note note1 = new Note(1, title1, text1, tagIDs, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
-        Note note2 = new Note(1, title1, text1, tags, creationEpoch,
+        Note note2 = new Note(1, title1, text1, tagIDs, creationEpoch,
                 modifiedEpoch_2, notificationEpoch, false, false);
 
         assertNotEquals(note1, note2);
@@ -77,9 +78,9 @@ public class NoteTest {
      */
     @Test
     public void isNotesEqual_differentIds_returnFalse() {
-        Note note1 = new Note(1, title1, text1, tags, creationEpoch,
+        Note note1 = new Note(1, title1, text1, tagIDs, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
-        Note note2 = new Note(2, title1, text1, tags, creationEpoch,
+        Note note2 = new Note(2, title1, text1, tagIDs, creationEpoch,
                 modifiedEpoch_1, notificationEpoch, false, false);
 
         assertNotEquals(note1, note2);
