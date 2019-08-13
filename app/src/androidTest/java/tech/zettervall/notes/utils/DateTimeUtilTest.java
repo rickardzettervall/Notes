@@ -1,7 +1,9 @@
 package tech.zettervall.notes.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import androidx.preference.PreferenceManager;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -16,7 +18,9 @@ import tech.zettervall.mNotes.R;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests the DateTimeUtil class methods.
@@ -24,19 +28,21 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class DateTimeUtilTest {
 
-    private long dayInMilliseconds, todayEpoch, dayOldEpoch, weekOldEpoch, yearOldEpoch,
-            yearOldEpochZeroed;
-    private Context context;
+    private long mDayInMilliseconds, mTodayEpoch, mDayOldEpoch, mWeekOldEpoch, mYearOldEpoch,
+            mYearOldEpochZeroed;
+    private Context mContext;
+    private SharedPreferences mSharedPreferences;
 
     @Before
     public void setUp() {
-        dayInMilliseconds = 86400000L;
-        todayEpoch = new Date().getTime();
-        dayOldEpoch = todayEpoch - (dayInMilliseconds);
-        weekOldEpoch = todayEpoch - (dayInMilliseconds * 7);
-        yearOldEpoch = 1514808030000L; // Jan 1, 2018 13:00:30
-        yearOldEpochZeroed = 1514808000000L; // Jan 1, 2018 13:00:00
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        mDayInMilliseconds = 86400000L;
+        mTodayEpoch = new Date().getTime();
+        mDayOldEpoch = mTodayEpoch - (mDayInMilliseconds);
+        mWeekOldEpoch = mTodayEpoch - (mDayInMilliseconds * 7);
+        mYearOldEpoch = 1514808030000L; // Jan 1, 2018 13:00:30
+        mYearOldEpochZeroed = 1514808000000L; // Jan 1, 2018 13:00:00
+        mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
     /**
@@ -52,7 +58,7 @@ public class DateTimeUtilTest {
      */
     @Test
     public void isEpochZeroed_returnTrue() {
-        assertEquals(yearOldEpochZeroed, DateTimeUtil.getEpochWithZeroSeconds(yearOldEpoch));
+        assertEquals(mYearOldEpochZeroed, DateTimeUtil.getEpochWithZeroSeconds(mYearOldEpoch));
     }
 
     /**
@@ -60,7 +66,7 @@ public class DateTimeUtilTest {
      */
     @Test
     public void isDateStringToday_returnTrue() {
-        assertThat(DateTimeUtil.getDateStringFromEpoch(todayEpoch, context),
+        assertThat(DateTimeUtil.getDateStringFromEpoch(mTodayEpoch, mContext),
                 containsString("Today"));
     }
 
@@ -69,8 +75,8 @@ public class DateTimeUtilTest {
      */
     @Test
     public void isDateStringYesterDay_returnTrue() {
-        assertThat(DateTimeUtil.getDateStringFromEpoch(dayOldEpoch, context),
-                containsString(context.getString(R.string.yesterday)));
+        assertThat(DateTimeUtil.getDateStringFromEpoch(mDayOldEpoch, mContext),
+                containsString(mContext.getString(R.string.yesterday)));
     }
 
     /**
@@ -80,21 +86,37 @@ public class DateTimeUtilTest {
      */
     @Test
     public void isDateStringWeekOld_returnFalse() {
-        assertFalse((DateTimeUtil.getDateStringFromEpoch(weekOldEpoch, context)
+        assertFalse((DateTimeUtil.getDateStringFromEpoch(mWeekOldEpoch, mContext)
                 .contains("Yesterday") &&
-                DateTimeUtil.getDateStringFromEpoch(weekOldEpoch, context)
+                DateTimeUtil.getDateStringFromEpoch(mWeekOldEpoch, mContext)
                         .contains("Today") &&
-                DateTimeUtil.getDateStringFromEpoch(weekOldEpoch, context)
+                DateTimeUtil.getDateStringFromEpoch(mWeekOldEpoch, mContext)
                         .contains(new SimpleDateFormat("yyyy").format(new Date()))));
     }
 
     /**
-     * Checks that Unix Epoch set at previous year return correct String,
-     * time value should default to 24h.
+     * Checks that Unix Epoch set at previous year return correct String.
+     * Date format should be MMM DD, YYYY.
+     * Time format should be AM/PM, e.g. 1:00 PM.
      */
     @Test
     public void isDateStringYearOld_returnTrue() {
-        assertThat(DateTimeUtil.getDateStringFromEpoch(yearOldEpoch, context),
+        // Change preferences to disable locale override
+        mSharedPreferences.edit().putBoolean(mContext.getString(R.string.time_24_key), false).commit();
+        assertThat(DateTimeUtil.getDateStringFromEpoch(mYearOldEpoch, mContext),
+                is("Jan 1, 2018 1:00 PM"));
+    }
+
+    /**
+     * Checks that Unix Epoch set at previous year return correct String,
+     * Date format should be DD MMM, YYYY.
+     * Time format should be military (24H), e.g. 13:00.
+     */
+    @Test
+    public void isDateStringYearOldMilitary_returnTrue() {
+        // Change preferences to enable local override
+        mSharedPreferences.edit().putBoolean(mContext.getString(R.string.time_24_key), true).commit();
+        assertThat(DateTimeUtil.getDateStringFromEpoch(mYearOldEpoch, mContext),
                 is("1 Jan, 2018 13:00"));
     }
 }
