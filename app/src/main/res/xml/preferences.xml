@@ -44,7 +44,6 @@
         <Preference
             app:icon="@drawable/ic_info"
             app:key="@string/about_simplenotes_key"
-            app:summary="@string/version"
             app:title="@string/app_name" />
 
     </PreferenceCategory>

@@ -17,6 +17,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import tech.zettervall.mNotes.BuildConfig;
 import tech.zettervall.mNotes.R;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -81,6 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
             // About (App)
             Preference aboutApp = findPreference(getString(R.string.about_simplenotes_key));
             aboutApp.setOnPreferenceClickListener(this);
+            aboutApp.setSummary(getString(R.string.app_version, BuildConfig.VERSION_NAME));
         }
 
         @Override

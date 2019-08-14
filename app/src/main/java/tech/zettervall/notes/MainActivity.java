@@ -23,6 +23,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import tech.zettervall.mNotes.BuildConfig;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
@@ -38,7 +39,8 @@ public class MainActivity extends BaseActivity implements
     private NavigationView mNavView;
     private MainActivityViewModel mMainActivityViewModel;
     private SparseIntArray mNotesTagsCount = new SparseIntArray();
-    private TextView mAllNotesCounterTextView, mFavoritesCounterTextView, mRemindersCounterTextView;
+    private TextView mAllNotesCounterTextView, mFavoritesCounterTextView, mRemindersCounterTextView,
+            mNavHeaderVersionTextView;
     private boolean startedByNotification;
     private MenuItem mTagsItem;
 
@@ -56,6 +58,7 @@ public class MainActivity extends BaseActivity implements
         mToolbar = findViewById(R.id.toolbar);
         mNavDrawerLayout = findViewById(R.id.drawer_layout);
         mNavView = findViewById(R.id.nav_view);
+        mNavHeaderVersionTextView = mNavView.getHeaderView(0).findViewById(R.id.nav_header_version_textview);
         MenuItem allNotesItem = mNavView.getMenu().findItem(R.id.nav_all_notes),
                 favoritesItem = mNavView.getMenu().findItem(R.id.nav_favorites),
                 remindersItem = mNavView.getMenu().findItem(R.id.nav_reminders);
@@ -72,8 +75,9 @@ public class MainActivity extends BaseActivity implements
 
         // Set Drawer
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                this, mNavDrawerLayout, mToolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
+                this, mNavDrawerLayout, mToolbar, R.string.cont_nav_drawer_open, R.string.cont_nav_drawer_close);
         mNavDrawerLayout.addDrawerListener(drawerToggle);
+        mNavHeaderVersionTextView.setText(getString(R.string.app_version, BuildConfig.VERSION_NAME));
         drawerToggle.syncState();
 
         // Set Listeners
