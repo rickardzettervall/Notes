@@ -30,6 +30,7 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
+import tech.zettervall.notes.testing.EspressoIdlingResource;
 
 public abstract class BaseListFragment extends Fragment
         implements NoteAdapter.OnNoteClickListener, ListObservers {
@@ -88,6 +89,13 @@ public abstract class BaseListFragment extends Fragment
      */
     @Override
     public void refreshObservers(@Nullable String query) {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set Espresso testing to wait
+        EspressoIdlingResource.pause();
     }
 
     @Override
