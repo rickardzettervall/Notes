@@ -34,7 +34,7 @@ public class DateTimeUtilTest {
     private SharedPreferences mSharedPreferences;
 
     @Before
-    public void setUp() {
+    public void init() {
         mDayInMilliseconds = 86400000L;
         mTodayEpoch = new Date().getTime();
         mDayOldEpoch = mTodayEpoch - (mDayInMilliseconds);

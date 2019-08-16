@@ -20,7 +20,7 @@ public class NoteTest {
      * Set fields which will be used in various tests.
      */
     @Before
-    public void setup() {
+    public void init() {
         title1 = "this is the title";
         title2 = "This is the title";
         text1 = "this is the text";
