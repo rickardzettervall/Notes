@@ -23,8 +23,10 @@ android {
         }
     }
     testOptions {
-        // Required for testing because of Logging
-        unitTests.returnDefaultValues = true
+        unitTests {
+            returnDefaultValues = true // Required for testing because of Logging
+            includeAndroidResources = true // Required for Robolectric
+        }
     }
     dataBinding.enabled true
 }
@@ -54,6 +56,9 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+
+    // Robolectric
+    testImplementation "org.robolectric:robolectric:4.3"
 
     // Mockito
     def mockitoVersion = "2.19.0"
