@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertThat;
 /**
  * Tests the DateTimeUtil class methods.
  */
-@RunWith(AndroidJUnit4.class)
+@RunWith(RobolectricTestRunner.class)
 public class DateTimeUtilTest {
 
     private long mDayInMilliseconds, mTodayEpoch, mDayOldEpoch, mWeekOldEpoch, mYearOldEpoch,
