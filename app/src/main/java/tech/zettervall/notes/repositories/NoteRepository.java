@@ -1,11 +1,13 @@
 package tech.zettervall.notes.repositories;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.sqlite.db.SimpleSQLiteQuery;
@@ -33,6 +35,12 @@ public class NoteRepository {
         mNoteDao = db.noteDao();
         mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(application.getApplicationContext());
+    }
+
+    @VisibleForTesting
+    public NoteRepository(AppDb db, Context context) {
+        mNoteDao = db.noteDao();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public static NoteRepository getInstance(final Application application) {

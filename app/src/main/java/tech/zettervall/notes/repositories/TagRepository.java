@@ -3,6 +3,7 @@ package tech.zettervall.notes.repositories;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
@@ -23,6 +24,11 @@ public class TagRepository {
 
     private TagRepository(Application application) {
         AppDb db = AppDb.getInstance(application.getApplicationContext());
+        mTagDao = db.tagDao();
+    }
+
+    @VisibleForTesting
+    public TagRepository(AppDb db) {
         mTagDao = db.tagDao();
     }
 
