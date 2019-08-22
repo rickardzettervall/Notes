@@ -67,6 +67,7 @@ public class TrashFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
+        super.subscribeObservers();
         mTrashFragmentViewModel.getTrash().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {

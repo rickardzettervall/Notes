@@ -81,6 +81,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                                         String str = newTag.getText().toString()
                                                 .replaceAll("#", "");
                                         mTagsFragmentViewModel.insertTag(new Tag(str));
+                                        EspressoIdlingResource.pause();
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;
@@ -108,6 +109,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
 
     @Override
     public void subscribeObservers() {
+        super.subscribeObservers();
         mTagsFragmentViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<PagedList<Tag>>() {
             @Override
             public void onChanged(PagedList<Tag> tags) {
@@ -128,6 +130,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                     case DialogInterface.BUTTON_POSITIVE:
                         // Delete Tag and update associated Notes
                         mTagsFragmentViewModel.deleteTag(tag);
+                        EspressoIdlingResource.pause();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
@@ -156,6 +159,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                         // Update Tag
                         tag.setTitle(tagTitleEditText.getText().toString());
                         mTagsFragmentViewModel.updateTag(tag);
+                        EspressoIdlingResource.pause();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;

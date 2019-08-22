@@ -77,6 +77,7 @@ public class FavoritesFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
+        super.subscribeObservers();
         mFavoritesFragmentViewModel.getFavorites().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {

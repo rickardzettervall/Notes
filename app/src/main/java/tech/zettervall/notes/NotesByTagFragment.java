@@ -87,6 +87,7 @@ public class NotesByTagFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
+        super.subscribeObservers();
         mNotesByTagFragmentViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {

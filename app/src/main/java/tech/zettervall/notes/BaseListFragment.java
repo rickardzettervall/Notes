@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -48,6 +49,11 @@ public abstract class BaseListFragment extends Fragment
     // Used for SearchView to restore state on configuration changes
     private boolean mSearchIconified;
     private String mSearchQuery;
+
+    @VisibleForTesting
+    public NoteAdapter getNoteAdapter() {
+        return mNoteAdapter;
+    }
 
     @Nullable
     @Override
@@ -81,6 +87,7 @@ public abstract class BaseListFragment extends Fragment
      */
     @Override
     public void subscribeObservers() {
+        EspressoIdlingResource.pause();
     }
 
     /**
@@ -89,12 +96,6 @@ public abstract class BaseListFragment extends Fragment
      */
     @Override
     public void refreshObservers(@Nullable String query) {
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Set Espresso testing to wait
         EspressoIdlingResource.pause();
     }
 
