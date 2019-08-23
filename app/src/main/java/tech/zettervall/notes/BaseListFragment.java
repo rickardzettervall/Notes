@@ -31,7 +31,6 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
-import tech.zettervall.notes.testing.EspressoIdlingResource;
 
 public abstract class BaseListFragment extends Fragment
         implements NoteAdapter.OnNoteClickListener, ListObservers {
@@ -87,7 +86,6 @@ public abstract class BaseListFragment extends Fragment
      */
     @Override
     public void subscribeObservers() {
-        EspressoIdlingResource.pause();
     }
 
     /**
@@ -96,7 +94,6 @@ public abstract class BaseListFragment extends Fragment
      */
     @Override
     public void refreshObservers(@Nullable String query) {
-        EspressoIdlingResource.pause();
     }
 
     @Override
@@ -126,7 +123,6 @@ public abstract class BaseListFragment extends Fragment
                 mSearchQuery = query;
                 mSearchIconified = false;
                 refreshObservers(query);
-                subscribeObservers();
             }
 
             @Override

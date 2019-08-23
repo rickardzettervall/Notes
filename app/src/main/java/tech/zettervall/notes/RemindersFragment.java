@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
-import tech.zettervall.notes.testing.EspressoIdlingResource;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.RemindersFragmentViewModel;
 
@@ -83,8 +82,6 @@ public class RemindersFragment extends BaseListFragment {
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
                 emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
-                // Set Espresso testing to resume
-                EspressoIdlingResource.resume();
             }
         });
     }

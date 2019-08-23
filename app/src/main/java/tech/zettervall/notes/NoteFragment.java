@@ -41,7 +41,6 @@ import tech.zettervall.notes.adapters.TagSelectAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.services.NotificationJobService;
-import tech.zettervall.notes.testing.EspressoIdlingResource;
 import tech.zettervall.notes.utils.DateTimeUtil;
 import tech.zettervall.notes.utils.KeyboardUtil;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
@@ -320,7 +319,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     @Override
     public void onPause() {
         super.onPause();
-        EspressoIdlingResource.pause();
         if (!mNote.isTrash()) { // Not Trashed
             if (!mTrash) { // Don't trash, just save
                 saveNote();

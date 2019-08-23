@@ -18,7 +18,6 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
-import tech.zettervall.notes.testing.EspressoIdlingResource;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.NotesByTagFragmentViewModel;
 
@@ -87,14 +86,11 @@ public class NotesByTagFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
-        super.subscribeObservers();
         mNotesByTagFragmentViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
             @Override
             public void onChanged(PagedList<Note> notes) {
                 mNoteAdapter.submitList(notes);
                 emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
-                // Set Espresso testing to resume
-                EspressoIdlingResource.resume();
             }
         });
     }

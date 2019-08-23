@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.TagAdapter;
 import tech.zettervall.notes.models.Tag;
-import tech.zettervall.notes.testing.EspressoIdlingResource;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.TagsFragmentViewModel;
 
@@ -81,7 +80,6 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                                         String str = newTag.getText().toString()
                                                 .replaceAll("#", "");
                                         mTagsFragmentViewModel.insertTag(new Tag(str));
-                                        EspressoIdlingResource.pause();
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;
@@ -114,8 +112,6 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
             @Override
             public void onChanged(PagedList<Tag> tags) {
                 mTagAdapter.submitList(tags);
-                // Set Espresso testing to resume
-                EspressoIdlingResource.resume();
             }
         });
     }
@@ -130,7 +126,6 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                     case DialogInterface.BUTTON_POSITIVE:
                         // Delete Tag and update associated Notes
                         mTagsFragmentViewModel.deleteTag(tag);
-                        EspressoIdlingResource.pause();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
@@ -159,7 +154,6 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                         // Update Tag
                         tag.setTitle(tagTitleEditText.getText().toString());
                         mTagsFragmentViewModel.updateTag(tag);
-                        EspressoIdlingResource.pause();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
