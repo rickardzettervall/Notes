@@ -4,16 +4,12 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.utils.DateTimeUtil;
 
-@RunWith(RobolectricTestRunner.class)
 public abstract class TestHelper {
 
     public static final String NOTE_1_TITLE = "espresso (n1)";
