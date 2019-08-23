@@ -60,6 +60,10 @@ dependencies {
     // Robolectric
     testImplementation "org.robolectric:robolectric:4.3"
 
+    // LiveData Testing
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    testImplementation "com.jraska.livedata:testing:1.1.0"
+
     // Mockito
     def mockitoVersion = "2.19.0"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
