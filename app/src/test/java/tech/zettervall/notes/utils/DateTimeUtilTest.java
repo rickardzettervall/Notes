@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.TestHelper;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -41,7 +41,7 @@ public class DateTimeUtilTest {
         mWeekOldEpoch = mTodayEpoch - (mDayInMilliseconds * 7);
         mYearOldEpoch = 1514808030000L; // Jan 1, 2018 13:00:30
         mYearOldEpochZeroed = 1514808000000L; // Jan 1, 2018 13:00:00
-        mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        mContext = TestHelper.getContext();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
