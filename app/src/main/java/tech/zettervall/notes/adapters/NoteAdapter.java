@@ -107,8 +107,8 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             super(itemView);
 
             // Find Views
-            mTitleTextView = itemView.findViewById(R.id.fragment_note_title_textview);
-            mTextTextView = itemView.findViewById(R.id.fragment_note_text_textview);
+            mTitleTextView = itemView.findViewById(R.id.list_note_title_textview);
+            mTextTextView = itemView.findViewById(R.id.list_note_text_textview);
             mFavoriteImageView = itemView.findViewById(R.id.list_note_favorite_imageview);
             mReminderImageView = itemView.findViewById(R.id.list_note_reminder_imageview);
             mTitleLinearLayout = itemView.findViewById(R.id.list_note_title_linearlayout);

@@ -18,7 +18,7 @@
 
                 <!-- Title -->
                 <EditText
-                    android:id="@+id/fragment_note_title_textview"
+                    android:id="@+id/fragment_note_title_edittext"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
 
                 <!-- Text -->
                 <EditText
-                    android:id="@+id/fragment_note_text_textview"
+                    android:id="@+id/fragment_note_text_edittext"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -44,9 +44,9 @@
                     android:hint="@string/hint_text"
                     android:inputType="textMultiLine"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
-                    app:layout_constraintEnd_toEndOf="@+id/fragment_note_title_textview"
-                    app:layout_constraintStart_toStartOf="@+id/fragment_note_title_textview"
-                    app:layout_constraintTop_toBottomOf="@+id/fragment_note_title_textview" />
+                    app:layout_constraintEnd_toEndOf="@+id/fragment_note_title_edittext"
+                    app:layout_constraintStart_toStartOf="@+id/fragment_note_title_edittext"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_note_title_edittext" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -57,7 +57,7 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fragment_note_text_textview">
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_note_text_edittext">
 
                     <!-- Reminder Layout -->
                     <LinearLayout

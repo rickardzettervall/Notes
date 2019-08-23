@@ -103,8 +103,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Set GUI fields
-        mDataBinding.fragmentNoteTitleTextview.setText(mNote.getTitle());
-        mDataBinding.fragmentNoteTextTextview.setText(mNote.getText());
+        mDataBinding.fragmentNoteTitleEdittext.setText(mNote.getTitle());
+        mDataBinding.fragmentNoteTextEdittext.setText(mNote.getText());
         mDataBinding.fragmentNoteCreatedTextview.setText(getString(R.string.creation_date,
                 mNote.getCreationString(getActivity())));
         if (mNote.getModifiedEpoch() != -1) {
@@ -116,8 +116,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
         // Disable editing for trashed Notes
         if (mNote.isTrash()) {
-            mDataBinding.fragmentNoteTitleTextview.setEnabled(false);
-            mDataBinding.fragmentNoteTextTextview.setEnabled(false);
+            mDataBinding.fragmentNoteTitleEdittext.setEnabled(false);
+            mDataBinding.fragmentNoteTextEdittext.setEnabled(false);
         }
 
         // Hide / Show FAB depending on device
@@ -142,7 +142,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
         // Set focus on text field if user has set title
         if (!mNote.getTitle().isEmpty()) {
-            mDataBinding.fragmentNoteTextTextview.requestFocus();
+            mDataBinding.fragmentNoteTextEdittext.requestFocus();
         }
 
         // Tags sanity check
@@ -187,8 +187,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         if (tag != null) {
             tagIDs.add(tag.getId());
         }
-        return new Note(mDataBinding.fragmentNoteTitleTextview.getText().toString(),
-                mDataBinding.fragmentNoteTextTextview.getText().toString(),
+        return new Note(mDataBinding.fragmentNoteTitleEdittext.getText().toString(),
+                mDataBinding.fragmentNoteTextEdittext.getText().toString(),
                 tagIDs,
                 DateTimeUtil.getCurrentEpoch(),
                 -1,
@@ -203,11 +203,11 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      */
     private void saveNote() {
         mNote.setTrash(mTrash);
-        if (!mDataBinding.fragmentNoteTitleTextview.getText().toString().equals(mNote.getTitle()) ||
-                !mDataBinding.fragmentNoteTextTextview.getText().toString().equals(mNote.getText())) {
+        if (!mDataBinding.fragmentNoteTitleEdittext.getText().toString().equals(mNote.getTitle()) ||
+                !mDataBinding.fragmentNoteTextEdittext.getText().toString().equals(mNote.getText())) {
             // Change Note title/text and update modified time stamp
-            mNote.setTitle(mDataBinding.fragmentNoteTitleTextview.getText().toString());
-            mNote.setText(mDataBinding.fragmentNoteTextTextview.getText().toString());
+            mNote.setTitle(mDataBinding.fragmentNoteTitleEdittext.getText().toString());
+            mNote.setText(mDataBinding.fragmentNoteTextEdittext.getText().toString());
             mNote.setModifiedEpoch(DateTimeUtil.getCurrentEpoch());
         }
 

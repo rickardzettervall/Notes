@@ -89,14 +89,14 @@ public class CreateNewNoteTest {
         }
 
         // Put title and text
-        onView(withId(R.id.fragment_note_title_textview)).perform(typeText(title));
-        onView(withId(R.id.fragment_note_text_textview)).perform(typeText(text));
+        onView(withId(R.id.fragment_note_title_edittext)).perform(typeText(title));
+        onView(withId(R.id.fragment_note_text_edittext)).perform(typeText(text));
 
         // Check that values survive rotation
         mMainActivity.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mMainActivity.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        onView(withId(R.id.fragment_note_title_textview)).check(matches(withText(title)));
-        onView(withId(R.id.fragment_note_text_textview)).check(matches(withText(text)));
+        onView(withId(R.id.fragment_note_title_edittext)).check(matches(withText(title)));
+        onView(withId(R.id.fragment_note_text_edittext)).check(matches(withText(text)));
 
         // Go back
         ViewInteraction appCompatImageButton = onView(
