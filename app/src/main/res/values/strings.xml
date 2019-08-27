@@ -63,16 +63,16 @@
     <string name="action_restore">Restore</string>
     <string name="action_favoritize">Favoritize</string>
     <string name="action_unfavoritize">Unfavoritize</string>
-    <string name="action_switch_theme_dark">Switch to Dark Theme</string>
-    <string name="action_switch_theme_light">Switch to Light Theme</string>
     <string name="action_empty_trash">Empty trash</string>
-    <string name="action_restore_trash">Restore all notes</string>
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
-    <string name="action_tag_new">New Tag</string>
-    <string name="action_tag_edit">Edit Tag</string>
-    <string name="action_tag_delete_title">Delete Tag</string>
-    <string name="action_tag_delete_message">This deletes the tag and remove it from all associated Notes.</string>
+
+    <!-- Tags -->
+    <string name="tag_new">New Tag</string>
+    <string name="tag_edit">Edit Tag</string>
+    <string name="tag_delete_title">Delete Tag</string>
+    <string name="tag_delete_message">This deletes the tag and remove it from all associated Notes. No Note will be deleted by this action.</string>
+    <string name="tag_deleted_toast">Tag \'<xliff:g example="Personal" id="tag">%s</xliff:g>\' deleted</string>
 
     <!-- Sorting -->
     <string name="sort_by">Sort notes</string>
