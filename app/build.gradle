@@ -39,16 +39,10 @@ dependencies {
     implementation "androidx.preference:preference:1.0.0"
 
     // JUnit4
-    androidTestImplementation "junit:junit:4.12"
+    testImplementation "junit:junit:4.12"
     androidTestImplementation "androidx.test:runner:1.2.0"
     androidTestImplementation "androidx.test:rules:1.2.0"
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
-
-    // JUnit5 (local testing)
-    def junit5Version = "5.5.0"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5Version"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit5Version"
 
     // Espresso
     def espressoVersion = "3.2.0"
@@ -62,7 +56,6 @@ dependencies {
 
     // LiveData Testing
     testImplementation "android.arch.core:core-testing:1.1.1"
-    testImplementation "com.jraska.livedata:testing:1.1.0"
 
     // Mockito
     def mockitoVersion = "2.19.0"
