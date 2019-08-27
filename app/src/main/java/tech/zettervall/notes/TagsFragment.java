@@ -90,7 +90,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.action_tag_new));
                 builder.setView(dialogView);
-                builder.setPositiveButton(R.string.confirm_done, dialogClickListener);
+                builder.setPositiveButton(R.string.confirm, dialogClickListener);
                 builder.setNegativeButton(R.string.abort, dialogClickListener);
                 builder.show();
             }
