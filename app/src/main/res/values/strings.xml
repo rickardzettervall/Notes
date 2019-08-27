@@ -36,13 +36,15 @@
     <!-- Confirm Alert -->
     <string name="confirm_deletion">Delete Note?</string>
     <string name="confirm_trash">Trash Note?</string>
-    <string name="confirm_deletion_message">This deletes the Note beyond restoration.</string>
+    <string name="confirm_trash_message">Moves the Note to trash, you can restore it later.</string>
+    <string name="confirm_deletion_message">The Note can\'t be restored after this, are you sure?</string>
     <string name="confirm">Confirm</string>
     <string name="abort">Abort</string>
     <string name="confirm_empty_trash">Empty trash?</string>
+    <string name="confirm_empty_trash_message">Delete ALL trashed Notes, are you sure!?</string>
     <string name="confirm_restore">Restore Note?</string>
-    <string name="all_notes_deleted">All Notes deleted</string>
-    <string name="dummy_data_inserted">Dummy data inserted</string>
+    <string name="confirm_restore_message">Moves the Note out of trash.</string>
+    <string name="deleted_all_notes">Deleted all Notes!</string>
     <string name="confirm_done">Done</string>
 
     <!-- Titles -->

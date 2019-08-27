@@ -113,7 +113,7 @@ public class TrashFragment extends BaseListFragment {
                             case DialogInterface.BUTTON_POSITIVE:
                                 mTrashFragmentViewModel.emptyTrash();
                                 Toast.makeText(getActivity(),
-                                        "Trash emptied",
+                                        getString(R.string.deleted_all_notes),
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -121,9 +121,11 @@ public class TrashFragment extends BaseListFragment {
                         }
                     }
                 };
-                builder.setMessage(getString(R.string.confirm_empty_trash))
+                builder.setTitle(getString(R.string.confirm_empty_trash))
                         .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListener).show();
+                        .setNegativeButton(getString(R.string.abort), dialogClickListener)
+                        .setMessage(getString(R.string.confirm_empty_trash_message))
+                        .show();
                 break;
         }
         return super.onOptionsItemSelected(item);
