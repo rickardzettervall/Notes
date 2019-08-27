@@ -16,11 +16,11 @@
     <string name="creation_date">Created: <xliff:g example="Jun 1, 2019 10:55" id="date">%s</xliff:g></string>
     <string name="modified_date">Updated: <xliff:g example="Jun 2, 2019 12:00" id="date">%s</xliff:g></string>
     <string name="note_trashed">Note moved to trash</string>
-    <string name="note_trashed_detailed">\'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' moved to trash</string>
+    <string name="note_trashed_detailed">Note \'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' moved to trash</string>
     <string name="note_deleted">Note deleted</string>
-    <string name="note_deleted_detailed">\'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' deleted</string>
+    <string name="note_deleted_detailed">Note \'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' deleted</string>
     <string name="note_restored">Note restored</string>
-    <string name="note_restored_detailed">\'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' restored</string>
+    <string name="note_restored_detailed">Note \'<xliff:g example="Shopping List" id="noteTitle">%s</xliff:g>\' restored</string>
     <string name="note_favorites_added">Added to favorites</string>
     <string name="note_favorites_removed">Removed from favorites</string>
     <string name="note_saved">Note saved</string>
