@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.TagAdapter;
 import tech.zettervall.notes.models.Tag;
+import tech.zettervall.notes.utils.KeyboardUtil;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.TagsFragmentViewModel;
 
@@ -70,30 +71,39 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
             public void onClick(View v) {
                 // Inflate View
                 final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_new, null);
-
+                final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_new_edittext);
                 DialogInterface.OnClickListener dialogClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
-                                        EditText newTag = dialogView.findViewById(R.id.dialog_tag_new_edittext);
-                                        String str = newTag.getText().toString()
+                                        String str = tagTitleEditText.getText().toString()
                                                 .replaceAll("#", "");
                                         mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
+                                        KeyboardUtil.hideKeyboard(getActivity());
                                         break;
                                 }
                             }
                         };
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.tag_new))
                         .setView(dialogView)
                         .setPositiveButton(R.string.confirm, dialogClickListener)
                         .setNegativeButton(R.string.abort, dialogClickListener)
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                KeyboardUtil.hideKeyboard(getActivity());
+                            }
+                        })
                         .show();
+
+                // Set focus and show keyboard
+                tagTitleEditText.requestFocus();
+                KeyboardUtil.showKeyboard(getActivity());
             }
         });
 
@@ -131,6 +141,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                                 tag.getTitle()), Toast.LENGTH_SHORT).show();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
+                        KeyboardUtil.hideKeyboard(getActivity());
                         break;
                 }
             }
@@ -159,6 +170,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                         mTagsFragmentViewModel.updateTag(tag);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
+                        KeyboardUtil.hideKeyboard(getActivity());
                         break;
                 }
             }
@@ -168,7 +180,17 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                 .setView(dialogView)
                 .setPositiveButton(R.string.confirm, dialogClickListener)
                 .setNegativeButton(R.string.abort, dialogClickListener)
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        KeyboardUtil.hideKeyboard(getActivity());
+                    }
+                })
                 .show();
+
+        // Set focus and show keyboard
+        tagTitleEditText.requestFocus();
+        KeyboardUtil.showKeyboard(getActivity());
     }
 
     @Override
