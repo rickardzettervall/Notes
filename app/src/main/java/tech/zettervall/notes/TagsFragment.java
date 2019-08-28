@@ -80,7 +80,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                                         EditText newTag = dialogView.findViewById(R.id.dialog_tag_new_edittext);
                                         String str = newTag.getText().toString()
                                                 .replaceAll("#", "");
-                                        mTagsFragmentViewModel.insertTag(new Tag(str));
+                                        mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;
@@ -89,11 +89,11 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                         };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getString(R.string.tag_new));
-                builder.setView(dialogView);
-                builder.setPositiveButton(R.string.confirm, dialogClickListener);
-                builder.setNegativeButton(R.string.abort, dialogClickListener);
-                builder.show();
+                builder.setTitle(getString(R.string.tag_new))
+                        .setView(dialogView)
+                        .setPositiveButton(R.string.confirm, dialogClickListener)
+                        .setNegativeButton(R.string.abort, dialogClickListener)
+                        .show();
             }
         });
 
@@ -136,11 +136,11 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.tag_delete_title));
-        builder.setMessage(getString(R.string.tag_delete_message));
-        builder.setPositiveButton(R.string.confirm, dialogClickListener);
-        builder.setNegativeButton(R.string.abort, dialogClickListener);
-        builder.show();
+        builder.setTitle(getString(R.string.tag_delete_title))
+                .setMessage(getString(R.string.tag_delete_message))
+                .setPositiveButton(R.string.confirm, dialogClickListener)
+                .setNegativeButton(R.string.abort, dialogClickListener)
+                .show();
     }
 
     @Override
@@ -155,7 +155,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         // Update Tag
-                        tag.setTitle(tagTitleEditText.getText().toString());
+                        tag.setTitle(tagTitleEditText.getText().toString().trim());
                         mTagsFragmentViewModel.updateTag(tag);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -164,11 +164,11 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.tag_edit));
-        builder.setView(dialogView);
-        builder.setPositiveButton(R.string.confirm, dialogClickListener);
-        builder.setNegativeButton(R.string.abort, dialogClickListener);
-        builder.show();
+        builder.setTitle(getString(R.string.tag_edit))
+                .setView(dialogView)
+                .setPositiveButton(R.string.confirm, dialogClickListener)
+                .setNegativeButton(R.string.abort, dialogClickListener)
+                .show();
     }
 
     @Override
