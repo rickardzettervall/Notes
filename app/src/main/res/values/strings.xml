@@ -72,7 +72,7 @@
     <string name="tag_new">New Tag</string>
     <string name="tag_edit">Edit Tag</string>
     <string name="tag_delete_title">Delete Tag</string>
-    <string name="tag_delete_message">This deletes the tag and remove it from all associated Notes. No Note will be deleted by this action.</string>
+    <string name="tag_delete_message">Delete the Tag and remove it from all associated Notes. No Note will be deleted by this action.</string>
     <string name="tag_deleted_toast">Tag \'<xliff:g example="Personal" id="tag">%s</xliff:g>\' deleted</string>
 
     <!-- Sorting -->
