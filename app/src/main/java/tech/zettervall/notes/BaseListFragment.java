@@ -122,6 +122,11 @@ public abstract class BaseListFragment extends Fragment
             private void setResults(String query) {
                 mSearchQuery = query;
                 mSearchIconified = false;
+                if (!query.isEmpty()) {
+                    emptyTextView.setText(R.string.search_is_empty);
+                } else {
+                    emptyTextView.setText(R.string.list_is_empty);
+                }
                 refreshObservers(query);
             }
 

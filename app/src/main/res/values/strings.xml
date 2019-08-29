@@ -89,8 +89,9 @@
     <string name="hint_text">Notes..</string>
 
     <!-- Empty Lists -->
-    <string name="list_is_empty">List is empty..</string>
+    <string name="list_is_empty">You have no Notes in this section..</string>
     <string name="trash_is_empty">Trash is empty..</string>
+    <string name="search_is_empty">No Notes found matching your search..</string>
 
     <!-- Tools -->
     <string name="tools_headline" translatable="false">Important stuff</string>
