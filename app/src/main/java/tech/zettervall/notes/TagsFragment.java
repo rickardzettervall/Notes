@@ -141,7 +141,6 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                                 tag.getTitle()), Toast.LENGTH_SHORT).show();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
-                        KeyboardUtil.hideKeyboard(getActivity());
                         break;
                 }
             }
