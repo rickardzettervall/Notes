@@ -124,15 +124,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             mDataBinding.fragmentNoteUpdatedTextview.setVisibility(View.GONE);
         }
 
-        // Set Photo
-        if (mNote.getPhotoPath() != null && !mNote.getPhotoPath().isEmpty()) {
-            Bitmap photo = getPhotoFromPath(mNote.getPhotoPath());
-            if (photo != null) {
-                mDataBinding.fragmentNotePhotoImageview.setVisibility(View.VISIBLE);
-                mDataBinding.fragmentNotePhotoImageview.setImageBitmap(photo);
-            }
-        }
-
         // Disable editing for trashed Notes
         if (mNote.isTrash()) {
             mDataBinding.fragmentNoteTitleEdittext.setEnabled(false);
@@ -381,6 +372,14 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         if (DateTimeUtil.getCurrentEpoch() > mNote.getNotificationEpoch()) {
             mNote.setNotificationEpoch(-1);
         }
+        // Set Photo
+        if (mNote.getPhotoPath() != null && !mNote.getPhotoPath().isEmpty()) {
+            Bitmap photo = getPhotoFromPath(mNote.getPhotoPath());
+            if (photo != null) {
+                mDataBinding.fragmentNotePhotoImageview.setVisibility(View.VISIBLE);
+                mDataBinding.fragmentNotePhotoImageview.setImageBitmap(photo);
+            }
+        }
     }
 
     @Override
@@ -516,7 +515,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             }
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
