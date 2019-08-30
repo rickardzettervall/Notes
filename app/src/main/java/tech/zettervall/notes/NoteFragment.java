@@ -7,8 +7,12 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PersistableBundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -30,6 +35,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.parceler.Parcels;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -54,6 +61,8 @@ import static android.content.Context.JOB_SCHEDULER_SERVICE;
 public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
     private boolean mTrash, mFinalDeletion, mRestore, mIsTablet;
     private long mReminderDateTimeEpoch;
     private FragmentNoteBinding mDataBinding;
@@ -442,6 +451,46 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         }
     }
 
+    private File createImageFile() throws IOException {
+        // Image filename
+        String title = mNote.getTitle().isEmpty() ? "Note" : mNote.getTitle();
+        String imageFileName = title + "_" + mNote.getCreationEpoch();
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        String path = image.getAbsolutePath(); // todo: save into note
+        // first version will only support one photo
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                // Error occurred while creating the File
+                e.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getActivity(),
+                        "tech.zettervall.notes.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -483,6 +532,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         .setView(dialogView)
                         .setPositiveButton(R.string.confirm_done, null)
                         .show();
+                break;
+            case R.id.action_photo:
+                dispatchTakePictureIntent();
                 break;
             case R.id.action_reminder:
                 dateTimePicker();
