@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 tools:context="tech.zettervall.notes.NoteActivity">
 
-                <!-- Photo Layout -->
+                <!-- Title -->
                 <EditText
                     android:id="@+id/fragment_note_title_edittext"
                     android:layout_width="0dp"
@@ -33,7 +33,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/fragment_note_photo_layout" />
 
-                <!-- Title -->
+                <!-- Photo Layout -->
                 <RelativeLayout
                     android:id="@+id/fragment_note_photo_layout"
                     android:layout_width="match_parent"
