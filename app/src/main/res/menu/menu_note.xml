@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_star_border"
         android:orderInCategory="10"
         android:title="@string/action_favoritize"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <!-- Tags -->
     <item
@@ -17,7 +17,15 @@
         android:icon="@drawable/ic_tag"
         android:orderInCategory="20"
         android:title="@string/action_tags"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <!-- Photo -->
+    <item
+        android:id="@+id/action_photo"
+        android:icon="@drawable/ic_camera"
+        android:orderInCategory="25"
+        android:title="@string/action_photo"
+        app:showAsAction="always" />
 
     <!-- Reminder -->
     <item

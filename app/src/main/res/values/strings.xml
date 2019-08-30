@@ -67,6 +67,7 @@
     <string name="action_empty_trash">Empty trash</string>
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
+    <string name="action_photo">Take Photo</string>
 
     <!-- Tags -->
     <string name="tag_new">New Tag</string>
@@ -113,6 +114,7 @@
     <string name="cont_reminder">Reminder</string>
     <string name="cont_tag_title">Tag title</string>
     <string name="cont_tag_delete">Delete tag</string>
+    <string name="cont_photo">Take photo</string>
 
     <!-- Pre defined Tags -->
     <string name="tag_personal">Personal</string>
