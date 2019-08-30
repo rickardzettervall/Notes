@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
+            android:name="tech.zettervall.notes.PhotoActivity"
+            android:label="@string/photo" />
+        <activity
             android:name="tech.zettervall.notes.SettingsActivity"
             android:theme="@style/AppTheme"
             android:label="@string/action_settings" />

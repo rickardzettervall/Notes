@@ -10,6 +10,7 @@
     <string name="disabled">Disabled</string>
     <string name="about">About</string>
     <string name="general">General</string>
+    <string name="photo">Photo</string>
 
     <!-- Note -->
     <string name="note">Note</string>
@@ -24,6 +25,7 @@
     <string name="note_favorites_added">Added to favorites</string>
     <string name="note_favorites_removed">Removed from favorites</string>
     <string name="note_saved">Note saved</string>
+    <string name="note_photo_removed">Photo removed</string>
 
     <!-- Date -->
     <string name="today">Today</string>
@@ -46,6 +48,7 @@
     <string name="confirm_restore_message">Move the Note out of trash.</string>
     <string name="deleted_all_notes">Deleted all Notes!</string>
     <string name="confirm_done">Done</string>
+    <string name="confirm_photo_delete">Delete Photo</string>
 
     <!-- Titles -->
     <string name="note_new">New Note</string>

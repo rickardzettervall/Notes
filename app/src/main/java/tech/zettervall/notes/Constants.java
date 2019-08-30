@@ -15,6 +15,9 @@ public abstract class Constants {
     public static final String TAG = "tag";
     public static final String TAG_ID = "tag_id";
 
+    // Photo
+    public static final String PHOTO_PATH = "photo_path";
+
     // Fragment
     public static final String FRAGMENT_NOTELIST = "fragment_notelist";
     public static final String FRAGMENT_FAVORITES = "fragment_favorites";

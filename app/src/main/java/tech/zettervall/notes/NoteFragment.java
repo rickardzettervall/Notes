@@ -73,6 +73,14 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private JobScheduler mJobScheduler;
     private TagSelectAdapter mTagSelectAdapter;
 
+    /**
+     * Retrieves photo as Bitmap from path.
+     */
+    public static Bitmap getPhotoFromPath(String photoPath) {
+        File imgFile = new File(photoPath);
+        return imgFile.exists() ? BitmapFactory.decodeFile(imgFile.getAbsolutePath()) : null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -153,6 +161,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         // Set focus on text field if user has set title
         if (!mNote.getTitle().isEmpty()) {
             mDataBinding.fragmentNoteTextEdittext.requestFocus();
+            KeyboardUtil.hideKeyboard(getActivity());
         }
 
         // Tags sanity check
@@ -162,14 +171,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         updateTagsUi();
 
         return rootView;
-    }
-
-    /**
-     * Retrieves photo as Bitmap from path.
-     */
-    private Bitmap getPhotoFromPath(String photoPath) {
-        File imgFile = new File(photoPath);
-        return imgFile.exists() ? BitmapFactory.decodeFile(imgFile.getAbsolutePath()) : null;
     }
 
     /**
@@ -358,6 +359,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         } else { // Trashed Note
             if (mFinalDeletion) { // Final deletion
                 mNoteFragmentViewModel.deleteNote(mNote);
+                deleteImageFile(); // Delete photo
             } else if (mRestore) { // Restore trashed note
                 mNote.setTrash(false);
                 mNoteFragmentViewModel.updateNote(mNote);
@@ -378,11 +380,37 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             if (photo != null) {
                 mDataBinding.fragmentNotePhotoLayout.setVisibility(View.VISIBLE);
                 mDataBinding.fragmentNotePhotoImageview.setImageBitmap(photo);
+                mDataBinding.fragmentNotePhotoImageview.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getActivity(), PhotoActivity.class);
+                                intent.putExtra(Constants.PHOTO_PATH, mNote.getPhotoPath());
+                                startActivity(intent);
+                            }
+                        });
                 mDataBinding.fragmentNoteRemovePhotoImageview.setOnClickListener(
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
+                                DialogInterface.OnClickListener dialogClickListener =
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                switch (which) {
+                                                    case DialogInterface.BUTTON_POSITIVE:
+                                                        deleteImageFile();
+                                                        break;
+                                                    case DialogInterface.BUTTON_NEGATIVE:
+                                                        break;
+                                                }
+                                            }
+                                        };
+                                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
+                                deleteBuilder.setTitle(getString(R.string.confirm_photo_delete))
+                                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
+                                        .setNegativeButton(getString(R.string.abort), dialogClickListener)
+                                        .show();
                             }
                         });
             }
@@ -478,18 +506,32 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     }
 
     /**
+     * Delete photo from storage.
+     */
+    private void deleteImageFile() {
+        if (mNote.getPhotoPath() != null && !mNote.getPhotoPath().isEmpty()) {
+            File file = new File(mNote.getPhotoPath());
+            boolean deleted = file.delete();
+            if (deleted) {
+                mDataBinding.fragmentNotePhotoLayout.setVisibility(View.GONE);
+                mDataBinding.fragmentNotePhotoImageview.setImageBitmap(null);
+                Toast.makeText(getActivity(),
+                        getString(R.string.note_photo_removed),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /**
      * Create Image File for saving photo.
      *
      * @return Image
      * @throws IOException
      */
     private File createImageFile() throws IOException {
-        // Image filename
-        String title = mNote.getTitle().isEmpty() ? "Note" : mNote.getTitle();
-        String imageFileName = title + "_" + mNote.getCreationEpoch();
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
+                String.valueOf(mNote.getCreationEpoch()),  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
