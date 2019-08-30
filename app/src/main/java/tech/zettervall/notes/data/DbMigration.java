@@ -10,6 +10,57 @@ import java.util.List;
 public abstract class DbMigration {
 
     /**
+     * Migration of db version 8 -> 9.
+     */
+    public static Migration MIGRATION_8_9 = new Migration(8, 9) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.beginTransaction();
+            try {
+                database.execSQL("ALTER TABLE notes RENAME TO notes_tmp");
+                database.execSQL("CREATE TABLE notes(" +
+                        "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        "title TEXT," +
+                        "text TEXT," +
+                        "photo_path TEXT," +
+                        "tags TEXT," +
+                        "creation_epoch INTEGER NOT NULL," +
+                        "modified_epoch INTEGER NOT NULL," +
+                        "notification_epoch INTEGER NOT NULL," +
+                        "trash INTEGER NOT NULL," +
+                        "favorite INTEGER NOT NULL)");
+                database.execSQL("INSERT INTO notes(" +
+                        "_id," +
+                        "title," +
+                        "text," +
+                        "tags," +
+                        "creation_epoch," +
+                        "modified_epoch," +
+                        "notification_epoch," +
+                        "trash," +
+                        "favorite)" +
+                        "SELECT _id, title, text, tags, creation_epoch," +
+                        "modified_epoch, notification_epoch, trash, favorite " +
+                        "FROM notes_tmp");
+                database.execSQL("DROP TABLE notes_tmp");
+                database.setTransactionSuccessful();
+            } finally {
+                database.endTransaction();
+            }
+        }
+    };
+
+    /**
+     * Migration of db version 7 -> 8.
+     */
+    public static Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // No change to db but the way Tags (String) are stored in a Note was changed.
+        }
+    };
+
+    /**
      * Migration of db version 5 -> 7.
      */
     public static Migration MIGRATION_5_7 = new Migration(5, 7) {
@@ -29,14 +80,21 @@ public abstract class DbMigration {
     };
 
     /**
-     * Migration of db version 7 -> 8.
+     * Converts the old Tags String to List.
      */
-    public static Migration MIGRATION_7_8 = new Migration(7, 8) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // No change to db but the way Tags (String) are stored in a Note was changed.
+    public static List<Integer> MIGRATION_7_8_FIX(String oldTagString) {
+        ArrayList<Integer> values = new ArrayList<>();
+        StringBuilder digit = new StringBuilder();
+        for (int i = 0; i < oldTagString.length(); i++) {
+            if (Character.isDigit(oldTagString.charAt(i))) {
+                digit.append(oldTagString.charAt(i));
+            } else {
+                values.add(Integer.valueOf(digit.toString()));
+                digit.delete(0, digit.length());
+            }
         }
-    };
+        return values;
+    }
 
     /**
      * Converts the old Tags JSON String to List.
@@ -62,23 +120,6 @@ public abstract class DbMigration {
                 }
             }
             values.add(Integer.valueOf(digitString.toString()));
-        }
-        return values;
-    }
-
-    /**
-     * Converts the old Tags String to List.
-     */
-    public static List<Integer> MIGRATION_7_8_FIX(String oldTagString) {
-        ArrayList<Integer> values = new ArrayList<>();
-        StringBuilder digit = new StringBuilder();
-        for (int i = 0; i < oldTagString.length(); i++) {
-            if (Character.isDigit(oldTagString.charAt(i))) {
-                digit.append(oldTagString.charAt(i));
-            } else {
-                values.add(Integer.valueOf(digit.toString()));
-                digit.delete(0, digit.length());
-            }
         }
         return values;
     }

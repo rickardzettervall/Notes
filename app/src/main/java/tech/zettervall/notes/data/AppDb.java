@@ -20,7 +20,7 @@ import tech.zettervall.notes.models.Tag;
  * Room Database.
  * IMPORTANT!! Increment version number when changing any entity class.
  */
-@Database(entities = {Note.class, Tag.class}, version = 8)
+@Database(entities = {Note.class, Tag.class}, version = 9)
 @TypeConverters(IntegerListTypeConverter.class)
 public abstract class AppDb extends RoomDatabase {
 
@@ -58,7 +58,8 @@ public abstract class AppDb extends RoomDatabase {
                     })
                             .addMigrations(
                                     DbMigration.MIGRATION_5_7,
-                                    DbMigration.MIGRATION_7_8)
+                                    DbMigration.MIGRATION_7_8,
+                                    DbMigration.MIGRATION_8_9)
                             .build();
                 }
             }

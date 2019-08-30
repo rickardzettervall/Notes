@@ -198,6 +198,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         }
         return new Note(mDataBinding.fragmentNoteTitleEdittext.getText().toString(),
                 mDataBinding.fragmentNoteTextEdittext.getText().toString(),
+                null,
                 tagIDs,
                 DateTimeUtil.getCurrentEpoch(),
                 -1,
