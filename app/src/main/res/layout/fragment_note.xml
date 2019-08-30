@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 tools:context="tech.zettervall.notes.NoteActivity">
 
-                <!-- Title -->
+                <!-- Photo -->
                 <EditText
                     android:id="@+id/fragment_note_title_edittext"
                     android:layout_width="0dp"
@@ -29,6 +29,19 @@
                     android:inputType="textMultiLine"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_note_photo_imageview" />
+
+                <!-- Title -->
+                <ImageView
+                    android:id="@+id/fragment_note_photo_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="300dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -54,6 +67,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:paddingBottom="16dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

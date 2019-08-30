@@ -8,6 +8,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -61,7 +63,6 @@ import static android.content.Context.JOB_SCHEDULER_SERVICE;
 public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     private boolean mTrash, mFinalDeletion, mRestore, mIsTablet;
     private long mReminderDateTimeEpoch;
@@ -123,6 +124,15 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             mDataBinding.fragmentNoteUpdatedTextview.setVisibility(View.GONE);
         }
 
+        // Set Photo
+        if (mNote.getPhotoPath() != null && !mNote.getPhotoPath().isEmpty()) {
+            Bitmap photo = getPhotoFromPath(mNote.getPhotoPath());
+            if (photo != null) {
+                mDataBinding.fragmentNotePhotoImageview.setVisibility(View.VISIBLE);
+                mDataBinding.fragmentNotePhotoImageview.setImageBitmap(photo);
+            }
+        }
+
         // Disable editing for trashed Notes
         if (mNote.isTrash()) {
             mDataBinding.fragmentNoteTitleEdittext.setEnabled(false);
@@ -161,6 +171,14 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         updateTagsUi();
 
         return rootView;
+    }
+
+    /**
+     * Retrieves photo as Bitmap from path.
+     */
+    private Bitmap getPhotoFromPath(String photoPath) {
+        File imgFile = new File(photoPath);
+        return imgFile.exists() ? BitmapFactory.decodeFile(imgFile.getAbsolutePath()) : null;
     }
 
     /**
@@ -214,7 +232,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private void saveNote() {
         mNote.setTrash(mTrash);
         if (!mDataBinding.fragmentNoteTitleEdittext.getText().toString().equals(mNote.getTitle()) ||
-                !mDataBinding.fragmentNoteTextEdittext.getText().toString().equals(mNote.getText())) {
+                !mDataBinding.fragmentNoteTextEdittext.getText().toString().equals(mNote.getText()) ||
+                mNote.getPhotoPath() != null) {
             // Change Note title/text and update modified time stamp
             mNote.setTitle(mDataBinding.fragmentNoteTitleEdittext.getText().toString().trim());
             mNote.setText(mDataBinding.fragmentNoteTextEdittext.getText().toString().trim());
@@ -452,6 +471,12 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         }
     }
 
+    /**
+     * Create Image File for saving photo.
+     *
+     * @return Image
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Image filename
         String title = mNote.getTitle().isEmpty() ? "Note" : mNote.getTitle();
@@ -462,12 +487,13 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-        String path = image.getAbsolutePath(); // todo: save into note
-        // first version will only support one photo
+        mNote.setPhotoPath(image.getAbsolutePath()); // Save path to Note
         return image;
     }
 
+    /**
+     * Launch Intent for taking photo.
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
