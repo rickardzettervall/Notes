@@ -376,8 +376,15 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         if (mNote.getPhotoPath() != null && !mNote.getPhotoPath().isEmpty()) {
             Bitmap photo = getPhotoFromPath(mNote.getPhotoPath());
             if (photo != null) {
-                mDataBinding.fragmentNotePhotoImageview.setVisibility(View.VISIBLE);
+                mDataBinding.fragmentNotePhotoLayout.setVisibility(View.VISIBLE);
                 mDataBinding.fragmentNotePhotoImageview.setImageBitmap(photo);
+                mDataBinding.fragmentNoteRemovePhotoImageview.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
             }
         }
     }
