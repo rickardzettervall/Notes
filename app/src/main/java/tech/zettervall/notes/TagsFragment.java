@@ -70,8 +70,8 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
             @Override
             public void onClick(View v) {
                 // Inflate View
-                final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_new, null);
-                final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_new_edittext);
+                final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_edit, null);
+                final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_edit_edittext);
                 DialogInterface.OnClickListener dialogClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override

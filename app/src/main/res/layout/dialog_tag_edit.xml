@@ -9,6 +9,7 @@
         android:id="@+id/dialog_tag_edit_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cont_tag_title" />
+        android:inputType="text"
+        android:hint="@string/hint_tag" />
 
 </LinearLayout>

@@ -27,6 +27,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:padding="12dp"
+        android:contentDescription="@string/cont_tag_delete"
         android:src="@drawable/ic_clear_list" />
 
 </RelativeLayout>

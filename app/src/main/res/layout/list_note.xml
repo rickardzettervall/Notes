@@ -5,13 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_listitem"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/list_note_title_linearlayout"
@@ -60,7 +55,5 @@
             android:maxLines="3"
             android:textAppearance="?android:textAppearanceSmall"
             tools:text="@string/tools_text" />
-
-    </LinearLayout>
 
 </LinearLayout>

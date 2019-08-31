@@ -91,6 +91,7 @@
     <!-- Hints -->
     <string name="hint_title">Title..</string>
     <string name="hint_text">Notes..</string>
+    <string name="hint_tag">Tag..</string>
 
     <!-- Empty Lists -->
     <string name="list_is_empty">You have no Notes in this section..</string>
@@ -119,10 +120,7 @@
     <string name="cont_tag_delete">Delete tag</string>
     <string name="cont_photo_take">Take photo</string>
     <string name="cont_photo_delete">Delete photo</string>
-
-    <!-- Autofill Hints -->
-    <string name="autofill_note_title">Shopping, Christmas presents, Things to remember</string>
-    <string name="autofill_note_text">Carrots Cucumber Salad, Socks Xbox Sweater, Feed the cat</string>
+    <string name="cont_counter">Counter</string>
 
     <!-- Pre defined Tags -->
     <string name="tag_personal">Personal</string>
