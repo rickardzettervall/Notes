@@ -14,6 +14,7 @@ Android app built with MVVM architecture for writing down notes and saving them 
 - Switch between light / dark theme, icons / clickable backgrounds change accordingly.
 - Add tags to notes to allow user specific sorting.
 - Favoritize notes.
+- Take a photo and add it to Note.
 
 <strong><h3>Screen Captures</h3></strong>
 
