@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.utils.BitmapUtil;
 
 /**
  * Activity for showing photo in full view.
@@ -22,7 +23,7 @@ public class PhotoActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             String photoPath = getIntent().getExtras().getString(Constants.PHOTO_PATH);
-            Bitmap photo = NoteFragment.getPhotoFromPath(photoPath);
+            Bitmap photo = BitmapUtil.getBitmap(photoPath);
             if (photo != null) {
                 photoImageView.setImageBitmap(photo);
             }

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,6 +49,7 @@ import tech.zettervall.notes.adapters.TagSelectAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.services.NotificationJobService;
+import tech.zettervall.notes.utils.BitmapUtil;
 import tech.zettervall.notes.utils.DateTimeUtil;
 import tech.zettervall.notes.utils.KeyboardUtil;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
@@ -72,14 +72,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private Calendar mReminderCalender, mDateTimePickerCalender;
     private JobScheduler mJobScheduler;
     private TagSelectAdapter mTagSelectAdapter;
-
-    /**
-     * Retrieves photo as Bitmap from path.
-     */
-    public static Bitmap getPhotoFromPath(String photoPath) {
-        File imgFile = new File(photoPath);
-        return imgFile.exists() ? BitmapFactory.decodeFile(imgFile.getAbsolutePath()) : null;
-    }
 
     @Nullable
     @Override
@@ -376,7 +368,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         }
         // Set Photo
         if (mNote.getPhotoPath() != null && !mNote.getPhotoPath().isEmpty()) {
-            Bitmap photo = getPhotoFromPath(mNote.getPhotoPath());
+            Bitmap photo = BitmapUtil.getBitmap(mNote.getPhotoPath());
             if (photo != null) {
                 mDataBinding.fragmentNotePhotoLayout.setVisibility(View.VISIBLE);
                 mDataBinding.fragmentNotePhotoImageview.setImageBitmap(photo);
