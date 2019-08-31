@@ -117,7 +117,12 @@
     <string name="cont_reminder">Reminder</string>
     <string name="cont_tag_title">Tag title</string>
     <string name="cont_tag_delete">Delete tag</string>
-    <string name="cont_photo">Take photo</string>
+    <string name="cont_photo_take">Take photo</string>
+    <string name="cont_photo_delete">Delete photo</string>
+
+    <!-- Autofill Hints -->
+    <string name="autofill_note_title">Shopping, Christmas presents, Things to remember</string>
+    <string name="autofill_note_text">Carrots Cucumber Salad, Socks Xbox Sweater, Feed the cat</string>
 
     <!-- Pre defined Tags -->
     <string name="tag_personal">Personal</string>

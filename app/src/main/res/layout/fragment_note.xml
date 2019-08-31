@@ -29,6 +29,7 @@
                     android:inputType="textMultiLine"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textStyle="bold"
+                    android:autofillHints="@string/autofill_note_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/fragment_note_photo_layout" />
@@ -51,7 +52,8 @@
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:maxHeight="300dp"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/photo" />
 
                     <!-- Remove Photo Button -->
                     <ImageView
@@ -63,7 +65,8 @@
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/circle_grey"
                         android:padding="8dp"
-                        android:src="@drawable/ic_clear" />
+                        android:src="@drawable/ic_clear"
+                        android:contentDescription="@string/cont_photo_delete"/>
 
                 </RelativeLayout>
 
@@ -78,6 +81,7 @@
                     android:hint="@string/hint_text"
                     android:inputType="textMultiLine"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:autofillHints="@string/autofill_note_text"
                     app:layout_constraintEnd_toEndOf="@+id/fragment_note_title_edittext"
                     app:layout_constraintStart_toStartOf="@+id/fragment_note_title_edittext"
                     app:layout_constraintTop_toBottomOf="@+id/fragment_note_title_edittext" />
