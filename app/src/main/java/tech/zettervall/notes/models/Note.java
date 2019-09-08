@@ -206,11 +206,18 @@ public class Note {
             return false;
         }
         Note note = (Note) obj;
+
+        boolean photoPathCheck = false;
+        if(photoPath != null && note.getPhotoPath() != null) {
+            photoPathCheck = photoPath.equals(note.getPhotoPath());
+        }
+
         return _id == note.getId() &&
                 title.equals(note.getTitle()) &&
                 text.equals(note.getText()) &&
                 isFavorite == note.isFavorite() &&
-                notificationEpoch == note.getNotificationEpoch();
+                notificationEpoch == note.getNotificationEpoch() &&
+                photoPathCheck;
     }
 
     @Override

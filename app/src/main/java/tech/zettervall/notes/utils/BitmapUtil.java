@@ -14,4 +14,15 @@ public abstract class BitmapUtil {
         File imgFile = new File(absolutePath);
         return imgFile.exists() ? BitmapFactory.decodeFile(imgFile.getAbsolutePath()) : null;
     }
+
+    /**
+     * Check if File exists.
+     */
+    public static boolean doesFileExist(String absolutePath) {
+        if(absolutePath == null) {
+            return false;
+        }
+        File imgFile = new File(absolutePath);
+        return imgFile.exists();
+    }
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.utils.BitmapUtil;
 
 /**
  * Adapter for displaying Notes in RecyclerView.
@@ -84,6 +85,13 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             } else {
                 holder.mReminderImageView.setVisibility(View.GONE);
             }
+
+            // Photo
+            if (BitmapUtil.doesFileExist(note.getPhotoPath())) {
+                holder.mPhotoImageView.setVisibility(View.VISIBLE);
+            } else {
+                holder.mPhotoImageView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -100,7 +108,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleTextView, mTextTextView;
-        private ImageView mFavoriteImageView, mReminderImageView;
+        private ImageView mFavoriteImageView, mReminderImageView, mPhotoImageView;
         private LinearLayout mTitleLinearLayout;
 
         public NoteViewHolder(@NonNull View itemView) {
@@ -111,6 +119,7 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             mTextTextView = itemView.findViewById(R.id.list_note_text_textview);
             mFavoriteImageView = itemView.findViewById(R.id.list_note_favorite_imageview);
             mReminderImageView = itemView.findViewById(R.id.list_note_reminder_imageview);
+            mPhotoImageView = itemView.findViewById(R.id.list_note_photo_imageview);
             mTitleLinearLayout = itemView.findViewById(R.id.list_note_title_linearlayout);
 
             // Set OnClickListener

@@ -13,4 +13,5 @@
     <color name="colorSelectorNight">#2B2B2B</color>
     <color name="colorIconDefaultDay">#737373</color>
     <color name="colorIconDefaultNight">#C1C1C1</color>
+    <color name="colorListIconNight">#E5E5E5</color>
 </resources>
