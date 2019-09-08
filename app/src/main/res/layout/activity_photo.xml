@@ -9,5 +9,5 @@
     app:zoomage_animateOnReset="true"
     app:zoomage_autoResetMode="UNDER"
     app:zoomage_autoCenter="true"
-    app:zoomage_minScale="0.1"
+    app:zoomage_minScale="0.5"
     app:zoomage_maxScale="8" />
