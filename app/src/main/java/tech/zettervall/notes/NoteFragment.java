@@ -606,10 +606,22 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         .show();
                 break;
             case R.id.action_photo:
-                dispatchTakePictureIntent();
+                if(mDataBinding.fragmentNoteTitleEdittext.getText().toString().isEmpty() &&
+                        mDataBinding.fragmentNoteTextEdittext.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), getString(R.string.error_missing_title_text),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    dispatchTakePictureIntent(); // Only allow photo for non-empty Note
+                }
                 break;
             case R.id.action_reminder:
-                dateTimePicker();
+                if(mDataBinding.fragmentNoteTitleEdittext.getText().toString().isEmpty() &&
+                        mDataBinding.fragmentNoteTextEdittext.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), getString(R.string.error_missing_title_text),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    dateTimePicker(); // Only allow reminder for non-empty Note
+                }
                 break;
             case R.id.action_delete:
                 DialogInterface.OnClickListener dialogClickListenerDelete =

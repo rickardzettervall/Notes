@@ -12,6 +12,9 @@
     <string name="general">General</string>
     <string name="photo">Photo</string>
 
+    <!-- Errors -->
+    <string name="error_missing_title_text">Write a title or text first..</string>
+
     <!-- Note -->
     <string name="note">Note</string>
     <string name="creation_date">Created: <xliff:g example="Jun 1, 2019 10:55" id="date">%s</xliff:g></string>
