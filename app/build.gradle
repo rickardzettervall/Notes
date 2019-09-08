@@ -54,14 +54,6 @@ dependencies {
     // Robolectric
     testImplementation "org.robolectric:robolectric:4.3"
 
-    // LiveData Testing
-    testImplementation "android.arch.core:core-testing:1.1.1"
-
-    // Mockito
-    def mockitoVersion = "2.19.0"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
-    androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
-
     // Room
     def roomVersion = "2.1.0"
     implementation "androidx.room:room-runtime:$roomVersion"
