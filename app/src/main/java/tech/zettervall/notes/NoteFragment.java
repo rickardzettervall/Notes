@@ -516,6 +516,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         getString(R.string.note_photo_removed),
                         Toast.LENGTH_SHORT).show();
             }
+            mNote.setPhotoPath(null); // Reset path
         }
     }
 
