@@ -207,7 +207,8 @@ public class Note {
         }
         Note note = (Note) obj;
         return _id == note.getId() &&
-                modifiedEpoch == note.getModifiedEpoch() &&
+                title.equals(note.getTitle()) &&
+                text.equals(note.getText()) &&
                 isFavorite == note.isFavorite() &&
                 notificationEpoch == note.getNotificationEpoch();
     }
