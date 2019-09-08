@@ -207,9 +207,11 @@ public class Note {
         }
         Note note = (Note) obj;
 
-        boolean photoPathCheck = false;
-        if(photoPath != null && note.getPhotoPath() != null) {
+        boolean photoPathCheck;
+        try {
             photoPathCheck = photoPath.equals(note.getPhotoPath());
+        } catch (NullPointerException e) {
+            photoPathCheck = (photoPath == null && note.getPhotoPath() == null);
         }
 
         return _id == note.getId() &&
