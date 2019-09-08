@@ -120,6 +120,7 @@
     <string name="cont_tag_delete">Delete tag</string>
     <string name="cont_photo_take">Take photo</string>
     <string name="cont_photo_delete">Delete photo</string>
+    <string name="cont_photo">Note photo</string>
     <string name="cont_counter">Counter</string>
 
     <!-- Pre defined Tags -->

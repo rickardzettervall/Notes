@@ -4,10 +4,11 @@
     android:id="@+id/activity_photo_zoomageview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:contentDescription="@string/cont_photo"
     android:scaleType="fitCenter"
-    app:zoomage_restrictBounds="true"
     app:zoomage_animateOnReset="true"
-    app:zoomage_autoResetMode="UNDER"
     app:zoomage_autoCenter="true"
+    app:zoomage_autoResetMode="UNDER"
+    app:zoomage_maxScale="8"
     app:zoomage_minScale="0.5"
-    app:zoomage_maxScale="8" />
+    app:zoomage_restrictBounds="true" />
