@@ -3,9 +3,10 @@ package tech.zettervall.notes;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.jsibbold.zoomage.ZoomageView;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.utils.BitmapUtil;
@@ -21,7 +22,7 @@ public class PhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo);
 
         // Find view
-        ImageView photoImageView = findViewById(R.id.activity_photo_imageview);
+        ZoomageView photoZoomageView = findViewById(R.id.activity_photo_zoomageview);
 
         // Set Home menu item
         if (getSupportActionBar() != null) {
@@ -37,7 +38,7 @@ public class PhotoActivity extends AppCompatActivity {
             String photoPath = getIntent().getExtras().getString(Constants.PHOTO_PATH);
             Bitmap photo = BitmapUtil.getBitmap(photoPath);
             if (photo != null) {
-                photoImageView.setImageBitmap(photo);
+                photoZoomageView.setImageBitmap(photo);
             }
         }
     }
