@@ -18,9 +18,12 @@
         android:roundIcon="@mipmap/ic_agenda"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <!-- Use default Theme for this Activity because only back button is needed -->
         <activity
             android:name="tech.zettervall.notes.PhotoActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/photo" />
+        <!-- Use default Theme for this Activity because only back button is needed -->
         <activity
             android:name="tech.zettervall.notes.SettingsActivity"
             android:theme="@style/AppTheme"

@@ -381,6 +381,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                             public void onClick(View v) {
                                 Intent intent = new Intent(getActivity(), PhotoActivity.class);
                                 intent.putExtra(Constants.PHOTO_PATH, mNote.getPhotoPath());
+                                intent.putExtra(Constants.NOTE_TITLE,
+                                        mDataBinding.fragmentNoteTitleEdittext.getText().toString().trim());
                                 startActivity(intent);
                             }
                         });
