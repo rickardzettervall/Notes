@@ -36,19 +36,19 @@
     <string name="reminder_removed">Reminder removed</string>
 
     <!-- Confirm Alert -->
-    <string name="confirm_deletion">Delete Note</string>
-    <string name="confirm_trash">Trash Note</string>
+    <string name="confirm_deletion">Delete Note?</string>
+    <string name="confirm_trash">Trash Note?</string>
     <string name="confirm_trash_message">Move the Note to trash, you can restore it later.</string>
     <string name="confirm_deletion_message">The Note can\'t be restored after this, are you sure?</string>
     <string name="confirm">Confirm</string>
     <string name="abort">Abort</string>
-    <string name="confirm_empty_trash">Empty trash</string>
+    <string name="confirm_empty_trash">Empty trash?</string>
     <string name="confirm_empty_trash_message">Delete ALL trashed Notes, are you sure!?</string>
-    <string name="confirm_restore">Restore Note</string>
+    <string name="confirm_restore">Restore Note?</string>
     <string name="confirm_restore_message">Move the Note out of trash.</string>
     <string name="deleted_all_notes">Deleted all Notes!</string>
     <string name="confirm_done">Done</string>
-    <string name="confirm_photo_delete">Delete Photo</string>
+    <string name="confirm_photo_delete">Delete Photo?</string>
 
     <!-- Titles -->
     <string name="note_new">New Note</string>
