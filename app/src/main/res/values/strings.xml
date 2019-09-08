@@ -153,6 +153,6 @@
     <string name="about_built_by">This app was built by Rickard Zettervall, is open source and you can view the code over at &lt;a href=\"https://github.com/rickardzettervall/notes/\">github&lt;/a>.</string>
     <string name="about_app_icon">The app launch icon is made by &lt;a href=\"https://www.freepik.com/\" title=\"Freepik\">Freepik&lt;/a> from &lt;a href=\"https://www.flaticon.com/\" title=\"Flaticon\">www.flaticon.com&lt;/a> and is licensed by &lt;a href=\"http://creativecommons.org/licenses/by/3.0/\" title=\"Creative
 Commons BY 3.0\">CC 3.0 BY&lt;/a>.</string>
-    <string name="about_libraries">These external libraries were used when building this app: &lt;a href=\"https://github.com/johncarl81/parceler/\">Parceler&lt;/a>, &lt;a href=\"https://site.mockito.org/\">Mockito&lt;/a>, &lt;a href=\"http://robolectric.org//\">Robolectric&lt;/a>.</string>
+    <string name="about_libraries">These external libraries were used when building this app: &lt;a href=\"https://github.com/johncarl81/parceler/\">Parceler&lt;/a>, &lt;a href=\"http://robolectric.org/\">Robolectric&lt;/a>, &lt;a href=\"https://github.com/jsibbold/zoomage/\">Zoomage&lt;/a>.</string>
 
 </resources>
