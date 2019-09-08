@@ -213,15 +213,20 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      * Save Note.
      */
     private void saveNote() {
-        mNote.setTrash(mTrash);
+        mNote.setTrash(mTrash); // Set Trash state
+
+        // Decides when to update modified time stamp
         if (!mDataBinding.fragmentNoteTitleEdittext.getText().toString().equals(mNote.getTitle()) ||
                 !mDataBinding.fragmentNoteTextEdittext.getText().toString().equals(mNote.getText())) {
-            // Change Note title/text and update modified time stamp
-            mNote.setTitle(mDataBinding.fragmentNoteTitleEdittext.getText().toString().trim());
-            mNote.setText(mDataBinding.fragmentNoteTextEdittext.getText().toString().trim());
+            // Update modified time stamp
             mNote.setModifiedEpoch(DateTimeUtil.getCurrentEpoch());
         }
 
+        // Update title/text in Note Object
+        mNote.setTitle(mDataBinding.fragmentNoteTitleEdittext.getText().toString().trim());
+        mNote.setText(mDataBinding.fragmentNoteTextEdittext.getText().toString().trim());
+
+        // Save to db
         if (mNote.getId() > 0) { // Existing Note
             mNoteFragmentViewModel.updateNote(mNote);
         } else if (!mNote.getTitle().isEmpty() ||
