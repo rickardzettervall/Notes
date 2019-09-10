@@ -78,9 +78,11 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
-                                        String str = tagTitleEditText.getText().toString()
-                                                .replaceAll("#", "");
-                                        mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
+                                        if (!tagTitleEditText.getText().toString().isEmpty()) { // Don't allow empty Tag title
+                                            String str = tagTitleEditText.getText().toString()
+                                                    .replaceAll("#", "");
+                                            mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
+                                        }
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         KeyboardUtil.hideKeyboard(getActivity());
@@ -147,7 +149,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.tag_delete_title))
-                .setMessage(getString(R.string.tag_delete_message))
+                .setMessage(getString(R.string.tag_delete_message, tag.getTitle()))
                 .setPositiveButton(R.string.confirm, dialogClickListener)
                 .setNegativeButton(R.string.abort, dialogClickListener)
                 .show();
