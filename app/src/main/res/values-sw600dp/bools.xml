@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Tablet version is a WIP, enable this to enable -->
     <bool name="isTablet">true</bool>
 </resources>
