@@ -16,7 +16,7 @@ Android app built with MVVM architecture for writing down notes and saving them 
 - Favoritize notes.
 - Take a photo and add it to Note.
 
-<strong><h3>Screen Captures</h3></strong>
+<h3><strong>Screen Captures</strong> (v1.0)</h3>
 
 <img src="https://i.imgur.com/zsVeASC.png" width="32%"> <img src="https://i.imgur.com/uoiD80E.png" width="32%"> <img src="https://i.imgur.com/WLjaqy9.png" width="32%">
 
