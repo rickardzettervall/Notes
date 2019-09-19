@@ -192,13 +192,11 @@ public class Note {
     }
 
     /**
-     * Compare contents for diff check in Adapter, determines whether to update the item
-     * in adapter. Whenever modifiedEpoch changed it means that the Note text fields was
-     * modified. We also need to check if favorite status or notificationEpoch changed
-     * because the adapter displays an icon for those.
+     * Compare contents for diff check in adapter,
+     * determines whether to update the item in adapter.
      *
      * @param obj Note to compare to this
-     * @return true when contents are the same
+     * @return true when contents are the same, false = adapter will update
      */
     @Override
     public boolean equals(@Nullable Object obj) {
