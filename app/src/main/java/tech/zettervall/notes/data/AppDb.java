@@ -44,15 +44,12 @@ public abstract class AppDb extends RoomDatabase {
                         @Override
                         public void onCreate(@NonNull SupportSQLiteDatabase db) {
                             super.onCreate(db);
-                            AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.d(TAG, "Creating default tags..");
-                                    Tag[] tags = {
-                                            new Tag(context.getString(R.string.tag_personal)),
-                                            new Tag(context.getString(R.string.tag_work))};
-                                    getInstance(context).tagDao().insertTags(tags);
-                                }
+                            AppExecutor.getExecutor().diskIO().execute(() -> {
+                                Log.d(TAG, "Creating default tags..");
+                                Tag[] tags = {
+                                        new Tag(context.getString(R.string.tag_personal)),
+                                        new Tag(context.getString(R.string.tag_work))};
+                                getInstance(context).tagDao().insertTags(tags);
                             });
                         }
                     })
