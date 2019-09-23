@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tech.zettervall.mNotes.R;
@@ -58,12 +56,7 @@ public class FavoritesFragment extends BaseListFragment {
         });
 
         // Set FAB OnClickListener
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onFragmentFabClick(true, null);
-            }
-        });
+        mFab.setOnClickListener(this::fabClick);
 
         // Set title
         getActivity().setTitle(R.string.action_favorites);
@@ -75,14 +68,13 @@ public class FavoritesFragment extends BaseListFragment {
     }
 
     @Override
+    protected void fabClick(View v) {
+        callback.onFragmentFabClick(true, null);
+    }
+
+    @Override
     public void subscribeObservers() {
-        mFavoritesFragmentViewModel.getFavorites().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mNoteAdapter.submitList(notes);
-                emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
-            }
-        });
+        mFavoritesFragmentViewModel.getFavorites().observe(getViewLifecycleOwner(), super::updateAdapter);
     }
 
     @Override

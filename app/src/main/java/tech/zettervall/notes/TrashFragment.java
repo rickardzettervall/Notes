@@ -13,9 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -66,13 +64,7 @@ public class TrashFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
-        mTrashFragmentViewModel.getTrash().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mNoteAdapter.submitList(notes);
-                emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
-            }
-        });
+        mTrashFragmentViewModel.getTrash().observe(getViewLifecycleOwner(), super::updateAdapter);
     }
 
     @Override
@@ -106,21 +98,7 @@ public class TrashFragment extends BaseListFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         switch (item.getItemId()) {
             case R.id.action_empty_trash:
-                dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                mTrashFragmentViewModel.emptyTrash();
-                                Toast.makeText(getActivity(),
-                                        getString(R.string.deleted_all_notes),
-                                        Toast.LENGTH_SHORT).show();
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                break;
-                        }
-                    }
-                };
+                dialogClickListener = this::emptyTrashDialogClickListener;
                 builder.setTitle(getString(R.string.confirm_empty_trash))
                         .setPositiveButton(getString(R.string.confirm), dialogClickListener)
                         .setNegativeButton(getString(R.string.abort), dialogClickListener)
@@ -129,5 +107,21 @@ public class TrashFragment extends BaseListFragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * ClickListener for Dialog confirmation to empty trash.
+     */
+    private void emptyTrashDialogClickListener(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                mTrashFragmentViewModel.emptyTrash();
+                Toast.makeText(getActivity(),
+                        getString(R.string.deleted_all_notes),
+                        Toast.LENGTH_SHORT).show();
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                break;
+        }
     }
 }

@@ -60,7 +60,8 @@ import static android.content.Context.JOB_SCHEDULER_SERVICE;
 /**
  * Fragment for editing a Note, uses ViewModel to fetch data from db.
  */
-public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener {
+public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClickListener,
+        View.OnClickListener {
 
     private static final String TAG = NoteFragment.class.getSimpleName();
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -173,15 +174,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             mDataBinding.fragmentNoteReminderLinearlayout.setVisibility(View.VISIBLE);
             mDataBinding.fragmentNoteReminderTextview.setText(getString(R.string.reminder_set,
                     DateTimeUtil.getDateStringFromEpoch(notificationEpoch, context)));
-            mDataBinding.fragmentNoteReminderRemoveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDataBinding.fragmentNoteReminderLinearlayout.setVisibility(View.GONE);
-                    cancelReminderJob();
-                    Toast.makeText(context, getString(R.string.reminder_removed),
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
+            mDataBinding.fragmentNoteReminderRemoveButton.setOnClickListener(this);
         } else {
             mDataBinding.fragmentNoteReminderLinearlayout.setVisibility(View.GONE);
         }
@@ -329,6 +322,41 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 mDateTimePickerCalender.get(Calendar.DATE)).show();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == mDataBinding.fragmentNoteReminderRemoveButton) { // Remove Button for reminder
+            mDataBinding.fragmentNoteReminderLinearlayout.setVisibility(View.GONE);
+            cancelReminderJob();
+            Toast.makeText(getContext(), getString(R.string.reminder_removed),
+                    Toast.LENGTH_SHORT).show();
+        } else if (v == mDataBinding.fragmentNotePhotoImageview) { // Photo ImageView
+            Intent intent = new Intent(getActivity(), PhotoActivity.class);
+            intent.putExtra(Constants.PHOTO_PATH, mNote.getPhotoPath());
+            intent.putExtra(Constants.NOTE_TITLE,
+                    mDataBinding.fragmentNoteTitleEdittext.getText().toString().trim());
+            startActivity(intent);
+        } else if (v == mDataBinding.fragmentNoteRemovePhotoImageview) { // Photo remove Button
+            DialogInterface.OnClickListener dialogClickListener =
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    deleteImageFile();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+            AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
+            deleteBuilder.setTitle(getString(R.string.confirm_photo_delete))
+                    .setPositiveButton(getString(R.string.confirm), dialogClickListener)
+                    .setNegativeButton(getString(R.string.abort), dialogClickListener)
+                    .show();
+        }
+    }
+
     /**
      * Save / Trash / Restore / Delete Note.
      */
@@ -375,41 +403,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             if (photo != null) {
                 mDataBinding.fragmentNotePhotoLayout.setVisibility(View.VISIBLE);
                 mDataBinding.fragmentNotePhotoImageview.setImageBitmap(photo);
-                mDataBinding.fragmentNotePhotoImageview.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getActivity(), PhotoActivity.class);
-                                intent.putExtra(Constants.PHOTO_PATH, mNote.getPhotoPath());
-                                intent.putExtra(Constants.NOTE_TITLE,
-                                        mDataBinding.fragmentNoteTitleEdittext.getText().toString().trim());
-                                startActivity(intent);
-                            }
-                        });
-                mDataBinding.fragmentNoteRemovePhotoImageview.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                DialogInterface.OnClickListener dialogClickListener =
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                switch (which) {
-                                                    case DialogInterface.BUTTON_POSITIVE:
-                                                        deleteImageFile();
-                                                        break;
-                                                    case DialogInterface.BUTTON_NEGATIVE:
-                                                        break;
-                                                }
-                                            }
-                                        };
-                                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
-                                deleteBuilder.setTitle(getString(R.string.confirm_photo_delete))
-                                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                                        .setNegativeButton(getString(R.string.abort), dialogClickListener)
-                                        .show();
-                            }
-                        });
+                mDataBinding.fragmentNotePhotoImageview.setOnClickListener(this);
+                mDataBinding.fragmentNoteRemovePhotoImageview.setOnClickListener(this);
             }
         }
     }
@@ -606,7 +601,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         .show();
                 break;
             case R.id.action_photo:
-                if(mDataBinding.fragmentNoteTitleEdittext.getText().toString().isEmpty() &&
+                if (mDataBinding.fragmentNoteTitleEdittext.getText().toString().isEmpty() &&
                         mDataBinding.fragmentNoteTextEdittext.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), getString(R.string.error_missing_title_text),
                             Toast.LENGTH_SHORT).show();
@@ -615,7 +610,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 }
                 break;
             case R.id.action_reminder:
-                if(mDataBinding.fragmentNoteTitleEdittext.getText().toString().isEmpty() &&
+                if (mDataBinding.fragmentNoteTitleEdittext.getText().toString().isEmpty() &&
                         mDataBinding.fragmentNoteTextEdittext.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), getString(R.string.error_missing_title_text),
                             Toast.LENGTH_SHORT).show();

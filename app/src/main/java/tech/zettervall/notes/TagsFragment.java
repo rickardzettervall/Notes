@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,48 +65,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         });
 
         // Set FAB OnClickListener
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Inflate View
-                final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_edit, null);
-                final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_edit_edittext);
-                DialogInterface.OnClickListener dialogClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        if (!tagTitleEditText.getText().toString().isEmpty()) { // Don't allow empty Tag title
-                                            String str = tagTitleEditText.getText().toString()
-                                                    .replaceAll("#", "");
-                                            mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
-                                        }
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        KeyboardUtil.hideKeyboard(getActivity());
-                                        break;
-                                }
-                            }
-                        };
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getString(R.string.tag_new))
-                        .setView(dialogView)
-                        .setPositiveButton(R.string.confirm, dialogClickListener)
-                        .setNegativeButton(R.string.abort, dialogClickListener)
-                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                KeyboardUtil.hideKeyboard(getActivity());
-                            }
-                        })
-                        .show();
-
-                // Set focus and show keyboard
-                tagTitleEditText.requestFocus();
-                KeyboardUtil.showKeyboard(getActivity());
-            }
-        });
+        mFab.setOnClickListener(this::fabClick);
 
         // Set title
         getActivity().setTitle(getString(R.string.action_tags));
@@ -121,12 +79,55 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
     @Override
     public void subscribeObservers() {
         super.subscribeObservers();
-        mTagsFragmentViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<PagedList<Tag>>() {
-            @Override
-            public void onChanged(PagedList<Tag> tags) {
-                mTagAdapter.submitList(tags);
-            }
-        });
+        mTagsFragmentViewModel.getTags().observe(getViewLifecycleOwner(), this::updateTagAdapter);
+    }
+
+    /**
+     * Update Tag Adapter.
+     */
+    private void updateTagAdapter(PagedList<Tag> tags) {
+        mTagAdapter.submitList(tags);
+    }
+
+    @Override
+    protected void fabClick(View v) {
+        // Inflate View
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_edit, null);
+        final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_edit_edittext);
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                if (!tagTitleEditText.getText().toString().isEmpty()) { // Don't allow empty Tag title
+                                    String str = tagTitleEditText.getText().toString()
+                                            .replaceAll("#", "");
+                                    mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
+                                }
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                KeyboardUtil.hideKeyboard(getActivity());
+                                break;
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getString(R.string.tag_new))
+                .setView(dialogView)
+                .setPositiveButton(R.string.confirm, dialogClickListener)
+                .setNegativeButton(R.string.abort, dialogClickListener)
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        KeyboardUtil.hideKeyboard(getActivity());
+                    }
+                })
+                .show();
+
+        // Set focus and show keyboard
+        tagTitleEditText.requestFocus();
+        KeyboardUtil.showKeyboard(getActivity());
     }
 
     @Override

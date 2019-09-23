@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.parceler.Parcels;
@@ -68,12 +66,7 @@ public class NotesByTagFragment extends BaseListFragment {
         });
 
         // Set FAB OnClickListener
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onFragmentFabClick(false, mTag);
-            }
-        });
+        mFab.setOnClickListener(this::fabClick);
 
         // Set title
         getActivity().setTitle(mTag.getTitle());
@@ -85,14 +78,13 @@ public class NotesByTagFragment extends BaseListFragment {
     }
 
     @Override
+    protected void fabClick(View v) {
+        callback.onFragmentFabClick(false, mTag);
+    }
+
+    @Override
     public void subscribeObservers() {
-        mNotesByTagFragmentViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mNoteAdapter.submitList(notes);
-                emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
-            }
-        });
+        mNotesByTagFragmentViewModel.getNotes().observe(this, super::updateAdapter);
     }
 
     @Override

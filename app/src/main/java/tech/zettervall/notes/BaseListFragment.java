@@ -22,6 +22,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,6 +95,21 @@ public abstract class BaseListFragment extends Fragment
      */
     @Override
     public void refreshObservers(@Nullable String query) {
+    }
+
+    /**
+     * Lambda for Observer.
+     */
+    protected void updateAdapter(PagedList<Note> notes) {
+        mNoteAdapter.submitList(notes);
+        emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Lambda for FAB Click.
+     */
+    protected void fabClick(View v) {
+        callback.onFragmentFabClick(false, null);
     }
 
     @Override

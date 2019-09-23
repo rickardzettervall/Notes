@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tech.zettervall.mNotes.R;
@@ -58,12 +56,7 @@ public class RemindersFragment extends BaseListFragment {
         });
 
         // Set FAB OnClickListener
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onFragmentFabClick(false, null);
-            }
-        });
+        mFab.setOnClickListener(super::fabClick);
 
         // Set title
         getActivity().setTitle(R.string.action_reminders);
@@ -77,13 +70,7 @@ public class RemindersFragment extends BaseListFragment {
     @Override
     public void subscribeObservers() {
         super.subscribeObservers();
-        mRemindersFragmentViewModel.getReminders().observe(getViewLifecycleOwner(), new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mNoteAdapter.submitList(notes);
-                emptyTextView.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
-            }
-        });
+        mRemindersFragmentViewModel.getReminders().observe(getViewLifecycleOwner(), super::updateAdapter);
     }
 
     @Override
