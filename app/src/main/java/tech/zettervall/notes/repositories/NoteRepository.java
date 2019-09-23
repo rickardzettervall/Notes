@@ -14,7 +14,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.Constants;
@@ -207,12 +206,7 @@ public class NoteRepository {
      */
     public List<Note> getNotesList(final int tagID) {
         Log.d(TAG, "Retrieving Notes matching tag from db..");
-        return DbUtil.rawDB(new Callable<List<Note>>() {
-            @Override
-            public List<Note> call() {
-                return mNoteDao.getNotesList(String.valueOf(tagID));
-            }
-        });
+        return DbUtil.rawDB(() -> mNoteDao.getNotesList(String.valueOf(tagID)));
     }
 
     /**
@@ -267,24 +261,14 @@ public class NoteRepository {
      */
     public Note getNote(final int noteID) {
         Log.d(TAG, "Retrieving Note[id:" + noteID + "] from db..");
-        return DbUtil.rawDB(new Callable<Note>() {
-            @Override
-            public Note call() {
-                return mNoteDao.getNote(noteID);
-            }
-        });
+        return DbUtil.rawDB(() -> mNoteDao.getNote(noteID));
     }
 
     /**
      * Insert new Note into db and return Note ID.
      */
     public long insertNote(final Note note) {
-        long noteID = DbUtil.rawDB(new Callable<Long>() {
-            @Override
-            public Long call() {
-                return mNoteDao.insertNote(note);
-            }
-        });
+        long noteID = DbUtil.rawDB(() -> mNoteDao.insertNote(note));
         Log.d(TAG, "Inserted Note[id:" + noteID + "] into db..");
         return noteID;
     }
@@ -293,12 +277,7 @@ public class NoteRepository {
      * Insert multiple Notes into db and return array with Note ID's.
      */
     public long[] insertNotes(final Note[] notes) {
-        long[] noteIDs = DbUtil.rawDB(new Callable<long[]>() {
-            @Override
-            public long[] call() {
-                return mNoteDao.insertNotes(notes);
-            }
-        });
+        long[] noteIDs = DbUtil.rawDB(() -> mNoteDao.insertNotes(notes));
         Log.d(TAG, "Inserted Notes[id's:" + Arrays.toString(noteIDs) + "] into db..");
         return noteIDs;
     }
@@ -307,64 +286,43 @@ public class NoteRepository {
      * Update existing Note.
      */
     public void updateNote(final Note note) {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Updating Note[id:" + note.getId() + "] in db..");
-                mNoteDao.updateNote(note);
-            }
-        });
+        Log.d(TAG, "Updating Note[id:" + note.getId() + "] in db..");
+        AppExecutor.getExecutor().diskIO().execute(() -> mNoteDao.updateNote(note));
     }
 
     /**
      * Update existing Notes.
      */
     public void updateNotes(final Note[] notes) {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Updating Notes[id:" + Arrays.toString(notes) + "] in db..");
-                mNoteDao.updateNotes(notes);
-            }
-        });
+        long[] noteIDs = new long[notes.length];
+        for (int i = 0; i < notes.length; i++) {
+            noteIDs[i] = notes[i].getId();
+        }
+        Log.d(TAG, "Updating Notes[id:" + Arrays.toString(noteIDs) + "] in db..");
+        AppExecutor.getExecutor().diskIO().execute(() -> mNoteDao.updateNotes(notes));
     }
 
     /**
      * Delete existing Note.
      */
     public void deleteNote(final Note note) {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Deleting Note[id:" + note.getId() + "] from db..");
-                mNoteDao.deleteNote(note);
-            }
-        });
+        Log.d(TAG, "Deleting Note[id:" + note.getId() + "] from db..");
+        AppExecutor.getExecutor().diskIO().execute(() -> mNoteDao.deleteNote(note));
     }
 
     /**
      * Delete all Notes.
      */
     public void deleteAllNotes() {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Deleting all Notes from db..!");
-                mNoteDao.deleteAllNotes();
-            }
-        });
+        Log.d(TAG, "Deleting all Notes from db..!");
+        AppExecutor.getExecutor().diskIO().execute(() -> mNoteDao.deleteAllNotes());
     }
 
     /**
      * Delete all trashed Notes.
      */
     public void deleteAllTrashedNotes() {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Deleting all trashed Notes from db..!");
-                mNoteDao.deleteAllTrashedNotes();
-            }
-        });
+        Log.d(TAG, "Deleting all trashed Notes from db..!");
+        AppExecutor.getExecutor().diskIO().execute(() -> mNoteDao.deleteAllTrashedNotes());
     }
 }

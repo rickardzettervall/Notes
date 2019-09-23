@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.data.AppDb;
@@ -65,12 +64,7 @@ public class TagRepository {
      */
     public List<Tag> getTagsList() {
         Log.d(TAG, "Retrieving all Tags from db..");
-        return DbUtil.rawDB(new Callable<List<Tag>>() {
-            @Override
-            public List<Tag> call() {
-                return mTagDao.getTagsList();
-            }
-        });
+        return DbUtil.rawDB(() -> mTagDao.getTagsList());
     }
 
     /**
@@ -86,24 +80,14 @@ public class TagRepository {
      */
     public Tag getTag(final int tagID) {
         Log.d(TAG, "Retrieving Tag[id:" + tagID + "] from db..");
-        return DbUtil.rawDB(new Callable<Tag>() {
-            @Override
-            public Tag call() {
-                return mTagDao.getTag(tagID);
-            }
-        });
+        return DbUtil.rawDB(() -> mTagDao.getTag(tagID));
     }
 
     /**
      * Insert new Tag into DB and return Tag ID.
      */
     public long insertTag(final Tag tag) {
-        long tagID = DbUtil.rawDB(new Callable<Long>() {
-            @Override
-            public Long call() {
-                return mTagDao.insertTag(tag);
-            }
-        });
+        long tagID = DbUtil.rawDB(() -> mTagDao.insertTag(tag));
         Log.d(TAG, "Inserted Tag[id:" + tagID + "] in db..");
         return tagID;
     }
@@ -112,25 +96,15 @@ public class TagRepository {
      * Update existing Tag.
      */
     public void updateTag(final Tag tag) {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Updating Tag[id:" + tag.getId() + "] in db..");
-                mTagDao.updateTag(tag);
-            }
-        });
+        Log.d(TAG, "Updating Tag[id:" + tag.getId() + "] in db..");
+        AppExecutor.getExecutor().diskIO().execute(() -> mTagDao.updateTag(tag));
     }
 
     /**
      * Delete existing Tag.
      */
     public void deleteTag(final Tag tag) {
-        AppExecutor.getExecutor().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Deleting Tag[id:" + tag.getId() + "] from db..");
-                mTagDao.deleteTag(tag);
-            }
-        });
+        Log.d(TAG, "Deleting Tag[id:" + tag.getId() + "] from db..");
+        AppExecutor.getExecutor().diskIO().execute(() -> mTagDao.deleteTag(tag));
     }
 }
