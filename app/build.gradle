@@ -67,7 +67,7 @@ dependencies {
     // Lifecycle
     def lifeCycleVersion = "2.1.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifeCycleVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-common-java8:$lifeCycleVersion"
 
     // RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.0.0"
