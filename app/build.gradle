@@ -7,7 +7,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     signingConfigs {
-        release {
+        config {
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
             keyAlias keystoreProperties['keyAlias']
@@ -33,7 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
         }
     }
     testOptions {
