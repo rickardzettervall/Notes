@@ -1,6 +1,5 @@
 package tech.zettervall.notes.repositories;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -29,7 +28,7 @@ import static org.junit.Assert.assertNull;
 public class NoteRepositoryTest {
 
     @Rule
-    public InstantTaskExecutorRule mInstantTaskExecutorRule = new InstantTaskExecutorRule();
+//    public InstantTaskExecutorRule mInstantTaskExecutorRule = new InstantTaskExecutorRule();
     private AppDb mAppDb;
     private NoteRepository mNoteRepository;
 

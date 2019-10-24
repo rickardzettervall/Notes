@@ -36,6 +36,7 @@ public abstract class TestHelper {
         Note note1 = new Note(
                 NOTE_1_TITLE,
                 NOTE_1_TEXT,
+                null,
                 tagIDs,
                 DateTimeUtil.getCurrentEpoch(),
                 DateTimeUtil.getCurrentEpoch(),
@@ -45,6 +46,7 @@ public abstract class TestHelper {
         Note note2 = new Note(
                 NOTE_2_TITLE,
                 NOTE_2_TEXT,
+                null,
                 tagIDs,
                 DateTimeUtil.getCurrentEpoch(),
                 DateTimeUtil.getCurrentEpoch() - 5000L,
@@ -54,7 +56,8 @@ public abstract class TestHelper {
         Note note3 = new Note(
                 NOTE_3_TITLE,
                 NOTE_3_TEXT,
-                new ArrayList<Integer>(),
+                null,
+                new ArrayList<>(),
                 DateTimeUtil.getCurrentEpoch(),
                 DateTimeUtil.getCurrentEpoch() - 10000L,
                 -1L,
@@ -73,7 +76,8 @@ public abstract class TestHelper {
         return new Note(
                 NOTE_TRASHED_TITLE,
                 NOTE_TRASHED_TEXT,
-                new ArrayList<Integer>(),
+                null,
+                new ArrayList<>(),
                 DateTimeUtil.getCurrentEpoch(),
                 DateTimeUtil.getCurrentEpoch(),
                 -1L,
