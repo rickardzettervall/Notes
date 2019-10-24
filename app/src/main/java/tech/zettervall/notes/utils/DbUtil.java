@@ -1,6 +1,7 @@
 package tech.zettervall.notes.utils;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -75,5 +76,12 @@ public abstract class DbUtil {
         StringBuilder dbDirPath = new StringBuilder(context.getDatabasePath(AppDb.DB_NAME).getPath());
         dbDirPath.delete(dbDirPath.lastIndexOf(AppDb.DB_NAME), dbDirPath.length());
         return dbDirPath.toString();
+    }
+
+    /**
+     * Get default database backup directory path.
+     */
+    public static String getDefaultBackupDirPath() {
+        return Environment.getExternalStorageDirectory().getPath() + "/backup/simple_notes/";
     }
 }
