@@ -45,23 +45,27 @@ public abstract class FileUtil {
      * @return False if source directory is empty
      */
     public static boolean copyDirectoryContent(String source, String destination) {
-        File originDir = new File(source);
-        File[] originFiles = originDir.listFiles();
-
-        // Return early if source directory is empty
-        if (originFiles == null) {
-            return false;
-        }
-
         // Ensure paths are correctly formatted
         source = source.endsWith("/") ? source : source + "/";
         destination = destination.endsWith("/") ? destination : destination + "/";
 
+        // Get files from source directory
+        File sourceDir = new File(source);
+        File[] sourceFiles = sourceDir.listFiles();
+
+        // Return early if source directory is empty
+        if (sourceFiles == null) {
+            return false;
+        }
+
+        // Create destination path
+        new File(destination).mkdirs();
+
         // Assign destination paths
-        File[] destFiles = new File[originFiles.length];
-        for (int i = 0; i < originFiles.length; i++) {
+        File[] destFiles = new File[sourceFiles.length];
+        for (int i = 0; i < sourceFiles.length; i++) {
             // Extract filename from path
-            StringBuilder fileName = new StringBuilder(originFiles[i].toString());
+            StringBuilder fileName = new StringBuilder(sourceFiles[i].toString());
             int fileNameIndex = fileName.lastIndexOf("/") + 1;
             fileName.delete(0, fileNameIndex);
 
@@ -70,11 +74,11 @@ public abstract class FileUtil {
         }
 
         // Copy files
-        for (int i = 0; i < originFiles.length; i++) {
+        for (int i = 0; i < sourceFiles.length; i++) {
             try {
-                FileUtil.copyFile(originFiles[i], destFiles[i]);
+                FileUtil.copyFile(sourceFiles[i], destFiles[i]);
             } catch (IOException e) {
-                Log.w(TAG, "Could not copy file: " + originFiles[i].toString());
+                Log.w(TAG, "Could not copy file: " + sourceFiles[i].toString());
             }
         }
 
