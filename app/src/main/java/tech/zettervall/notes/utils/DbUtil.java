@@ -1,10 +1,14 @@
 package tech.zettervall.notes.utils;
 
+import android.content.Context;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import tech.zettervall.notes.data.AppDb;
 
 public abstract class DbUtil {
 
@@ -42,5 +46,34 @@ public abstract class DbUtil {
         } catch (InterruptedException e) {
             service.shutdownNow();
         }
+    }
+
+    /**
+     * Copy database files to input destination path.
+     *
+     * @param destination Directory path to copy database files to
+     * @return True when copy of main db file was successful
+     */
+    public static boolean backupDb(Context context, String destination) {
+        return FileUtil.copyDirectoryContent(getDbDirPath(context), destination);
+    }
+
+    /**
+     * Restore database files from input source path.
+     *
+     * @param source Source path to copy database files from
+     * @return True when copy of main db file was successful
+     */
+    public static boolean restoreDb(Context context, String source) {
+        return FileUtil.copyDirectoryContent(source, getDbDirPath(context));
+    }
+
+    /**
+     * Get database directory path.
+     */
+    private static String getDbDirPath(Context context) {
+        StringBuilder dbDirPath = new StringBuilder(context.getDatabasePath(AppDb.DB_NAME).getPath());
+        dbDirPath.delete(dbDirPath.lastIndexOf(AppDb.DB_NAME), dbDirPath.length());
+        return dbDirPath.toString();
     }
 }
