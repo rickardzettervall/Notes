@@ -35,6 +35,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
+        debug {
+            minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.config
+        }
     }
     testOptions {
         unitTests {
@@ -73,7 +78,7 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.3"
 
     // Room
-    def roomVersion = "2.2.0"
+    def roomVersion = "2.2.1"
     implementation "androidx.room:room-runtime:$roomVersion"
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
     testImplementation "androidx.room:room-testing:$roomVersion"
