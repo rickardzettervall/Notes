@@ -11,6 +11,9 @@
     <string name="about">About</string>
     <string name="general">General</string>
     <string name="photo">Photo</string>
+    <string name="database">Database</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
 
     <!-- Errors -->
     <string name="error_missing_title_text">Write a title or text first..</string>
@@ -148,6 +151,10 @@
     <string name="about_apps_key">about_apps</string>
     <string name="about_apps_title">Google Play</string>
     <string name="about_apps_summary">Try my other Apps</string>
+    <string name="backup_key">backup</string>
+    <string name="backup_summary">Copy db files to your storage, located at /backup/tech.zettervall.notes/</string>
+    <string name="restore_key">restore</string>
+    <string name="restore_summary">Restore db from previously saved backup.</string>
 
     <!-- Notifications -->
     <string name="notification_channel_reminders_title">Reminders</string>

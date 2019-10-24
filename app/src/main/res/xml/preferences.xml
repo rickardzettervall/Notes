@@ -33,6 +33,24 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/database">
+
+        <!-- Backup -->
+        <Preference
+            app:icon="@drawable/ic_db_backup"
+            app:key="@string/backup_key"
+            app:summary="@string/backup_summary"
+            app:title="@string/backup" />
+
+        <!-- Restore -->
+        <Preference
+            app:icon="@drawable/ic_db_restore"
+            app:key="@string/restore_key"
+            app:summary="@string/restore_summary"
+            app:title="@string/restore" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/about">
 
         <Preference
