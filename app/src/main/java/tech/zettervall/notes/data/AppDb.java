@@ -25,8 +25,8 @@ import tech.zettervall.notes.models.Tag;
 public abstract class AppDb extends RoomDatabase {
 
     private static final String TAG = AppDb.class.getSimpleName();
-    private static final String DB_NAME = "notes_db";
     private static AppDb INSTANCE;
+    public static final String DB_NAME = "notes_db";
 
     /**
      * Room Db instance.
