@@ -1,7 +1,5 @@
 package tech.zettervall.notes.utils;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -78,7 +76,7 @@ public abstract class FileUtil {
             try {
                 FileUtil.copyFile(sourceFiles[i], destFiles[i]);
             } catch (IOException e) {
-                Log.w(TAG, "Could not copy file: " + sourceFiles[i].toString());
+                e.printStackTrace();
             }
         }
 
