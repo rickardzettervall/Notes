@@ -61,7 +61,7 @@ public abstract class DateTimeUtil {
         // Default formats
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault()),
                 dateFormat = new SimpleDateFormat("d MMM", Locale.getDefault()),
-                yearFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
+                yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
 
         // Set AM/PM for countries which use that standard
         if (!use24h(context)) {
