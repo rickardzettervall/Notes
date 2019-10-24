@@ -55,6 +55,8 @@
     <string name="deleted_all_notes">Deleted all Notes!</string>
     <string name="confirm_done">Done</string>
     <string name="confirm_photo_delete">Delete Photo?</string>
+    <string name="confirm_restore_db">Restore database?</string>
+    <string name="confirm_restore_db_message">Delete all current data and restore from most recent backup, are you sure!?</string>
 
     <!-- Titles -->
     <string name="note_new">New Note</string>
@@ -147,14 +149,19 @@
     <string name="sort_favorites_on_top_key" translatable="false">sort_favorites_on_top</string>
     <string name="time_24_key">time_24</string>
     <string name="time_24_title">Military time (24H)</string>
-    <string name="time_24_summary">Override your locale settings and use the military time format.</string>
+    <string name="time_24_summary">Override your locale settings and use the military time format</string>
     <string name="about_apps_key">about_apps</string>
     <string name="about_apps_title">Google Play</string>
     <string name="about_apps_summary">Try my other Apps</string>
     <string name="backup_key">backup</string>
-    <string name="backup_summary">Copy db files to your storage, located at /backup/tech.zettervall.notes/</string>
+    <string name="backup_summary">Save database to local storage, files will be located in \'<xliff:g example="/storage/backup/" id="path">%s</xliff:g>\'</string>
     <string name="restore_key">restore</string>
-    <string name="restore_summary">Restore db from previously saved backup.</string>
+    <string name="restore_summary">Use latest backup to restore database</string>
+
+    <!-- Backup -->
+    <string name="backup_saved_to">Backup saved to <xliff:g example="/storage/backup/" id="path">%s</xliff:g></string>
+    <string name="backup_restored">Backup restored</string>
+    <string name="backup_restored_failed">No backup found, restore failed</string>
 
     <!-- Notifications -->
     <string name="notification_channel_reminders_title">Reminders</string>

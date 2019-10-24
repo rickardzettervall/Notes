@@ -1,7 +1,10 @@
 package tech.zettervall.notes;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -9,7 +12,9 @@ import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -19,6 +24,7 @@ import androidx.preference.PreferenceManager;
 
 import tech.zettervall.mNotes.BuildConfig;
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.utils.DbUtil;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -63,6 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
     public static class SettingsFragment extends PreferenceFragmentCompat implements
             Preference.OnPreferenceClickListener {
 
+        private static final int BACKUP_DB_REQUEST_CODE = 0;
+        private static final int RESTORE_DB_REQUEST_CODE = 1;
         private SharedPreferences mSharedPreferences;
 
         @Override
@@ -74,6 +82,15 @@ public class SettingsActivity extends AppCompatActivity {
             // Dark Theme
             Preference darkTheme = findPreference(getString(R.string.dark_theme_key));
             darkTheme.setOnPreferenceClickListener(this);
+
+            // Backup Database
+            Preference backupDb = findPreference(getString(R.string.backup_key));
+            backupDb.setSummary(getString(R.string.backup_summary, DbUtil.getDefaultBackupDirPath()));
+            backupDb.setOnPreferenceClickListener(this);
+
+            // Restore Database
+            Preference restoreDb = findPreference(getString(R.string.restore_key));
+            restoreDb.setOnPreferenceClickListener(this);
 
             // About (Other Apps)
             Preference aboutOtherApps = findPreference(getString(R.string.about_apps_key));
@@ -87,7 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            if (preference == findPreference(getString(R.string.dark_theme_key))) {
+            if (preference == findPreference(getString(R.string.dark_theme_key))) { // Dark Theme
                 boolean setDarkTheme = mSharedPreferences.getBoolean(getString(R.string.dark_theme_key), false);
                 if (setDarkTheme) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -95,13 +112,37 @@ public class SettingsActivity extends AppCompatActivity {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
                 getActivity().recreate();
-            } else if (preference == findPreference(getString(R.string.about_apps_key))) {
+            } else if (preference == findPreference(getString(R.string.backup_key))) { // Backup Db
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions, BACKUP_DB_REQUEST_CODE);
+            } else if (preference == findPreference(getString(R.string.restore_key))) { // Restore Db
+                DialogInterface.OnClickListener dialogClickListenerDelete =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                                        requestPermissions(permissions, RESTORE_DB_REQUEST_CODE);
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
+                            }
+                        };
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getString(R.string.confirm_restore_db))
+                        .setPositiveButton(getString(R.string.confirm), dialogClickListenerDelete)
+                        .setNegativeButton(getString(R.string.abort), dialogClickListenerDelete)
+                        .setMessage(getString(R.string.confirm_restore_db_message))
+                        .show();
+            } else if (preference == findPreference(getString(R.string.about_apps_key))) { // View other Apps
                 Uri devPages = Uri.parse(Constants.GOOGLE_PLAY_STORE_PAGE);
                 Intent intent = new Intent(Intent.ACTION_VIEW, devPages);
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);
                 }
-            } else if (preference == findPreference(getString(R.string.about_simplenotes_key))) {
+            } else if (preference == findPreference(getString(R.string.about_simplenotes_key))) { // About App
                 // Inflate View
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
 
@@ -130,6 +171,28 @@ public class SettingsActivity extends AppCompatActivity {
                 builder.show();
             }
             return false;
+        }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            switch (requestCode) {
+                case BACKUP_DB_REQUEST_CODE:
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        DbUtil.backupDb(getContext(), DbUtil.getDefaultBackupDirPath());
+                        Toast.makeText(getActivity(), getString(R.string.backup_saved_to, DbUtil.getDefaultBackupDirPath()), Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case RESTORE_DB_REQUEST_CODE:
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        boolean result = DbUtil.restoreDb(getContext(), DbUtil.getDefaultBackupDirPath());
+                        if (result) {
+                            Toast.makeText(getActivity(), getString(R.string.backup_restored), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.backup_restored_failed), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    break;
+            }
         }
     }
 }
