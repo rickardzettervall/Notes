@@ -559,6 +559,17 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_TAKE_PHOTO) {
+            if(data == null) { // Cleanup file when taking photo was aborted
+                File file = new File(mNote.getPhotoPath());
+                file.delete();
+                mNote.setPhotoPath(null);
+            }
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favoritize:
