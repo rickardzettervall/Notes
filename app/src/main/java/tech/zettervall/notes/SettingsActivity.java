@@ -85,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             // Backup Database
             Preference backupDb = findPreference(getString(R.string.backup_key));
-            backupDb.setSummary(getString(R.string.backup_summary, DbUtil.getDefaultBackupDirPath()));
+            backupDb.setSummary(getString(R.string.backup_summary, DbUtil.DB_BACKUP_TRAIL_PATH));
             backupDb.setOnPreferenceClickListener(this);
 
             // Restore Database
@@ -179,7 +179,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case BACKUP_DB_REQUEST_CODE:
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         DbUtil.backupDb(getContext(), DbUtil.getDefaultBackupDirPath());
-                        Toast.makeText(getActivity(), getString(R.string.backup_saved_to, DbUtil.getDefaultBackupDirPath()), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), getString(R.string.backup_saved_to, DbUtil.DB_BACKUP_TRAIL_PATH), Toast.LENGTH_LONG).show();
                     }
                     break;
                 case RESTORE_DB_REQUEST_CODE:

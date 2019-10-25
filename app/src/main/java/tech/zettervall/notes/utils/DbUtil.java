@@ -13,6 +13,8 @@ import tech.zettervall.notes.data.AppDb;
 
 public abstract class DbUtil {
 
+    public static final String DB_BACKUP_TRAIL_PATH = "/backup/simple_notes/";
+
     /**
      * Generic method for retrieving raw db objects,
      * for when you don't want to use an observable.
@@ -82,6 +84,6 @@ public abstract class DbUtil {
      * Get default database backup directory path.
      */
     public static String getDefaultBackupDirPath() {
-        return Environment.getExternalStorageDirectory().getPath() + "/backup/simple_notes/";
+        return Environment.getExternalStorageDirectory().getPath() + DB_BACKUP_TRAIL_PATH;
     }
 }
