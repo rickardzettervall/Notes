@@ -55,6 +55,7 @@ import tech.zettervall.notes.utils.KeyboardUtil;
 import tech.zettervall.notes.utils.RecyclerViewUtil;
 import tech.zettervall.notes.viewmodels.NoteFragmentViewModel;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
 /**
@@ -560,12 +561,11 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_TAKE_PHOTO) {
-            if(data == null) { // Cleanup file when taking photo was aborted
-                File file = new File(mNote.getPhotoPath());
-                file.delete();
-                mNote.setPhotoPath(null);
-            }
+        // Cleanup file when taking photo was aborted
+        if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_CANCELED) {
+            File file = new File(mNote.getPhotoPath());
+            file.delete();
+            mNote.setPhotoPath(null);
         }
     }
 
