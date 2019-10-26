@@ -13,7 +13,7 @@ import tech.zettervall.notes.data.AppDb;
 
 public abstract class DbUtil {
 
-    public static final String DB_BACKUP_TRAIL_PATH = "/backup/simple_notes/";
+    public static final String DB_BACKUP_TRAIL_PATH = "/backup/simple_notes/db/";
 
     /**
      * Generic method for retrieving raw db objects,
