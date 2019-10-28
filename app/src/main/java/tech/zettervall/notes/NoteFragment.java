@@ -306,10 +306,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         mReminderCalender.set(Calendar.MINUTE, minute);
                         mReminderDateTimeEpoch = DateTimeUtil.
                                 getEpochWithZeroSeconds(mReminderCalender.getTime().getTime());
-                        // Display for user
-                        Toast.makeText(getActivity(), getString(R.string.reminder_set,
-                                DateTimeUtil.getDateStringFromEpoch(mReminderDateTimeEpoch,
-                                        getActivity())), Toast.LENGTH_LONG).show();
                         // Set Reminder for Note
                         mNote.setNotificationEpoch(mReminderDateTimeEpoch);
                         scheduleReminderJob(getActivity());
@@ -576,13 +572,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 if (mNote.isFavorite()) { // Note is in favorites
                     mNote.setFavorite(false);
                     setUnfavoritizedIcon(item);
-                    Toast.makeText(getActivity(), getString(R.string.note_favorites_removed),
-                            Toast.LENGTH_SHORT).show();
                 } else { // Note is not in favorites
                     mNote.setFavorite(true);
                     setFavoritizedIcon(item);
-                    Toast.makeText(getActivity(), getString(R.string.note_favorites_added),
-                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.action_tags:
