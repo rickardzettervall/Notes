@@ -504,9 +504,6 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             if (deleted) {
                 mDataBinding.fragmentNotePhotoLayout.setVisibility(View.GONE);
                 mDataBinding.fragmentNotePhotoImageview.setImageBitmap(null);
-                Toast.makeText(getActivity(),
-                        getString(R.string.note_photo_removed),
-                        Toast.LENGTH_SHORT).show();
             }
             mNote.setPhotoPath(null); // Reset path
         }
