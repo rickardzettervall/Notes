@@ -12,6 +12,7 @@
             android:id="@+id/list_note_title_linearlayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -63,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="3"
+            android:maxLines="5"
             android:textAppearance="?android:textAppearanceSmall"
             tools:text="@string/tools_text" />
 
