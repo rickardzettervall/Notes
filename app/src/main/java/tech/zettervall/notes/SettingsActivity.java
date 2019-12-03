@@ -48,19 +48,10 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            /* Don't use finish() here because MainActivity needs to be reloaded
-             * when user changes theme. */
-            startActivity(new Intent(this, MainActivity.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        /* Don't use finish() here because MainActivity needs to be reloaded
-         * when user changes theme. */
-        startActivity(new Intent(this, MainActivity.class));
     }
 
     /**
@@ -147,22 +138,19 @@ public class SettingsActivity extends AppCompatActivity {
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
 
                 // Set HTML link for 'built by'
-                ((TextView) dialogView.findViewById(R.id.dialog_about_built_by_textview))
-                        .setMovementMethod(LinkMovementMethod.getInstance());
-                ((TextView) dialogView.findViewById(R.id.dialog_about_built_by_textview))
-                        .setText(Html.fromHtml(getString(R.string.about_built_by)));
+                TextView builtBy = dialogView.findViewById(R.id.dialog_about_built_by_textview);
+                builtBy.setMovementMethod(LinkMovementMethod.getInstance());
+                builtBy.setText(Html.fromHtml(getString(R.string.about_built_by)));
 
                 // Set HTML link for 'libraries'
-                ((TextView) dialogView.findViewById(R.id.dialog_about_libraries_textview))
-                        .setMovementMethod(LinkMovementMethod.getInstance());
-                ((TextView) dialogView.findViewById(R.id.dialog_about_libraries_textview))
-                        .setText(Html.fromHtml(getString(R.string.about_libraries)));
+                TextView libraries = dialogView.findViewById(R.id.dialog_about_libraries_textview);
+                libraries.setMovementMethod(LinkMovementMethod.getInstance());
+                libraries.setText(Html.fromHtml(getString(R.string.about_libraries)));
 
                 // Set HTML link for 'app icon'
-                ((TextView) dialogView.findViewById(R.id.dialog_about_app_icon_textview))
-                        .setMovementMethod(LinkMovementMethod.getInstance());
-                ((TextView) dialogView.findViewById(R.id.dialog_about_app_icon_textview))
-                        .setText(Html.fromHtml(getString(R.string.about_app_icon)));
+                TextView appIcon = dialogView.findViewById(R.id.dialog_about_app_icon_textview);
+                appIcon.setMovementMethod(LinkMovementMethod.getInstance());
+                appIcon.setText(Html.fromHtml(getString(R.string.about_app_icon)));
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.app_name));
