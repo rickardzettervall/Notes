@@ -13,7 +13,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 
@@ -101,16 +100,13 @@ public class MainActivity extends BaseActivity implements
             mMainActivityViewModel.setNotificationNote(noteID);
 
             // Observer
-            mMainActivityViewModel.getNotificationNote().observe(this, new Observer<Note>() {
-                @Override
-                public void onChanged(Note note) {
-                    // Reset Notification
-                    note.setNotificationEpoch(-1);
-                    // Simulate click
-                    onNoteClick(note);
-                    // Remove Extra to prevent loop
-                    getIntent().removeExtra(Constants.NOTE_ID);
-                }
+            mMainActivityViewModel.getNotificationNote().observe(this, (Note note) -> {
+                // Reset Notification
+                note.setNotificationEpoch(-1);
+                // Simulate click
+                onNoteClick(note);
+                // Remove Extra to prevent loop
+                getIntent().removeExtra(Constants.NOTE_ID);
             });
         }
 
@@ -122,42 +118,27 @@ public class MainActivity extends BaseActivity implements
      * Observers for updating number of notes in each navigation view category.
      */
     private void subscribeObservers() {
-        mMainActivityViewModel.getNotes().observe(this, new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mAllNotesCounterTextView.setText(getNotesCounterValue(notes.size()));
-                mNotesTagsCount.clear();
-                for (int i = 0; i < notes.size(); i++) {
-                    try {
-                        // Get number of Notes in each Tag category and put them into SparseIntArray
-                        for (Integer j : notes.get(i).getTagIDs()) {
-                            mNotesTagsCount.put(j, mNotesTagsCount.get(j) + 1);
-                        }
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
+        mMainActivityViewModel.getNotes().observe(this, (PagedList<Note> notes) -> {
+            mAllNotesCounterTextView.setText(getNotesCounterValue(notes.size()));
+            mNotesTagsCount.clear();
+            for (int i = 0; i < notes.size(); i++) {
+                try {
+                    // Get number of Notes in each Tag category and put them into SparseIntArray
+                    for (Integer j : notes.get(i).getTagIDs()) {
+                        mNotesTagsCount.put(j, mNotesTagsCount.get(j) + 1);
                     }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
-                updateTagCounters(mMainActivityViewModel.getTagsList());
             }
+            updateTagCounters(mMainActivityViewModel.getTagsList());
         });
-        mMainActivityViewModel.getFavorites().observe(this, new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mFavoritesCounterTextView.setText(getNotesCounterValue(notes.size()));
-            }
-        });
-        mMainActivityViewModel.getReminders().observe(this, new Observer<PagedList<Note>>() {
-            @Override
-            public void onChanged(PagedList<Note> notes) {
-                mRemindersCounterTextView.setText(getNotesCounterValue(notes.size()));
-            }
-        });
-        mMainActivityViewModel.getTags().observe(this, new Observer<PagedList<Tag>>() {
-            @Override
-            public void onChanged(PagedList<Tag> tags) {
-                updateTagCounters(tags);
-            }
-        });
+        mMainActivityViewModel.getFavorites().observe(this, (PagedList<Note> notes) ->
+                mFavoritesCounterTextView.setText(getNotesCounterValue(notes.size())));
+        mMainActivityViewModel.getReminders().observe(this, (PagedList<Note> notes) ->
+                mRemindersCounterTextView.setText(getNotesCounterValue(notes.size())));
+        mMainActivityViewModel.getTags().observe(this, (PagedList<Tag> tags) ->
+                updateTagCounters(tags));
     }
 
     /**
@@ -172,13 +153,10 @@ public class MainActivity extends BaseActivity implements
             TextView counterTextView = menuItem.getActionView()
                     .findViewById(R.id.nav_view_counter_textview);
             counterTextView.setText(String.valueOf(mNotesTagsCount.get(tag.getId())));
-            menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    setNotesByTagFragment(getNotesByTagFragment(tag));
-                    mNavDrawerLayout.closeDrawer(GravityCompat.START);
-                    return true;
-                }
+            menuItem.setOnMenuItemClickListener((MenuItem item) -> {
+                setNotesByTagFragment(getNotesByTagFragment(tag));
+                mNavDrawerLayout.closeDrawer(GravityCompat.START);
+                return true;
             });
         }
     }

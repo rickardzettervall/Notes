@@ -108,17 +108,14 @@ public class SettingsActivity extends AppCompatActivity {
                 requestPermissions(permissions, BACKUP_DB_REQUEST_CODE);
             } else if (preference == findPreference(getString(R.string.restore_key))) { // Restore Db
                 DialogInterface.OnClickListener dialogClickListenerDelete =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                                        requestPermissions(permissions, RESTORE_DB_REQUEST_CODE);
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        break;
-                                }
+                        (DialogInterface dialog, int which) -> {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                                    requestPermissions(permissions, RESTORE_DB_REQUEST_CODE);
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
                             }
                         };
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

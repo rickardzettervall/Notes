@@ -95,21 +95,18 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_edit, null);
         final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_edit_edittext);
         DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                if (!tagTitleEditText.getText().toString().isEmpty()) { // Don't allow empty Tag title
-                                    String str = tagTitleEditText.getText().toString()
-                                            .replaceAll("#", "");
-                                    mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
-                                }
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                KeyboardUtil.hideKeyboard(getActivity());
-                                break;
-                        }
+                (DialogInterface dialog, int which) -> {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            if (!tagTitleEditText.getText().toString().isEmpty()) { // Don't allow empty Tag title
+                                String str = tagTitleEditText.getText().toString()
+                                        .replaceAll("#", "");
+                                mTagsFragmentViewModel.insertTag(new Tag(str.trim()));
+                            }
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            KeyboardUtil.hideKeyboard(getActivity());
+                            break;
                     }
                 };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -117,13 +114,9 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                 .setView(dialogView)
                 .setPositiveButton(R.string.confirm, dialogClickListener)
                 .setNegativeButton(R.string.abort, dialogClickListener)
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        KeyboardUtil.hideKeyboard(getActivity());
-                    }
-                })
-                .show();
+                .setOnCancelListener((DialogInterface dialog) -> {
+                    KeyboardUtil.hideKeyboard(getActivity());
+                }).show();
 
         // Set focus and show keyboard
         tagTitleEditText.requestFocus();
@@ -133,19 +126,16 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
     @Override
     public void onTagDeleteClick(int index) {
         final Tag tag = mTagAdapter.getCurrentList().get(index);
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        // Delete Tag and update associated Notes
-                        mTagsFragmentViewModel.deleteTag(tag);
-                        Toast.makeText(getActivity(), getString(R.string.tag_deleted_toast,
-                                tag.getTitle()), Toast.LENGTH_SHORT).show();
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
+        DialogInterface.OnClickListener dialogClickListener = (DialogInterface dialog, int which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    // Delete Tag and update associated Notes
+                    mTagsFragmentViewModel.deleteTag(tag);
+                    Toast.makeText(getActivity(), getString(R.string.tag_deleted_toast,
+                            tag.getTitle()), Toast.LENGTH_SHORT).show();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -162,19 +152,16 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_tag_edit, null);
         final EditText tagTitleEditText = dialogView.findViewById(R.id.dialog_tag_edit_edittext);
         tagTitleEditText.setText(tag.getTitle());
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        // Update Tag
-                        tag.setTitle(tagTitleEditText.getText().toString().trim());
-                        mTagsFragmentViewModel.updateTag(tag);
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        KeyboardUtil.hideKeyboard(getActivity());
-                        break;
-                }
+        DialogInterface.OnClickListener dialogClickListener = (DialogInterface dialog, int which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    // Update Tag
+                    tag.setTitle(tagTitleEditText.getText().toString().trim());
+                    mTagsFragmentViewModel.updateTag(tag);
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    KeyboardUtil.hideKeyboard(getActivity());
+                    break;
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -182,13 +169,9 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
                 .setView(dialogView)
                 .setPositiveButton(R.string.confirm, dialogClickListener)
                 .setNegativeButton(R.string.abort, dialogClickListener)
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        KeyboardUtil.hideKeyboard(getActivity());
-                    }
-                })
-                .show();
+                .setOnCancelListener((DialogInterface dialog) -> {
+                    KeyboardUtil.hideKeyboard(getActivity());
+                }).show();
 
         // Set focus and show keyboard
         tagTitleEditText.requestFocus();

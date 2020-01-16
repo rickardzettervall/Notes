@@ -134,12 +134,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
         // Hide / Show FAB depending on device
         if (mIsTablet) {
-            mDataBinding.fragmentNoteFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    saveNote();
-                    Toast.makeText(getActivity(), getString(R.string.note_saved), Toast.LENGTH_SHORT).show();
-                }
+            mDataBinding.fragmentNoteFab.setOnClickListener((View v) -> {
+                saveNote();
+                Toast.makeText(getActivity(), getString(R.string.note_saved), Toast.LENGTH_SHORT).show();
             });
         } else {
             mDataBinding.fragmentNoteFab.hide();
@@ -295,25 +292,19 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         if (mNote.getNotificationEpoch() > 0) {
             mDateTimePickerCalender.setTimeInMillis(mNote.getNotificationEpoch());
         }
-        new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mReminderCalender.set(year, monthOfYear, dayOfMonth);
-                new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mReminderCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        mReminderCalender.set(Calendar.MINUTE, minute);
-                        mReminderDateTimeEpoch = DateTimeUtil.
-                                getEpochWithZeroSeconds(mReminderCalender.getTime().getTime());
-                        // Set Reminder for Note
-                        mNote.setNotificationEpoch(mReminderDateTimeEpoch);
-                        scheduleReminderJob(getActivity());
-                    }
-                }, mDateTimePickerCalender.get(Calendar.HOUR_OF_DAY),
-                        mDateTimePickerCalender.get(Calendar.MINUTE),
-                        DateTimeUtil.use24h(getActivity())).show();
-            }
+        new DatePickerDialog(getActivity(), (DatePicker datePickerView, int year, int monthOfYear, int dayOfMonth) -> {
+            mReminderCalender.set(year, monthOfYear, dayOfMonth);
+            new TimePickerDialog(getActivity(), (TimePicker timePickerView, int hourOfDay, int minute) -> {
+                mReminderCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                mReminderCalender.set(Calendar.MINUTE, minute);
+                mReminderDateTimeEpoch = DateTimeUtil.
+                        getEpochWithZeroSeconds(mReminderCalender.getTime().getTime());
+                // Set Reminder for Note
+                mNote.setNotificationEpoch(mReminderDateTimeEpoch);
+                scheduleReminderJob(getActivity());
+            }, mDateTimePickerCalender.get(Calendar.HOUR_OF_DAY),
+                    mDateTimePickerCalender.get(Calendar.MINUTE),
+                    DateTimeUtil.use24h(getActivity())).show();
         }, mDateTimePickerCalender.get(Calendar.YEAR),
                 mDateTimePickerCalender.get(Calendar.MONTH),
                 mDateTimePickerCalender.get(Calendar.DATE)).show();
@@ -334,16 +325,13 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             startActivity(intent);
         } else if (v == mDataBinding.fragmentNoteRemovePhotoImageview) { // Photo remove Button
             DialogInterface.OnClickListener dialogClickListener =
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    deleteImageFile();
-                                    break;
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    break;
-                            }
+                    (DialogInterface dialog, int which) -> {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                deleteImageFile();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
                         }
                     };
             AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
@@ -555,7 +543,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // Cleanup file when taking photo was aborted
-        if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_CANCELED) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_CANCELED) {
             File file = new File(mNote.getPhotoPath());
             file.delete();
             mNote.setPhotoPath(null);
@@ -620,37 +608,34 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 break;
             case R.id.action_delete:
                 DialogInterface.OnClickListener dialogClickListenerDelete =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        if (!mNote.isTrash()) { // Regular Note, trash it
-                                            mTrash = true;
-                                        } else { // Already trashed Note, Final deletion!
-                                            mFinalDeletion = true;
-                                            String message = !mNote.getTitle().isEmpty() ?
-                                                    getString(R.string.note_deleted_detailed,
-                                                            mNote.getTitle()) :
-                                                    getString(R.string.note_deleted);
-                                            Toast.makeText(getActivity(), message,
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                        if (!mIsTablet) { // PHONE
-                                            getActivity().finish();
-                                        } else { // TABLET
-                                            onPause();
-                                            // Reload with new Fragment
-                                            getActivity().getSupportFragmentManager().beginTransaction()
-                                                    .replace(R.id.activity_note_framelayout,
-                                                            new NoteFragment(),
-                                                            Constants.FRAGMENT_NOTE)
-                                                    .commit();
-                                        }
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        break;
-                                }
+                        (DialogInterface dialog, int which) -> {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    if (!mNote.isTrash()) { // Regular Note, trash it
+                                        mTrash = true;
+                                    } else { // Already trashed Note, Final deletion!
+                                        mFinalDeletion = true;
+                                        String message = !mNote.getTitle().isEmpty() ?
+                                                getString(R.string.note_deleted_detailed,
+                                                        mNote.getTitle()) :
+                                                getString(R.string.note_deleted);
+                                        Toast.makeText(getActivity(), message,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                    if (!mIsTablet) { // PHONE
+                                        getActivity().finish();
+                                    } else { // TABLET
+                                        onPause();
+                                        // Reload with new Fragment
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.activity_note_framelayout,
+                                                        new NoteFragment(),
+                                                        Constants.FRAGMENT_NOTE)
+                                                .commit();
+                                    }
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
                             }
                         };
                 AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
@@ -664,33 +649,30 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 break;
             case R.id.action_restore:
                 DialogInterface.OnClickListener dialogClickListenerRestore =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        mTrash = false;
-                                        mRestore = true;
-                                        if (!mIsTablet) { // PHONE
-                                            getActivity().finish();
-                                        } else { // TABLET
-                                            onPause();
-                                            // Reload Fragment
-                                            getActivity().getSupportFragmentManager().beginTransaction()
-                                                    .replace(R.id.activity_note_framelayout,
-                                                            BaseActivity.getNoteFragment(mNote, false, null),
-                                                            Constants.FRAGMENT_NOTE)
-                                                    .commit();
-                                        }
-                                        String message = !mNote.getTitle().isEmpty() ?
-                                                getString(R.string.note_restored_detailed,
-                                                        mNote.getTitle()) :
-                                                getString(R.string.note_restored);
-                                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        break;
-                                }
+                        (DialogInterface dialog, int which) -> {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    mTrash = false;
+                                    mRestore = true;
+                                    if (!mIsTablet) { // PHONE
+                                        getActivity().finish();
+                                    } else { // TABLET
+                                        onPause();
+                                        // Reload Fragment
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.activity_note_framelayout,
+                                                        BaseActivity.getNoteFragment(mNote, false, null),
+                                                        Constants.FRAGMENT_NOTE)
+                                                .commit();
+                                    }
+                                    String message = !mNote.getTitle().isEmpty() ?
+                                            getString(R.string.note_restored_detailed,
+                                                    mNote.getTitle()) :
+                                            getString(R.string.note_restored);
+                                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
                             }
                         };
                 AlertDialog.Builder restoreBuilder = new AlertDialog.Builder(getActivity());

@@ -160,13 +160,9 @@ public abstract class BaseListFragment extends Fragment
         });
 
         // Set Close Behaviour
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Refresh List of Notes
-                refreshObservers(null);
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            refreshObservers(null);
+            return false;
         });
     }
 
@@ -197,30 +193,27 @@ public abstract class BaseListFragment extends Fragment
                 }
                 sortTypeGroup.check(checkedRadioButton);
                 // Set Listener
-                sortTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        switch (checkedId) {
-                            case R.id.dialog_sort_type_alphabetically_radiobutton: // Alphabetically
-                                mSharedPreferences.edit()
-                                        .putInt(Constants.SORT_TYPE_KEY,
-                                                Constants.SORT_TYPE_ALPHABETICALLY).apply();
-                                break;
-                            case R.id.dialog_sort_type_creation_date_radiobutton: // Creation date
-                                mSharedPreferences.edit()
-                                        .putInt(Constants.SORT_TYPE_KEY,
-                                                Constants.SORT_TYPE_CREATION_DATE).apply();
-                                break;
-                            case R.id.dialog_sort_type_modified_date_radiobutton: // Modified date
-                                mSharedPreferences.edit()
-                                        .putInt(Constants.SORT_TYPE_KEY,
-                                                Constants.SORT_TYPE_MODIFIED_DATE).apply();
-                                break;
-                        }
-
-                        // Refresh List of Notes
-                        refreshObservers(null);
+                sortTypeGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId) -> {
+                    switch (checkedId) {
+                        case R.id.dialog_sort_type_alphabetically_radiobutton: // Alphabetically
+                            mSharedPreferences.edit()
+                                    .putInt(Constants.SORT_TYPE_KEY,
+                                            Constants.SORT_TYPE_ALPHABETICALLY).apply();
+                            break;
+                        case R.id.dialog_sort_type_creation_date_radiobutton: // Creation date
+                            mSharedPreferences.edit()
+                                    .putInt(Constants.SORT_TYPE_KEY,
+                                            Constants.SORT_TYPE_CREATION_DATE).apply();
+                            break;
+                        case R.id.dialog_sort_type_modified_date_radiobutton: // Modified date
+                            mSharedPreferences.edit()
+                                    .putInt(Constants.SORT_TYPE_KEY,
+                                            Constants.SORT_TYPE_MODIFIED_DATE).apply();
+                            break;
                     }
+
+                    // Refresh List of Notes
+                    refreshObservers(null);
                 });
 
                 // Sort with favorites on top (Checkbox)
@@ -229,39 +222,31 @@ public abstract class BaseListFragment extends Fragment
                         Constants.SORT_FAVORITES_ON_TOP_KEY,
                         Constants.SORT_FAVORITES_ON_TOP_DEFAULT);
                 sortFavoritesOnTop.setChecked(sortFavoritesBool);
-                sortFavoritesOnTop.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                mSharedPreferences.edit().putBoolean(
-                                        Constants.SORT_FAVORITES_ON_TOP_KEY, isChecked).apply();
+                sortFavoritesOnTop.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+                    mSharedPreferences.edit().putBoolean(
+                            Constants.SORT_FAVORITES_ON_TOP_KEY, isChecked).apply();
 
-                                // Refresh List of Notes
-                                refreshObservers(null);
-                            }
-                        });
+                    // Refresh List of Notes
+                    refreshObservers(null);
+                });
 
-                DialogInterface.OnClickListener dialogClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE: // Ascending
-                                        mSharedPreferences.edit()
-                                                .putInt(Constants.SORT_DIRECTION_KEY,
-                                                        Constants.SORT_DIRECTION_ASC).apply();
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE: // Descending
-                                        mSharedPreferences.edit()
-                                                .putInt(Constants.SORT_DIRECTION_KEY,
-                                                        Constants.SORT_DIRECTION_DESC).apply();
-                                        break;
-                                }
+                DialogInterface.OnClickListener dialogClickListener = (DialogInterface dialog, int which) -> {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE: // Ascending
+                            mSharedPreferences.edit()
+                                    .putInt(Constants.SORT_DIRECTION_KEY,
+                                            Constants.SORT_DIRECTION_ASC).apply();
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE: // Descending
+                            mSharedPreferences.edit()
+                                    .putInt(Constants.SORT_DIRECTION_KEY,
+                                            Constants.SORT_DIRECTION_DESC).apply();
+                            break;
+                    }
 
-                                // Refresh List of Notes
-                                refreshObservers(null);
-                            }
-                        };
+                    // Refresh List of Notes
+                    refreshObservers(null);
+                };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.sort_by));
