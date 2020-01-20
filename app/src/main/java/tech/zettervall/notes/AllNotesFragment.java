@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tech.zettervall.mNotes.R;
@@ -54,6 +56,29 @@ public class AllNotesFragment extends BaseListFragment {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+        mItemToucherHelperCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        try {
+                            Note note = mNoteAdapter.getCurrentList().get(viewHolder.getAdapterPosition());
+                            note.setTrash(true);
+                            mAllNotesFragmentViewModel.updateNote(note);
+                            String toastMessage = note.getTitle() != null && !note.getTitle().isEmpty() ?
+                                    getString(R.string.note_trashed_detailed, note.getTitle()) :
+                                    getString(R.string.note_trashed);
+                            Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+        new ItemTouchHelper(mItemToucherHelperCallback).attachToRecyclerView(mRecyclerView);
 
         // Set FAB OnClickListener
         mFab.setOnClickListener(super::fabClick);

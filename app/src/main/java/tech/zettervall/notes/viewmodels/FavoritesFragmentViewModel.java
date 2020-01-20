@@ -35,4 +35,8 @@ public class FavoritesFragmentViewModel extends AndroidViewModel {
         mFavorites = new LivePagedListBuilder<>(mNoteRepository.getFavoritizedNotesPagedList(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
+
+    public void updateNote(Note note) {
+        mNoteRepository.updateNote(note);
+    }
 }

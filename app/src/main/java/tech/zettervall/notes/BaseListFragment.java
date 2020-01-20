@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.paging.PagedList;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +43,7 @@ public abstract class BaseListFragment extends Fragment
     protected LinearLayoutManager mLayoutManager;
     protected RecyclerView mRecyclerView;
     protected NoteAdapter mNoteAdapter;
+    protected ItemTouchHelper.SimpleCallback mItemToucherHelperCallback;
     // Common Views
     protected FloatingActionButton mFab;
     protected TextView emptyTextView;

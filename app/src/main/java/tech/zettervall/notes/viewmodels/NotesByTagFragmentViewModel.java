@@ -34,4 +34,8 @@ public class NotesByTagFragmentViewModel extends AndroidViewModel {
         mNotes = new LivePagedListBuilder<>(mNoteRepository.getNotesPagedList(tagID, query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
+
+    public void updateNote(Note note) {
+        mNoteRepository.updateNote(note);
+    }
 }

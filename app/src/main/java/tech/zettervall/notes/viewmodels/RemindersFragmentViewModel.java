@@ -35,4 +35,8 @@ public class RemindersFragmentViewModel extends AndroidViewModel {
         mReminders = new LivePagedListBuilder<>(mNoteRepository.getReminderNotesPagedList(query),
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
+
+    public void updateNote(Note note) {
+        mNoteRepository.updateNote(note);
+    }
 }
