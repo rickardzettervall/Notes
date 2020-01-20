@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.parceler.Parcels;
 
@@ -48,6 +49,7 @@ public class NotesByTagFragment extends BaseListFragment {
         mRecyclerView = rootView.findViewById(R.id.fragment_notelist_recyclerview);
         mFab = rootView.findViewById(R.id.fragment_notelist_fab);
         emptyTextView = rootView.findViewById(R.id.fragment_notelist_is_empty_textview);
+        mRootView = rootView.findViewById(R.id.fragment_notelist_root);
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
@@ -79,10 +81,16 @@ public class NotesByTagFragment extends BaseListFragment {
                             Note note = mNoteAdapter.getCurrentList().get(viewHolder.getAdapterPosition());
                             note.setTrash(true);
                             mNotesByTagFragmentViewModel.updateNote(note);
-                            String toastMessage = note.getTitle() != null && !note.getTitle().isEmpty() ?
+
+                            String message = note.getTitle() != null && !note.getTitle().isEmpty() ?
                                     getString(R.string.note_trashed_detailed, note.getTitle()) :
                                     getString(R.string.note_trashed);
-                            Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+
+                            Snackbar.make(mRootView, message, Snackbar.LENGTH_LONG)
+                                    .setAction(getString(R.string.undo), (View v) -> {
+                                        note.setTrash(false);
+                                        mNotesByTagFragmentViewModel.updateNote(note);
+                                    }).show();
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }

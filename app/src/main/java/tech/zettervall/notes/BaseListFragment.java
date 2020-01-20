@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -47,6 +48,8 @@ public abstract class BaseListFragment extends Fragment
     // Common Views
     protected FloatingActionButton mFab;
     protected TextView emptyTextView;
+    protected CoordinatorLayout mRootView;
+    // SharedPreferences
     private SharedPreferences mSharedPreferences;
     // Used for SearchView to restore state on configuration changes
     private boolean mSearchIconified;

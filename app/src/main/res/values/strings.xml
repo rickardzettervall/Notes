@@ -14,6 +14,7 @@
     <string name="database">Database</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
+    <string name="undo">Undo</string>
 
     <!-- Errors -->
     <string name="error_missing_title_text">Write a title or text first..</string>
