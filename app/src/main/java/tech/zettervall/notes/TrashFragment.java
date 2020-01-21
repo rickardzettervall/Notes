@@ -14,6 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -42,6 +46,7 @@ public class TrashFragment extends BaseListFragment {
         mFab = rootView.findViewById(R.id.fragment_notelist_fab);
         emptyTextView = rootView.findViewById(R.id.fragment_notelist_is_empty_textview);
         emptyTextView.setText(R.string.trash_is_empty);
+        mRootView = rootView.findViewById(R.id.fragment_notelist_root);
 
         // Set Adapter / LayoutManager / Decoration
         mNoteAdapter = new NoteAdapter(this);
@@ -49,6 +54,45 @@ public class TrashFragment extends BaseListFragment {
         mRecyclerView.setAdapter(mNoteAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         RecyclerViewUtil.setRecyclerViewDecoration(mLayoutManager, mRecyclerView);
+        mItemToucherHelperCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        Note note = mNoteAdapter.getCurrentList().get(viewHolder.getAdapterPosition());
+                        switch (direction) {
+                            case ItemTouchHelper.LEFT: // Delete
+                                mTrashFragmentViewModel.deleteNote(note);
+                                String deletedMessage = note.getTitle() != null && !note.getTitle().isEmpty() ?
+                                        getString(R.string.note_deleted_detailed, note.getTitle()) :
+                                        getString(R.string.note_deleted);
+
+                                Snackbar.make(mRootView, deletedMessage, Snackbar.LENGTH_LONG)
+                                        .setAction(getString(R.string.undo), (View v) ->
+                                                mTrashFragmentViewModel.insertNote(note)
+                                        ).show();
+                                break;
+                            case ItemTouchHelper.RIGHT: // Restore
+                                note.setTrash(false);
+                                mTrashFragmentViewModel.updateNote(note);
+                                String restoredMessage = note.getTitle() != null && !note.getTitle().isEmpty() ?
+                                        getString(R.string.note_restored_detailed, note.getTitle()) :
+                                        getString(R.string.note_restored);
+
+                                Snackbar.make(mRootView, restoredMessage, Snackbar.LENGTH_LONG)
+                                        .setAction(getString(R.string.undo), (View v) -> {
+                                            note.setTrash(true);
+                                            mTrashFragmentViewModel.updateNote(note);
+                                        }).show();
+                                break;
+                        }
+                    }
+                };
+        new ItemTouchHelper(mItemToucherHelperCallback).attachToRecyclerView(mRecyclerView);
 
         // Hide FAB
         mFab.hide();

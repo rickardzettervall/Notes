@@ -36,7 +36,19 @@ public class TrashFragmentViewModel extends AndroidViewModel {
                 Constants.NOTE_LIST_PAGE_SIZE).build();
     }
 
+    public long insertNote(Note note) {
+        return mNoteRepository.insertNote(note);
+    }
+
+    public void updateNote(Note note) {
+        mNoteRepository.updateNote(note);
+    }
+
     public void emptyTrash() {
         mNoteRepository.deleteAllTrashedNotes();
+    }
+
+    public void deleteNote(Note note) {
+        mNoteRepository.deleteNote(note);
     }
 }
