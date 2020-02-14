@@ -16,6 +16,9 @@ Android app built with MVVM architecture for writing down notes and saving them 
 - Favoritize notes.
 - Take a photo and add it to Note.
 
+<h3><strong>Cloning</strong></h3>
+If you are going to clone this repository, please note that in order for gradle to sync properly you either need to modify the keystore parameters or remove the line 'signingConfig signingConfigs.config' in (buildTypes -> release) inside the app level build.gradle.
+
 <h3><strong>Screen Captures</strong> (v1.0)</h3>
 
 <img src="https://i.imgur.com/zsVeASC.png" width="32%"> <img src="https://i.imgur.com/uoiD80E.png" width="32%"> <img src="https://i.imgur.com/WLjaqy9.png" width="32%">
