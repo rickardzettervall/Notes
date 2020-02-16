@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dialog_padding"
+    android:paddingStart="@dimen/dialog_padding_x"
+    android:paddingEnd="@dimen/dialog_padding_x"
+    android:paddingTop="@dimen/dialog_padding_y"
+    android:paddingBottom="@dimen/dialog_padding_y"
     android:orientation="vertical">
 
     <RadioGroup
