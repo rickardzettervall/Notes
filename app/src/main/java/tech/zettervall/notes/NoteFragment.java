@@ -606,6 +606,14 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                     dateTimePicker(); // Only allow reminder for non-empty Note
                 }
                 break;
+            case R.id.action_share:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TITLE, mNote.getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, mNote.getText());
+                shareIntent.setType("text/plain");
+                Intent intentChooser = Intent.createChooser(shareIntent, null);
+                startActivity(intentChooser);
+                break;
             case R.id.action_delete:
                 DialogInterface.OnClickListener dialogClickListenerDelete =
                         (DialogInterface dialog, int which) -> {
