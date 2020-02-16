@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +85,12 @@ public class FavoritesFragment extends BaseListFragment {
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        BaseListFragment.drawChildCanvas(getActivity(), viewHolder, c, actionState, dX, false);
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
                 };
         new ItemTouchHelper(mItemToucherHelperCallback).attachToRecyclerView(mRecyclerView);

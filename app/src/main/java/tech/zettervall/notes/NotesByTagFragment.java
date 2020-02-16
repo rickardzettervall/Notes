@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,12 @@ public class NotesByTagFragment extends BaseListFragment {
                             e.printStackTrace();
                         }
                     }
+
+                    @Override
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        BaseListFragment.drawChildCanvas(getActivity(), viewHolder, c, actionState, dX, false);
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    }
                 };
         new ItemTouchHelper(mItemToucherHelperCallback).attachToRecyclerView(mRecyclerView);
 
@@ -117,7 +124,7 @@ public class NotesByTagFragment extends BaseListFragment {
 
     @Override
     public void subscribeObservers() {
-        mNotesByTagFragmentViewModel.getNotes().observe(this, super::updateAdapter);
+        mNotesByTagFragmentViewModel.getNotes().observe(getViewLifecycleOwner(), super::updateAdapter);
     }
 
     @Override

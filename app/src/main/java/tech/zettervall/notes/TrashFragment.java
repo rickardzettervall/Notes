@@ -1,6 +1,7 @@
 package tech.zettervall.notes;
 
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -90,6 +91,12 @@ public class TrashFragment extends BaseListFragment {
                                         }).show();
                                 break;
                         }
+                    }
+
+                    @Override
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        BaseListFragment.drawChildCanvas(getActivity(), viewHolder, c, actionState, dX, true);
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
                 };
         new ItemTouchHelper(mItemToucherHelperCallback).attachToRecyclerView(mRecyclerView);
