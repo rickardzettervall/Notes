@@ -89,29 +89,27 @@ public abstract class BaseListFragment extends Fragment
         Paint paint = new Paint();
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            paint.setTextSize(65);
+            paint.setFakeBoldText(true);
+            float y = itemView.getBottom() + 25f + ((itemView.getTop() - itemView.getBottom()) / 2f);
+            float xMargin = 85;
             if (dX < 0) { // SWIPE LEFT
-                paint.setARGB(200, 255, 0, 0);
+                paint.setARGB(255, 255, 0, 50);
                 canvas.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
                         (float) itemView.getRight(), (float) itemView.getBottom(), paint);
                 paint.setARGB(255, 255, 255, 255);
-                paint.setTextSize(60);
                 paint.setTextAlign(Paint.Align.RIGHT);
-                paint.setFakeBoldText(true);
-                float y = itemView.getBottom() + 21f + ((itemView.getTop() - itemView.getBottom()) / 2f);
-                float x = (float) itemView.getRight() - 75f;
-                String message = !trashFragment ? context.getResources().getString(R.string.remove).toUpperCase() :
+                float x = (float) itemView.getRight() - xMargin;
+                String message = !trashFragment ? context.getResources().getString(R.string.action_trash).toUpperCase() :
                         context.getResources().getString(R.string.action_delete).toUpperCase();
                 canvas.drawText(message, x, y, paint);
             } else if (dX > 0 && trashFragment) { // SWIPE RIGHT
-                paint.setARGB(200, 0, 255, 0);
+                paint.setARGB(255, 50, 255, 50);
                 canvas.drawRect((float) itemView.getLeft() + dX, (float) itemView.getTop(),
                         (float) itemView.getLeft(), (float) itemView.getBottom(), paint);
                 paint.setARGB(255, 255, 255, 255);
-                paint.setTextSize(60);
                 paint.setTextAlign(Paint.Align.LEFT);
-                paint.setFakeBoldText(true);
-                float y = itemView.getBottom() + 21f + ((itemView.getTop() - itemView.getBottom()) / 2f);
-                float x = (float) itemView.getLeft() + 75f;
+                float x = (float) itemView.getLeft() + xMargin;
                 String message = context.getResources().getString(R.string.restore).toUpperCase();
                 canvas.drawText(message, x, y, paint);
             }
