@@ -55,13 +55,13 @@
 
         <Preference
             app:icon="@drawable/ic_android"
-            app:key="@string/about_apps_key"
-            app:summary="@string/about_apps_summary"
-            app:title="@string/about_apps_title" />
+            app:key="@string/about_other_apps_key"
+            app:summary="@string/about_other_apps_summary"
+            app:title="@string/about_other_apps_title" />
 
         <Preference
             app:icon="@drawable/ic_info"
-            app:key="@string/about_simplenotes_key"
+            app:key="@string/about_app_key"
             app:title="@string/app_name" />
 
     </PreferenceCategory>

@@ -15,6 +15,9 @@
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
     <string name="undo">Undo</string>
+    <string name="done">Done</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Errors -->
     <string name="error_missing_title_text">Write a title or text first..</string>
@@ -43,21 +46,18 @@
     <string name="reminder_removed">Reminder removed</string>
 
     <!-- Confirm Alert -->
-    <string name="accept_deletion">Delete Note?</string>
-    <string name="accept_trash">Trash Note?</string>
-    <string name="accept_trash_message">Move the Note to trash, you can restore it later.</string>
-    <string name="accept_deletion_message">The Note can\'t be restored after this, are you sure?</string>
-    <string name="accept">Accept</string>
-    <string name="cancel">Cancel</string>
+    <string name="confirm_deletion">Delete Note?</string>
+    <string name="confirm_trash">Trash Note?</string>
+    <string name="confirm_trash_message">Move the Note to trash, you can restore it later.</string>
+    <string name="confirm_deletion_message">The Note can\'t be restored after this, are you sure?</string>
     <string name="confirm_empty_trash">Empty trash?</string>
     <string name="confirm_empty_trash_message">Delete ALL trashed Notes, are you sure!?</string>
     <string name="confirm_restore">Restore Note?</string>
     <string name="confirm_restore_message">Move the Note out of trash.</string>
-    <string name="deleted_all_notes">Deleted all Notes!</string>
-    <string name="confirm_done">Done</string>
     <string name="confirm_photo_delete">Delete Photo?</string>
     <string name="confirm_restore_db">Restore database?</string>
     <string name="confirm_restore_db_message">Delete all current data and restore from most recent backup, are you sure!?</string>
+    <string name="deleted_all_notes">Deleted all Notes!</string>
 
     <!-- Titles -->
     <string name="note_new">New Note</string>
@@ -145,19 +145,19 @@
     <string name="dark_theme_title">Dark Theme</string>
     <string name="dark_theme_summary">Change app theme to dark.</string>
     <string name="dark_theme_key" translatable="false">dark_theme</string>
-    <string name="about_simplenotes_key" translatable="false">about_simplenotes</string>
+    <string name="about_app_key" translatable="false">about_app</string>
     <string name="sort_favorites_on_top_title">Favorites on top</string>
     <string name="sort_favorites_on_top_summary">Places your favoritized notes on top of all lists.</string>
     <string name="sort_favorites_on_top_key" translatable="false">sort_favorites_on_top</string>
-    <string name="time_24_key">time_24</string>
+    <string name="time_24_key" translatable="false">time_24</string>
     <string name="time_24_title">Military time (24H)</string>
     <string name="time_24_summary">Override your locale settings and use the military time format</string>
-    <string name="about_apps_key">about_apps</string>
-    <string name="about_apps_title">Google Play</string>
-    <string name="about_apps_summary">Try my other Apps</string>
-    <string name="backup_key">backup</string>
+    <string name="about_other_apps_key" translatable="false">about_apps</string>
+    <string name="about_other_apps_title">Google Play</string>
+    <string name="about_other_apps_summary">Try my other Apps</string>
+    <string name="backup_key" translatable="false">backup</string>
     <string name="backup_summary">Save database to local storage, files will be located in <xliff:g example="/storage/backup/" id="path">%s</xliff:g></string>
-    <string name="restore_key">restore</string>
+    <string name="restore_key" translatable="false">restore</string>
     <string name="restore_summary">Use latest backup to restore database</string>
 
     <!-- Backup -->
