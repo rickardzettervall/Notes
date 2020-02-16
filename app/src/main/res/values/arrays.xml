@@ -2,8 +2,8 @@
 <resources>
     <!-- Deletion confirmation -->
     <string-array name="confirm_deletion">
-        <item>@string/confirm</item>
-        <item>@string/abort</item>
+        <item>@string/accept</item>
+        <item>@string/cancel</item>
     </string-array>
 
     <!-- Sorting direction -->

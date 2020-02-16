@@ -336,8 +336,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                     };
             AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
             deleteBuilder.setTitle(getString(R.string.confirm_photo_delete))
-                    .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                    .setNegativeButton(getString(R.string.abort), dialogClickListener)
+                    .setPositiveButton(getString(R.string.accept), dialogClickListener)
+                    .setNegativeButton(getString(R.string.cancel), dialogClickListener)
                     .show();
         }
     }
@@ -639,12 +639,12 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                             }
                         };
                 AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
-                deleteBuilder.setTitle(mNote.isTrash() ? getString(R.string.confirm_deletion) :
-                        getString(R.string.confirm_trash))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListenerDelete)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListenerDelete)
-                        .setMessage(mNote.isTrash ? getString(R.string.confirm_deletion_message) :
-                                getString(R.string.confirm_trash_message))
+                deleteBuilder.setTitle(mNote.isTrash() ? getString(R.string.accept_deletion) :
+                        getString(R.string.accept_trash))
+                        .setPositiveButton(getString(R.string.accept), dialogClickListenerDelete)
+                        .setNegativeButton(getString(R.string.cancel), dialogClickListenerDelete)
+                        .setMessage(mNote.isTrash ? getString(R.string.accept_deletion_message) :
+                                getString(R.string.accept_trash_message))
                         .show();
                 break;
             case R.id.action_restore:
@@ -677,8 +677,8 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                         };
                 AlertDialog.Builder restoreBuilder = new AlertDialog.Builder(getActivity());
                 restoreBuilder.setTitle(getString(R.string.confirm_restore))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListenerRestore)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListenerRestore)
+                        .setPositiveButton(getString(R.string.accept), dialogClickListenerRestore)
+                        .setNegativeButton(getString(R.string.cancel), dialogClickListenerRestore)
                         .setMessage(getString(R.string.confirm_restore_message))
                         .show();
                 break;

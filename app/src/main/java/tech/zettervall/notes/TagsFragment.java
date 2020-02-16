@@ -112,8 +112,8 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.tag_new))
                 .setView(dialogView)
-                .setPositiveButton(R.string.confirm, dialogClickListener)
-                .setNegativeButton(R.string.abort, dialogClickListener)
+                .setPositiveButton(R.string.accept, dialogClickListener)
+                .setNegativeButton(R.string.cancel, dialogClickListener)
                 .setOnCancelListener((DialogInterface dialog) -> {
                     KeyboardUtil.hideKeyboard(getActivity());
                 }).show();
@@ -141,8 +141,8 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.tag_delete_title))
                 .setMessage(getString(R.string.tag_delete_message, tag.getTitle()))
-                .setPositiveButton(R.string.confirm, dialogClickListener)
-                .setNegativeButton(R.string.abort, dialogClickListener)
+                .setPositiveButton(R.string.accept, dialogClickListener)
+                .setNegativeButton(R.string.cancel, dialogClickListener)
                 .show();
     }
 
@@ -167,8 +167,8 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.tag_edit))
                 .setView(dialogView)
-                .setPositiveButton(R.string.confirm, dialogClickListener)
-                .setNegativeButton(R.string.abort, dialogClickListener)
+                .setPositiveButton(R.string.accept, dialogClickListener)
+                .setNegativeButton(R.string.cancel, dialogClickListener)
                 .setOnCancelListener((DialogInterface dialog) -> {
                     KeyboardUtil.hideKeyboard(getActivity());
                 }).show();

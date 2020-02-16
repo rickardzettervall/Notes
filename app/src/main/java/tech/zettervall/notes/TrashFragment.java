@@ -151,8 +151,8 @@ public class TrashFragment extends BaseListFragment {
             case R.id.action_empty_trash:
                 dialogClickListener = this::emptyTrashDialogClickListener;
                 builder.setTitle(getString(R.string.confirm_empty_trash))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListener)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListener)
+                        .setPositiveButton(getString(R.string.accept), dialogClickListener)
+                        .setNegativeButton(getString(R.string.cancel), dialogClickListener)
                         .setMessage(getString(R.string.confirm_empty_trash_message))
                         .show();
                 break;

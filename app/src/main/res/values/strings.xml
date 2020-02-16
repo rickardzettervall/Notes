@@ -1,7 +1,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- App -->
-    <string name="app_name">Simple Notes</string>
+    <string name="app_name">Easy Notes</string>
     <string name="app_version">Version <xliff:g example="1.0b">%s</xliff:g></string>
 
     <!-- Generic -->
@@ -43,12 +43,12 @@
     <string name="reminder_removed">Reminder removed</string>
 
     <!-- Confirm Alert -->
-    <string name="confirm_deletion">Delete Note?</string>
-    <string name="confirm_trash">Trash Note?</string>
-    <string name="confirm_trash_message">Move the Note to trash, you can restore it later.</string>
-    <string name="confirm_deletion_message">The Note can\'t be restored after this, are you sure?</string>
-    <string name="confirm">Confirm</string>
-    <string name="abort">Abort</string>
+    <string name="accept_deletion">Delete Note?</string>
+    <string name="accept_trash">Trash Note?</string>
+    <string name="accept_trash_message">Move the Note to trash, you can restore it later.</string>
+    <string name="accept_deletion_message">The Note can\'t be restored after this, are you sure?</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
     <string name="confirm_empty_trash">Empty trash?</string>
     <string name="confirm_empty_trash_message">Delete ALL trashed Notes, are you sure!?</string>
     <string name="confirm_restore">Restore Note?</string>

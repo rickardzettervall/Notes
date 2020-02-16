@@ -120,8 +120,8 @@ public class SettingsActivity extends AppCompatActivity {
                         };
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.confirm_restore_db))
-                        .setPositiveButton(getString(R.string.confirm), dialogClickListenerDelete)
-                        .setNegativeButton(getString(R.string.abort), dialogClickListenerDelete)
+                        .setPositiveButton(getString(R.string.accept), dialogClickListenerDelete)
+                        .setNegativeButton(getString(R.string.cancel), dialogClickListenerDelete)
                         .setMessage(getString(R.string.confirm_restore_db_message))
                         .show();
             } else if (preference == findPreference(getString(R.string.about_apps_key))) { // View other Apps
