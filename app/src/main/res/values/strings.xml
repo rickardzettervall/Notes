@@ -80,6 +80,7 @@
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
     <string name="action_photo">Take Photo</string>
+    <string name="action_share">Share</string>
 
     <!-- Tags -->
     <string name="tag_new">New Tag</string>
