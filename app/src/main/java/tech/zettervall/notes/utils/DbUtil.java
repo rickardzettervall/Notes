@@ -9,11 +9,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.data.AppDb;
 
 public abstract class DbUtil {
-
-    public static final String DB_BACKUP_TRAIL_PATH = "/backup/simple_notes/db/";
 
     /**
      * Generic method for retrieving raw db objects,
@@ -83,7 +82,16 @@ public abstract class DbUtil {
     /**
      * Get default database backup directory path.
      */
-    public static String getDefaultBackupDirPath() {
-        return Environment.getExternalStorageDirectory().getPath() + DB_BACKUP_TRAIL_PATH;
+    public static String getDefaultBackupDirPath(Context context) {
+        return Environment.getExternalStorageDirectory().getPath() + getDbTrailPath(context);
+    }
+
+    /**
+     * Get database backup trailing path.
+     */
+    public static String getDbTrailPath(Context context) {
+        String appName = context.getResources().getString(R.string.app_name)
+                .toLowerCase().replaceAll(" ", "_");
+        return "/backup/" + appName + "/db/";
     }
 }

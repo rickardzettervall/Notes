@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             // Backup Database
             Preference backupDb = findPreference(getString(R.string.backup_key));
-            backupDb.setSummary(getString(R.string.backup_summary, DbUtil.DB_BACKUP_TRAIL_PATH));
+            backupDb.setSummary(getString(R.string.backup_summary, DbUtil.getDbTrailPath(getActivity())));
             backupDb.setOnPreferenceClickListener(this);
 
             // Restore Database
@@ -84,11 +84,11 @@ public class SettingsActivity extends AppCompatActivity {
             restoreDb.setOnPreferenceClickListener(this);
 
             // About (Other Apps)
-            Preference aboutOtherApps = findPreference(getString(R.string.about_apps_key));
+            Preference aboutOtherApps = findPreference(getString(R.string.about_other_apps_key));
             aboutOtherApps.setOnPreferenceClickListener(this);
 
             // About (App)
-            Preference aboutApp = findPreference(getString(R.string.about_simplenotes_key));
+            Preference aboutApp = findPreference(getString(R.string.about_app_key));
             aboutApp.setOnPreferenceClickListener(this);
             aboutApp.setSummary(getString(R.string.app_version, BuildConfig.VERSION_NAME));
         }
@@ -124,13 +124,13 @@ public class SettingsActivity extends AppCompatActivity {
                         .setNegativeButton(getString(R.string.cancel), dialogClickListenerDelete)
                         .setMessage(getString(R.string.confirm_restore_db_message))
                         .show();
-            } else if (preference == findPreference(getString(R.string.about_apps_key))) { // View other Apps
+            } else if (preference == findPreference(getString(R.string.about_other_apps_key))) { // View other Apps
                 Uri devPages = Uri.parse(Constants.GOOGLE_PLAY_STORE_PAGE);
                 Intent intent = new Intent(Intent.ACTION_VIEW, devPages);
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);
                 }
-            } else if (preference == findPreference(getString(R.string.about_simplenotes_key))) { // About App
+            } else if (preference == findPreference(getString(R.string.about_app_key))) { // About App
                 // Inflate View
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
 
@@ -152,7 +152,7 @@ public class SettingsActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.app_name));
                 builder.setView(dialogView);
-                builder.setPositiveButton(R.string.confirm_done, null);
+                builder.setPositiveButton(R.string.done, null);
                 builder.show();
             }
             return false;
@@ -163,13 +163,13 @@ public class SettingsActivity extends AppCompatActivity {
             switch (requestCode) {
                 case BACKUP_DB_REQUEST_CODE:
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        DbUtil.backupDb(getContext(), DbUtil.getDefaultBackupDirPath());
-                        Toast.makeText(getActivity(), getString(R.string.backup_saved_to, DbUtil.DB_BACKUP_TRAIL_PATH), Toast.LENGTH_LONG).show();
+                        DbUtil.backupDb(getContext(), DbUtil.getDefaultBackupDirPath(getActivity()));
+                        Toast.makeText(getActivity(), getString(R.string.backup_saved_to, DbUtil.getDbTrailPath(getActivity())), Toast.LENGTH_LONG).show();
                     }
                     break;
                 case RESTORE_DB_REQUEST_CODE:
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        boolean result = DbUtil.restoreDb(getContext(), DbUtil.getDefaultBackupDirPath());
+                        boolean result = DbUtil.restoreDb(getContext(), DbUtil.getDefaultBackupDirPath(getActivity()));
                         if (result) {
                             Toast.makeText(getActivity(), getString(R.string.backup_restored), Toast.LENGTH_LONG).show();
                         } else {
