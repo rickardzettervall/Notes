@@ -3,6 +3,8 @@ package tech.zettervall.notes;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -76,6 +78,46 @@ public abstract class BaseListFragment extends Fragment
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    /**
+     * Used to draw canvas for ItemTouchHelperCallback onChildDraw.
+     */
+    public static void drawChildCanvas(Context context, RecyclerView.ViewHolder viewHolder,
+                                       Canvas canvas, int actionState, float dX, boolean trashFragment) {
+        View itemView = viewHolder.itemView;
+        Paint paint = new Paint();
+
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            if (dX < 0) { // SWIPE LEFT
+                paint.setARGB(200, 255, 0, 0);
+                canvas.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                        (float) itemView.getRight(), (float) itemView.getBottom(), paint);
+                paint.setARGB(255, 255, 255, 255);
+                paint.setTextSize(60);
+                paint.setTextAlign(Paint.Align.RIGHT);
+                paint.setFakeBoldText(true);
+                float y = itemView.getBottom() + 21f + ((itemView.getTop() - itemView.getBottom()) / 2f);
+                float x = (float) itemView.getRight() - 75f;
+                String message = !trashFragment ? context.getResources().getString(R.string.remove).toUpperCase() :
+                        context.getResources().getString(R.string.action_delete).toUpperCase();
+                canvas.drawText(message, x, y, paint);
+            } else if (dX > 0 && trashFragment) { // SWIPE RIGHT
+                paint.setARGB(200, 0, 255, 0);
+                canvas.drawRect((float) itemView.getLeft() + dX, (float) itemView.getTop(),
+                        (float) itemView.getLeft(), (float) itemView.getBottom(), paint);
+                paint.setARGB(255, 255, 255, 255);
+                paint.setTextSize(60);
+                paint.setTextAlign(Paint.Align.LEFT);
+                paint.setFakeBoldText(true);
+                float y = itemView.getBottom() + 21f + ((itemView.getTop() - itemView.getBottom()) / 2f);
+                float x = (float) itemView.getLeft() + 75f;
+                String message = context.getResources().getString(R.string.restore).toUpperCase();
+                canvas.drawText(message, x, y, paint);
+            }
+        }
+
+        itemView.setBackgroundColor(context.getResources().getColor(R.color.colorListItem));
     }
 
     /**
