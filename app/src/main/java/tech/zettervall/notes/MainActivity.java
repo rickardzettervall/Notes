@@ -26,6 +26,7 @@ import tech.zettervall.mNotes.BuildConfig;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
+import tech.zettervall.notes.utils.ColorStateListUtil;
 import tech.zettervall.notes.viewmodels.MainActivityViewModel;
 
 public class MainActivity extends BaseActivity implements
@@ -81,6 +82,14 @@ public class MainActivity extends BaseActivity implements
 
         // Set Listeners
         mNavView.setNavigationItemSelectedListener(this);
+
+        // Set Navigation Drawer item background/text/icon color (for currently checked item)
+        if (!mEnableDarkTheme) { // Light Theme
+            mNavView.setItemBackground(getResources().getDrawable(R.color.selector_navitem));
+        } else { // Dark Theme
+            mNavView.setItemTextColor(ColorStateListUtil.getNavigationDrawerNightColorStateList(this));
+            mNavView.setItemIconTintList(ColorStateListUtil.getNavigationDrawerNightColorStateList(this));
+        }
 
         // Set Fragments
         if (savedInstanceState == null) {
@@ -186,7 +195,7 @@ public class MainActivity extends BaseActivity implements
         for (int i = 0; i < mNavView.getMenu().size(); i++) {
             mNavView.getMenu().getItem(i).setChecked(false);
         }
-        for(int i = 0; i < mTagsItem.getSubMenu().size(); i++) {
+        for (int i = 0; i < mTagsItem.getSubMenu().size(); i++) {
             mTagsItem.getSubMenu().getItem(i).setChecked(false);
         }
     }
@@ -198,7 +207,7 @@ public class MainActivity extends BaseActivity implements
      * @param index Index in Navigation Drawer
      */
     private void setNavDrawerItemChecked(boolean isTag, int index) {
-        if(isTag) {
+        if (isTag) {
             mTagsItem.getSubMenu().getItem(index).setCheckable(true).setChecked(true);
         } else {
             mNavView.getMenu().getItem(index).setCheckable(true).setChecked(true);
@@ -278,8 +287,8 @@ public class MainActivity extends BaseActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         resetNavDrawerChecked();
         int index = 0;
-        for(int i = 0; i < mNavView.getMenu().size(); i++) {
-            if(mNavView.getMenu().getItem(i) == menuItem) {
+        for (int i = 0; i < mNavView.getMenu().size(); i++) {
+            if (mNavView.getMenu().getItem(i) == menuItem) {
                 index = i;
                 break;
             }
