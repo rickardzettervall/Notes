@@ -25,6 +25,8 @@ Android app built with MVVM architecture for writing down notes and saving them 
 <br><code>classpath 'com.google.gms:google-services:x.x.x'</code>
 <br><code>classpath 'com.google.firebase:perf-plugin:x.x.x'</code></p>
 <p>In build.gradle (app), remove the lines:
+<br><code>apply plugin: 'com.google.gms.google-services'</code>
+<br><code>apply plugin: 'com.google.firebase.firebase-perf'</code>
 <br><code>implementation "com.google.firebase:firebase-analytics:x.x.x"</code>
 <br><code>implementation "com.google.firebase:firebase-perf:x.x.x"</code></p>
 <p>Remove all lines of code pointing to and the <code>AnalyticsUtil.java</code> class.</p>
