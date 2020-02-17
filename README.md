@@ -17,17 +17,17 @@ Android app built with MVVM architecture for writing down notes and saving them 
 - Take a photo and add it to Note.
 
 <h3><strong>Cloning</strong></h3>
-If you are going to clone this repository, please note that in order for gradle to sync properly you either need to modify the keystore parameters or remove the line <code>signingConfig signingConfigs.config</code> in (buildTypes -> release) inside the app level build.gradle.
-<br>This app uses Google Firebase but the required google-services.json file is not published on github for security reasons so in order for the app to run you have two options:
+<p>If you are going to clone this repository, please note that in order for gradle to sync properly you either need to modify the keystore parameters or remove the line <code>signingConfig signingConfigs.config</code> in (buildTypes -> release) inside the app level build.gradle.</p>
+<p>This app uses Google Firebase but the required google-services.json file is not published on github for security reasons so in order for the app to run you have two options:</p>
 1. Add your own google-services.json file at <code>app/google-services.json</code> which you get from the Firebase console.
-2. Remove dependencies + code which are related to Firebase:
-- In build.gradle (project), remove the lines:
+<br>2. Remove dependencies + code which are related to Firebase:
+<p>In build.gradle (project), remove the lines:
 <br><code>classpath 'com.google.gms:google-services:x.x.x'</code>
-<br><code>classpath 'com.google.firebase:perf-plugin:x.x.x'</code>
-- In build.gradle (app), remove the lines:
+<br><code>classpath 'com.google.firebase:perf-plugin:x.x.x'</code></p>
+<p>In build.gradle (app), remove the lines:
 <br><code>implementation "com.google.firebase:firebase-analytics:x.x.x"</code>
-<br><code>implementation "com.google.firebase:firebase-perf:x.x.x"</code>
-- Remove all lines of code pointing to and the <code>AnalyticsUtil.java</code> class.
+<br><code>implementation "com.google.firebase:firebase-perf:x.x.x"</code></p>
+<p>Remove all lines of code pointing to and the <code>AnalyticsUtil.java</code> class.</p>
 
 <h3><strong>Screen Captures</strong> (v1.0)</h3>
 
