@@ -4,7 +4,7 @@
 
 <h3><strong>Features</strong></h3>
 
-<p>- Uses Room database to store notes / tags.
+- Uses Room database to store notes / tags.
 - Fragments to (only) show all notes, favorites, reminders (notes which have reminder set), trash.
 - Sets date and time formatting depending on user country, user can also override this in settings activity.
 - Search notes (title / text), query run as the user type.
@@ -15,7 +15,7 @@
 - Switch between light / dark theme, icons / clickable backgrounds change accordingly.
 - Add tags to notes to allow user specific sorting.
 - Favoritize notes.
-- Take a photo and add it to Note.</p>
+- Take a photo and add it to Note.
 
 <h3><strong>Cloning</strong></h3>
 <p>If you are going to clone this repository, please note that in order for gradle to sync properly you either need to modify the keystore parameters or remove the line <code>signingConfig signingConfigs.config</code> in (buildTypes -> release) inside the app level build.gradle.</p>
