@@ -7,6 +7,7 @@
         android:id="@+id/nav_all_notes"
         android:icon="@drawable/ic_note"
         android:title="@string/action_all_notes"
+        android:checkable="true"
         app:actionLayout="@layout/nav_view_counter" />
 
     <!-- Favorites -->
@@ -14,6 +15,7 @@
         android:id="@+id/nav_favorites"
         android:icon="@drawable/ic_star"
         android:title="@string/action_favorites"
+        android:checkable="true"
         app:actionLayout="@layout/nav_view_counter" />
 
     <!-- Reminders -->
@@ -21,12 +23,14 @@
         android:id="@+id/nav_reminders"
         android:icon="@drawable/ic_reminder"
         android:title="@string/action_reminders"
+        android:checkable="true"
         app:actionLayout="@layout/nav_view_counter" />
 
     <!-- Tags (Header + SubMenu) -->
     <item
         android:id="@+id/nav_tags_header"
-        android:title="@string/action_tags">
+        android:title="@string/action_tags"
+        android:checkable="false">
         <menu />
     </item>
 
@@ -34,18 +38,21 @@
     <item
         android:id="@+id/nav_tags"
         android:icon="@drawable/ic_tag"
-        android:title="@string/action_tags" />
+        android:title="@string/action_tags"
+        android:checkable="true" />
 
     <!-- Trash -->
     <item
         android:id="@+id/nav_trash"
         android:icon="@drawable/ic_trash"
-        android:title="@string/action_trash" />
+        android:title="@string/action_trash"
+        android:checkable="true" />
 
     <!-- Settings -->
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
-        android:title="@string/action_settings" />
+        android:title="@string/action_settings"
+        android:checkable="false" />
 
 </menu>
