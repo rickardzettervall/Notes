@@ -131,22 +131,24 @@ public class MainActivity extends BaseActivity implements
                     e.printStackTrace();
                 }
             }
-            updateTagCounters(mMainActivityViewModel.getTagsList());
+            updateTagsInDrawer(mMainActivityViewModel.getTagsList());
         });
         mMainActivityViewModel.getFavorites().observe(this, (PagedList<Note> notes) ->
                 mFavoritesCounterTextView.setText(getNotesCounterValue(notes.size())));
         mMainActivityViewModel.getReminders().observe(this, (PagedList<Note> notes) ->
                 mRemindersCounterTextView.setText(getNotesCounterValue(notes.size())));
         mMainActivityViewModel.getTags().observe(this, (PagedList<Tag> tags) ->
-                updateTagCounters(tags));
+                updateTagsInDrawer(tags));
     }
 
     /**
      * Update Navigation Drawer SubMenu of Tags
      */
-    private void updateTagCounters(final List<Tag> tags) {
+    private void updateTagsInDrawer(final List<Tag> tags) {
         mTagsItem.getSubMenu().clear();
-        for (final Tag tag : tags) {
+        for (int i = 0; i < tags.size(); i++) {
+            final Tag tag = tags.get(i);
+            final int index = i;
             String tagString = "#" + tag.getTitle();
             MenuItem menuItem = mTagsItem.getSubMenu().add(tagString)
                     .setActionView(R.layout.nav_view_counter);
@@ -154,11 +156,20 @@ public class MainActivity extends BaseActivity implements
                     .findViewById(R.id.nav_view_counter_textview);
             counterTextView.setText(String.valueOf(mNotesTagsCount.get(tag.getId())));
             menuItem.setOnMenuItemClickListener((MenuItem item) -> {
+                resetNavDrawerChecked();
+                item.setCheckable(true);
+                item.setChecked(true);
+                mMainActivityViewModel.setSelectedNavItemTag(true);
+                mMainActivityViewModel.setSelectedNavItemIndex(index);
                 setNotesByTagFragment(getNotesByTagFragment(tag));
                 mNavDrawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             });
         }
+
+        // Set current Navigation Drawer item as checked
+        setNavDrawerItemChecked(mMainActivityViewModel.isSelectedNavItemTag(),
+                mMainActivityViewModel.getSelectedNavItemIndex());
     }
 
     /**
@@ -166,6 +177,32 @@ public class MainActivity extends BaseActivity implements
      */
     private String getNotesCounterValue(int count) {
         return count > 999 ? "999" : String.valueOf(count);
+    }
+
+    /**
+     * Reset checked status of Navigation Drawer items.
+     */
+    private void resetNavDrawerChecked() {
+        for (int i = 0; i < mNavView.getMenu().size(); i++) {
+            mNavView.getMenu().getItem(i).setChecked(false);
+        }
+        for(int i = 0; i < mTagsItem.getSubMenu().size(); i++) {
+            mTagsItem.getSubMenu().getItem(i).setChecked(false);
+        }
+    }
+
+    /**
+     * Set Navigation Drawer item as checked.
+     *
+     * @param isTag Set to true if index should be used in list of tags
+     * @param index Index in Navigation Drawer
+     */
+    private void setNavDrawerItemChecked(boolean isTag, int index) {
+        if(isTag) {
+            mTagsItem.getSubMenu().getItem(index).setCheckable(true).setChecked(true);
+        } else {
+            mNavView.getMenu().getItem(index).setCheckable(true).setChecked(true);
+        }
     }
 
     /**
@@ -210,7 +247,9 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        mNavDrawerLayout.closeDrawer(GravityCompat.START, false);
+        // Set current Navigation Drawer item as checked
+        setNavDrawerItemChecked(mMainActivityViewModel.isSelectedNavItemTag(),
+                mMainActivityViewModel.getSelectedNavItemIndex());
     }
 
     @Override
@@ -237,7 +276,49 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        super.onNavigationItemSelected(menuItem);
+        resetNavDrawerChecked();
+        int index = 0;
+        for(int i = 0; i < mNavView.getMenu().size(); i++) {
+            if(mNavView.getMenu().getItem(i) == menuItem) {
+                index = i;
+                break;
+            }
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.nav_all_notes: // All Notes Fragment
+                menuItem.setChecked(true);
+                mMainActivityViewModel.setSelectedNavItemIndex(index);
+                mMainActivityViewModel.setSelectedNavItemTag(false);
+                setNoteListFragment(new AllNotesFragment());
+                break;
+            case R.id.nav_favorites: // Favorites Fragment
+                menuItem.setChecked(true);
+                mMainActivityViewModel.setSelectedNavItemIndex(index);
+                mMainActivityViewModel.setSelectedNavItemTag(false);
+                setFavoritesFragment(new FavoritesFragment());
+                break;
+            case R.id.nav_reminders: // Reminders Fragment
+                menuItem.setChecked(true);
+                mMainActivityViewModel.setSelectedNavItemIndex(index);
+                mMainActivityViewModel.setSelectedNavItemTag(false);
+                setRemindersFragment(new RemindersFragment());
+                break;
+            case R.id.nav_tags: // Tags Fragment
+                menuItem.setChecked(true);
+                mMainActivityViewModel.setSelectedNavItemIndex(index);
+                mMainActivityViewModel.setSelectedNavItemTag(false);
+                setTagsFragment(new TagsFragment());
+                break;
+            case R.id.nav_trash: // Trash Fragment
+                menuItem.setChecked(true);
+                mMainActivityViewModel.setSelectedNavItemIndex(index);
+                mMainActivityViewModel.setSelectedNavItemTag(false);
+                setTrashFragment(new TrashFragment());
+                break;
+            case R.id.nav_settings: // Settings Activity
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+        }
         mNavDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

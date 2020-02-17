@@ -1,16 +1,11 @@
 package tech.zettervall.notes;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
-
-import com.google.android.material.navigation.NavigationView;
 
 import org.parceler.Parcels;
 
@@ -21,8 +16,7 @@ import tech.zettervall.notes.models.Tag;
 /**
  * Base Activity with commonly used methods.
  */
-public abstract class BaseActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+public abstract class BaseActivity extends AppCompatActivity {
 
     protected boolean mEnableDarkTheme, mIsTablet;
 
@@ -142,50 +136,5 @@ public abstract class BaseActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_list, notesByTagFragment, Constants.FRAGMENT_NOTES_BY_TAG)
                 .commit();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.nav_all_notes: // Set Fragment or launch activity when outside MainActivity
-                if (this instanceof MainActivity) {
-                    setNoteListFragment(new AllNotesFragment());
-                } else {
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-                break;
-            case R.id.nav_favorites: // Set Fragment or launch activity when outside MainActivity
-                if (this instanceof MainActivity) {
-                    setFavoritesFragment(new FavoritesFragment());
-                } else {
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-                break;
-            case R.id.nav_reminders: // Set Fragment or launch activity when outside MainActivity
-                if (this instanceof MainActivity) {
-                    setRemindersFragment(new RemindersFragment());
-                } else {
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-                break;
-            case R.id.nav_tags: // Launch Activity
-                if (this instanceof MainActivity) {
-                    setTagsFragment(new TagsFragment());
-                } else {
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-                break;
-            case R.id.nav_trash: // Launch Activity
-                if (this instanceof MainActivity) {
-                    setTrashFragment(new TrashFragment());
-                } else {
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-                break;
-            case R.id.nav_settings: // Launch Activity
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-        }
-        return true;
     }
 }

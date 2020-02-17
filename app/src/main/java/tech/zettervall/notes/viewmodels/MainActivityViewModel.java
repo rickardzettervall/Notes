@@ -31,6 +31,8 @@ public class MainActivityViewModel extends AndroidViewModel {
     private LiveData<PagedList<Note>> mFavorites;
     private LiveData<PagedList<Note>> mReminders;
     private LiveData<PagedList<Tag>> mTags;
+    private boolean mSelectedNavItemTag;
+    private int mSelectedNavItemIndex;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
@@ -72,5 +74,21 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public List<Tag> getTagsList() {
         return mTagRepository.getTagsList();
+    }
+
+    public boolean isSelectedNavItemTag() {
+        return mSelectedNavItemTag;
+    }
+
+    public void setSelectedNavItemTag(boolean selectedNavItemIsTag) {
+        this.mSelectedNavItemTag = selectedNavItemIsTag;
+    }
+
+    public int getSelectedNavItemIndex() {
+        return mSelectedNavItemIndex;
+    }
+
+    public void setSelectedNavItemIndex(int selectedNavItemIndex) {
+        this.mSelectedNavItemIndex = selectedNavItemIndex;
     }
 }
