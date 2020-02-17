@@ -1,9 +1,10 @@
 # Android Notes App
-Android app built with MVVM architecture for writing down notes and saving them locally.
+
+<p>Android app built with MVVM architecture for writing down notes and saving them locally.</p>
 
 <h3><strong>Features</strong></h3>
 
-- Uses Room database to store notes / tags.
+<p>- Uses Room database to store notes / tags.
 - Fragments to (only) show all notes, favorites, reminders (notes which have reminder set), trash.
 - Sets date and time formatting depending on user country, user can also override this in settings activity.
 - Search notes (title / text), query run as the user type.
@@ -14,7 +15,7 @@ Android app built with MVVM architecture for writing down notes and saving them 
 - Switch between light / dark theme, icons / clickable backgrounds change accordingly.
 - Add tags to notes to allow user specific sorting.
 - Favoritize notes.
-- Take a photo and add it to Note.
+- Take a photo and add it to Note.</p>
 
 <h3><strong>Cloning</strong></h3>
 <p>If you are going to clone this repository, please note that in order for gradle to sync properly you either need to modify the keystore parameters or remove the line <code>signingConfig signingConfigs.config</code> in (buildTypes -> release) inside the app level build.gradle.</p>
