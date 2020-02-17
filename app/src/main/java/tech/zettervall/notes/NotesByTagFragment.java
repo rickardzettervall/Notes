@@ -109,7 +109,7 @@ public class NotesByTagFragment extends BaseListFragment {
         mFab.setOnClickListener(this::fabClick);
 
         // Set title
-        getActivity().setTitle(mTag.getTitle());
+        getActivity().setTitle(getString(R.string.tag) + ": " + mTag.getTitle());
 
         // Subscribe Observers
         subscribeObservers();

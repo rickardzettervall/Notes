@@ -18,6 +18,7 @@
     <string name="done">Done</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
+    <string name="tag">Tag</string>
 
     <!-- Errors -->
     <string name="error_missing_title_text">Write a title or text first..</string>
