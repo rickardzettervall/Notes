@@ -34,7 +34,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false // Enabling breaks Parceler
             debuggable false
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
