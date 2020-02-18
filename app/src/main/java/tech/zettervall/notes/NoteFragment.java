@@ -34,6 +34,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -49,6 +51,7 @@ import tech.zettervall.notes.adapters.TagSelectAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 import tech.zettervall.notes.services.NotificationJobService;
+import tech.zettervall.notes.utils.AnalyticsUtil;
 import tech.zettervall.notes.utils.BitmapUtil;
 import tech.zettervall.notes.utils.DateTimeUtil;
 import tech.zettervall.notes.utils.KeyboardUtil;
@@ -74,6 +77,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private Calendar mReminderCalender, mDateTimePickerCalender;
     private JobScheduler mJobScheduler;
     private TagSelectAdapter mTagSelectAdapter;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Nullable
     @Override
@@ -83,6 +87,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
         // Initialize ViewModel
         mNoteFragmentViewModel = ViewModelProviders.of(this).get(NoteFragmentViewModel.class);
+
+        // Setup Analytics
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext().getApplicationContext());
 
         // Enable Toolbar MenuItem handling.
         setHasOptionsMenu(true);
@@ -185,6 +192,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      * @param tag        Set Tag
      */
     private Note newNote(boolean isFavorite, @Nullable Tag tag) {
+        // Log Event to Analytics
+        AnalyticsUtil.logEventNewNote(mFirebaseAnalytics);
+
         List<Integer> tagIDs = new ArrayList<>();
         if (tag != null) {
             tagIDs.add(tag.getId());
@@ -248,6 +258,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
      * @param context Activity context
      */
     private void scheduleReminderJob(Context context) {
+        // Log Event to Analytics
+        AnalyticsUtil.logEventScheduleReminder(mFirebaseAnalytics);
+
         // Set bundle
         PersistableBundle bundle = new PersistableBundle();
         if (mNote.getId() == 0) {
@@ -542,11 +555,16 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // Cleanup file when taking photo was aborted
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_CANCELED) {
-            File file = new File(mNote.getPhotoPath());
-            file.delete();
-            mNote.setPhotoPath(null);
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_CANCELED) { // CANCELED
+                // Cleanup file when taking photo was aborted
+                File file = new File(mNote.getPhotoPath());
+                file.delete();
+                mNote.setPhotoPath(null);
+            } else { // SUCCESS
+                // Log Event to Analytics
+                AnalyticsUtil.logEventTakePhoto(mFirebaseAnalytics);
+            }
         }
     }
 
@@ -607,6 +625,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                 }
                 break;
             case R.id.action_share:
+                // Log Event to Analytics
+                AnalyticsUtil.logEventShare(mFirebaseAnalytics);
+
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_TITLE, mNote.getTitle());
                 shareIntent.putExtra(Intent.EXTRA_TEXT, mNote.getText());
