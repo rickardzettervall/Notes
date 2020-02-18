@@ -36,6 +36,7 @@ import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
+import tech.zettervall.notes.utils.DensityUtil;
 
 public abstract class BaseListFragment extends Fragment
         implements NoteAdapter.OnNoteClickListener, ListObservers {
@@ -89,12 +90,13 @@ public abstract class BaseListFragment extends Fragment
         Paint paint = new Paint();
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            paint.setTextSize(65);
+            paint.setTextSize(DensityUtil.convertDpToPx(context, 18));
             paint.setFakeBoldText(true);
-            float y = itemView.getBottom() + 25f + ((itemView.getTop() - itemView.getBottom()) / 2f);
-            float xMargin = 85;
+            float y = itemView.getBottom() + DensityUtil.convertDpToPx(context, 6)
+                    + ((itemView.getTop() - itemView.getBottom()) / 2f);
+            float xMargin = DensityUtil.convertDpToPx(context, 24);
             if (dX < 0) { // SWIPE LEFT
-                paint.setARGB(255, 255, 0, 50);
+                paint.setARGB(255, 255, 0, 0);
                 canvas.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
                         (float) itemView.getRight(), (float) itemView.getBottom(), paint);
                 paint.setARGB(255, 255, 255, 255);
@@ -104,7 +106,7 @@ public abstract class BaseListFragment extends Fragment
                         context.getResources().getString(R.string.action_delete).toUpperCase();
                 canvas.drawText(message, x, y, paint);
             } else if (dX > 0 && trashFragment) { // SWIPE RIGHT
-                paint.setARGB(255, 50, 255, 50);
+                paint.setARGB(255, 0, 255, 0);
                 canvas.drawRect((float) itemView.getLeft() + dX, (float) itemView.getTop(),
                         (float) itemView.getLeft(), (float) itemView.getBottom(), paint);
                 paint.setARGB(255, 255, 255, 255);
