@@ -102,8 +102,8 @@ public abstract class BaseListFragment extends Fragment
                 paint.setARGB(255, 255, 255, 255);
                 paint.setTextAlign(Paint.Align.RIGHT);
                 float x = (float) itemView.getRight() - xMargin;
-                String message = !trashFragment ? context.getResources().getString(R.string.action_trash).toUpperCase() :
-                        context.getResources().getString(R.string.action_delete).toUpperCase();
+                String message = !trashFragment ? context.getResources().getString(R.string.swipe_trash).toUpperCase() :
+                        context.getResources().getString(R.string.swipe_delete).toUpperCase();
                 canvas.drawText(message, x, y, paint);
             } else if (dX > 0 && trashFragment) { // SWIPE RIGHT
                 paint.setARGB(255, 0, 255, 0);
@@ -112,7 +112,7 @@ public abstract class BaseListFragment extends Fragment
                 paint.setARGB(255, 255, 255, 255);
                 paint.setTextAlign(Paint.Align.LEFT);
                 float x = (float) itemView.getLeft() + xMargin;
-                String message = context.getResources().getString(R.string.restore).toUpperCase();
+                String message = context.getResources().getString(R.string.swipe_restore).toUpperCase();
                 canvas.drawText(message, x, y, paint);
             }
         }

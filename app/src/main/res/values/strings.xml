@@ -83,6 +83,11 @@
     <string name="action_photo">Take Photo</string>
     <string name="action_share">Share</string>
 
+    <!-- Swipe Messages -->
+    <string name="swipe_delete">Delete</string>
+    <string name="swipe_restore">Restore</string>
+    <string name="swipe_trash">To trash</string>
+
     <!-- Tags -->
     <string name="tag_new">New Tag</string>
     <string name="tag_edit">Edit Tag</string>
