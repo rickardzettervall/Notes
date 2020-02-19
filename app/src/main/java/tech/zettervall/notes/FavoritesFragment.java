@@ -82,9 +82,14 @@ public class FavoritesFragment extends BaseListFragment {
                                         note.setTrash(false);
                                         mFavoritesFragmentViewModel.updateNote(note);
                                     }).show();
+
+                            if(mIsTablet) {
+                                reloadNoteFragmentOnSwipe(getActivity(), note, false);
+                            }
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }
+
                     }
 
                     @Override

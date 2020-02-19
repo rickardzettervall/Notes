@@ -76,6 +76,10 @@ public class TrashFragment extends BaseListFragment {
                                         .setAction(getString(R.string.undo), (View v) ->
                                                 mTrashFragmentViewModel.insertNote(note)
                                         ).show();
+
+                                if(mIsTablet) {
+                                    reloadNoteFragmentOnSwipe(getActivity(), note, false);
+                                }
                                 break;
                             case ItemTouchHelper.RIGHT: // Restore
                                 note.setTrash(false);
@@ -89,6 +93,10 @@ public class TrashFragment extends BaseListFragment {
                                             note.setTrash(true);
                                             mTrashFragmentViewModel.updateNote(note);
                                         }).show();
+
+                                if(mIsTablet) {
+                                    reloadNoteFragmentOnSwipe(getActivity(), note, true);
+                                }
                                 break;
                         }
                     }

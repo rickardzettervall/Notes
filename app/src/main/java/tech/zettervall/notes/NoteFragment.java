@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -114,6 +115,11 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         } else { // New Note
             mNote = newNote(false, null);
         }
+
+        // Set Note id in Arguments for easy retrieval in FragmentManager
+        Bundle bundle = new Bundle();
+        bundle.putLong(Constants.NOTE_CREATION_EPOCH, mNote.getCreationEpoch());
+        setArguments(bundle);
 
         // Show Reminder
         showReminder(getActivity(), mNote.getNotificationEpoch());
@@ -361,6 +367,15 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     @Override
     public void onPause() {
         super.onPause();
+        // Get bundle from fragment (fix for swipe deletion)
+        try {
+            if (getArguments().containsKey(Constants.SET_TRASH_STATUS)) {
+                mTrash = getArguments().getBoolean(Constants.SET_TRASH_STATUS);
+            }
+        } catch (NullPointerException e) {
+            Log.d(TAG, "Arguments null, this is normal in phone mode");
+        }
+
         if (!mNote.isTrash()) { // Not Trashed
             if (!mTrash) { // Don't trash, just save
                 saveNote();
@@ -372,10 +387,12 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
                     cancelReminderJob();
                 }
                 // Message to user
-                String toastMessage = mNote.getTitle() != null && !mNote.getTitle().isEmpty() ?
-                        getString(R.string.note_trashed_detailed, mNote.getTitle()) :
-                        getString(R.string.note_trashed);
-                Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                if (!getArguments().containsKey(Constants.SET_TRASH_STATUS)) { // Don't display when Note was removed from swipe
+                    String toastMessage = mNote.getTitle() != null && !mNote.getTitle().isEmpty() ?
+                            getString(R.string.note_trashed_detailed, mNote.getTitle()) :
+                            getString(R.string.note_trashed);
+                    Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                }
             }
         } else { // Trashed Note
             if (mFinalDeletion) { // Final deletion

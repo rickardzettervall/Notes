@@ -10,6 +10,7 @@ public abstract class Constants {
     public static final String NOTE_TITLE = "note_title"; // Used for Notifications
     public static final String NOTE_TEXT = "note_text"; // Used for Notifications
     public static final String NOTE_FAVORITE = "note_favorite"; // New Note in Favorites List
+    public static final String NOTE_CREATION_EPOCH = "note_creation_epoch"; // Used for tablet fragments
 
     // Tag
     public static final String TAG = "tag";
@@ -26,6 +27,9 @@ public abstract class Constants {
     public static final String FRAGMENT_TRASH = "fragment_trash";
     public static final String FRAGMENT_NOTE = "fragment_note";
     public static final String FRAGMENT_NOTES_BY_TAG = "fragment_notes_by_tag";
+
+    // Fragment (flag for swipe to trash fix)
+    public static final String SET_TRASH_STATUS = "trash_status";
 
     // Time
     public static final String TIME_SELECTOR = "time_selector";

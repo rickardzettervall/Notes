@@ -82,6 +82,10 @@ public class AllNotesFragment extends BaseListFragment {
                                         note.setTrash(false);
                                         mAllNotesFragmentViewModel.updateNote(note);
                                     }).show();
+
+                            if(mIsTablet) {
+                                reloadNoteFragmentOnSwipe(getActivity(), note, false);
+                            }
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }

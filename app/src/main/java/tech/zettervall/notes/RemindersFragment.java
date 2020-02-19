@@ -82,6 +82,10 @@ public class RemindersFragment extends BaseListFragment {
                                         note.setTrash(false);
                                         mRemindersFragmentViewModel.updateNote(note);
                                     }).show();
+
+                            if(mIsTablet) {
+                                reloadNoteFragmentOnSwipe(getActivity(), note, false);
+                            }
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }

@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,12 +26,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.adapters.NoteAdapter;
@@ -52,6 +56,8 @@ public abstract class BaseListFragment extends Fragment
     protected FloatingActionButton mFab;
     protected TextView emptyTextView;
     protected CoordinatorLayout mRootView;
+    // Tablet
+    protected boolean mIsTablet;
     // SharedPreferences
     private SharedPreferences mSharedPreferences;
     // Used for SearchView to restore state on configuration changes
@@ -68,6 +74,9 @@ public abstract class BaseListFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Set SharedPreferences
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        // Set tablet checker
+        mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Enable Toolbar MenuItem handling
         setHasOptionsMenu(true);
@@ -118,6 +127,46 @@ public abstract class BaseListFragment extends Fragment
         }
 
         itemView.setBackgroundColor(context.getResources().getColor(R.color.list_item));
+    }
+
+    /**
+     * Reload NoteFragment when Note match with current loaded Fragment Note.
+     * Uses Creation Epoch to check for a match because a unsaved Note have not
+     * yet been assigned an ID from Room.
+     *
+     * @param activity Activity from which the fragment resides (getActivity())
+     * @param note     The Note in List which was swiped
+     * @param restore  Indicates whether swiped Note should be restored from trash
+     */
+    public static void reloadNoteFragmentOnSwipe(FragmentActivity activity, Note note, boolean restore) {
+        long creationEpoch = 0;
+        List<Fragment> fragments = activity.getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment.getTag().equals(Constants.FRAGMENT_NOTE)) {
+                try {
+                    // Retrieve Note ID from within Fragment
+                    creationEpoch = fragment.getArguments().getLong(Constants.NOTE_CREATION_EPOCH);
+                } catch (NullPointerException e) {
+                    Log.d(TAG, "Couldn't get Note ID from Fragment");
+                }
+
+                if (creationEpoch > 0) {
+                    if (creationEpoch == note.getCreationEpoch()) { // Notes match
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean(Constants.SET_TRASH_STATUS, !restore);
+                        fragment.setArguments(bundle);
+                        fragment.onPause();
+
+                        activity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.activity_note_framelayout,
+                                        new NoteFragment(),
+                                        Constants.FRAGMENT_NOTE)
+                                .commit();
+                    }
+                }
+                break;
+            }
+        }
     }
 
     /**
