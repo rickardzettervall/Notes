@@ -146,7 +146,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         }
 
         // Hide / Show FAB depending on device
-        if (mIsTablet) {
+        if (mIsTablet && !mNote.isTrash()) {
             mDataBinding.fragmentNoteFab.setOnClickListener((View v) -> {
                 saveNote();
                 Toast.makeText(getActivity(), getString(R.string.note_saved), Toast.LENGTH_SHORT).show();
