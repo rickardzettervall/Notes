@@ -14,6 +14,9 @@ import java.util.List;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.models.Tag;
 
+/**
+ * Adapter for displaying available/checked tags for selection in NoteFragment.
+ */
 public class TagSelectAdapter extends RecyclerView.Adapter<TagSelectAdapter.ViewHolder> {
 
     private List<Tag> mTags;
