@@ -31,7 +31,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -87,7 +87,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
         View rootView = mDataBinding.getRoot();
 
         // Initialize ViewModel
-        mNoteFragmentViewModel = ViewModelProviders.of(this).get(NoteFragmentViewModel.class);
+        mNoteFragmentViewModel = new ViewModelProvider(this).get(NoteFragmentViewModel.class);
 
         // Setup Analytics
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext().getApplicationContext());

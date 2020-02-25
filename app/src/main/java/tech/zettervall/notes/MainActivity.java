@@ -13,7 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
 
 import com.google.android.material.navigation.NavigationView;
@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
 
         // Initialize ViewModel
-        mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         // Set ContentView
         setContentView(R.layout.activity_main);

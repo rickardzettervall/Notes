@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +43,7 @@ public class NotesByTagFragment extends BaseListFragment {
         }
 
         // Initialize ViewModel
-        mNotesByTagFragmentViewModel = ViewModelProviders.of(this).get(NotesByTagFragmentViewModel.class);
+        mNotesByTagFragmentViewModel = new ViewModelProvider(this).get(NotesByTagFragmentViewModel.class);
         mNotesByTagFragmentViewModel.setNotes(mTag.getId(), null);
 
         // Find Views

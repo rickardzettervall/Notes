@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +34,7 @@ public class AllNotesFragment extends BaseListFragment {
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
         // Initialize ViewModel
-        mAllNotesFragmentViewModel = ViewModelProviders.of(this).get(AllNotesFragmentViewModel.class);
+        mAllNotesFragmentViewModel = new ViewModelProvider(this).get(AllNotesFragmentViewModel.class);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.fragment_notelist_recyclerview);

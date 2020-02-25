@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +40,7 @@ public class TrashFragment extends BaseListFragment {
         View rootView = inflater.inflate(R.layout.fragment_notelist, container, false);
 
         // Initialize ViewModel
-        mTrashFragmentViewModel = ViewModelProviders.of(this).get(TrashFragmentViewModel.class);
+        mTrashFragmentViewModel = new ViewModelProvider(this).get(TrashFragmentViewModel.class);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.fragment_notelist_recyclerview);

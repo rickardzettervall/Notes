@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +40,7 @@ public class TagsFragment extends BaseListFragment implements TagAdapter.OnTagCl
         View rootView = inflater.inflate(R.layout.fragment_taglist, container, false);
 
         // Initialize ViewModel
-        mTagsFragmentViewModel = ViewModelProviders.of(this).get(TagsFragmentViewModel.class);
+        mTagsFragmentViewModel = new ViewModelProvider(this).get(TagsFragmentViewModel.class);
 
         // Find Views
         mRecyclerView = rootView.findViewById(R.id.fragment_taglist_recyclerview);
