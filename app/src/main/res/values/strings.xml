@@ -19,6 +19,7 @@
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
     <string name="tag">Tag</string>
+    <string name="debug">Debug</string>
 
     <!-- Errors -->
     <string name="error_missing_title_text">Write a title or text first..</string>
@@ -165,6 +166,12 @@
     <string name="backup_summary">Save database to local storage, files will be located in <xliff:g example="/storage/backup/" id="path">%s</xliff:g></string>
     <string name="restore_key" translatable="false">restore</string>
     <string name="restore_summary">Use latest backup to restore database</string>
+    <string name="dummy_data_key" translatable="false">dummy_data</string>
+    <string name="dummy_data_title">Insert dummy data</string>
+    <string name="dummy_data_summary">Adds a set of Notes into database for testing</string>
+    <string name="clear_db_key">clear_db</string>
+    <string name="clear_db_title">Clear database</string>
+    <string name="clear_db_summary">Delete all Notes</string>
 
     <!-- Backup -->
     <string name="backup_saved_to">Backup saved to <xliff:g example="/storage/backup/" id="path">%s</xliff:g></string>

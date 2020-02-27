@@ -24,7 +24,9 @@ import androidx.preference.PreferenceManager;
 
 import tech.zettervall.mNotes.BuildConfig;
 import tech.zettervall.mNotes.R;
+import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.utils.DbUtil;
+import tech.zettervall.notes.utils.DummyDataUtil;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -91,6 +93,14 @@ public class SettingsActivity extends AppCompatActivity {
             Preference aboutApp = findPreference(getString(R.string.about_app_key));
             aboutApp.setOnPreferenceClickListener(this);
             aboutApp.setSummary(getString(R.string.app_version, BuildConfig.VERSION_NAME));
+
+            // Dev (Dummy Data)
+            Preference dummyData = findPreference(getString(R.string.dummy_data_key));
+            dummyData.setOnPreferenceClickListener(this);
+
+            // Dev (Clear DB)
+            Preference clearDb = findPreference(getString(R.string.clear_db_key));
+            clearDb.setOnPreferenceClickListener(this);
         }
 
         @Override
@@ -154,6 +164,10 @@ public class SettingsActivity extends AppCompatActivity {
                 builder.setView(dialogView);
                 builder.setPositiveButton(R.string.done, null);
                 builder.show();
+            } else if (preference == findPreference(getString(R.string.dummy_data_key))) { // DEV TOOLS
+                DummyDataUtil.insertDummyData(NoteRepository.getInstance(getActivity().getApplication()));
+            } else if (preference == findPreference(getString(R.string.clear_db_key))) { // DEV TOOLS
+                NoteRepository.getInstance(getActivity().getApplication()).deleteAllNotes();
             }
             return false;
         }

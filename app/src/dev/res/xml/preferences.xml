@@ -50,4 +50,20 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/developer">
+
+        <Preference
+            app:icon="@drawable/ic_list_add"
+            app:key="@string/dummy_data_key"
+            app:summary="@string/dummy_data_summary"
+            app:title="@string/dummy_data_title" />
+
+        <Preference
+            app:icon="@drawable/ic_clear_db"
+            app:key="@string/clear_db_key"
+            app:summary="@string/clear_db_summary"
+            app:title="@string/clear_db_title" />
+
+    </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>
