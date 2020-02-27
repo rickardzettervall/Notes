@@ -43,8 +43,17 @@ android {
         debug {
             minifyEnabled false
             debuggable true
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            dimension "version"
+            versionNameSuffix "-dev"
+            applicationId "tech.zettervall.notes.dev"
+        }
+        full {
+            dimension "version"
         }
     }
     testOptions {
