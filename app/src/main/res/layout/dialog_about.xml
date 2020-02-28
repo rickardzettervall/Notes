@@ -12,19 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Developer -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/developer"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/dialog_about_built_by_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/about_built_by" />
-
         <!-- Libraries -->
         <TextView
             android:layout_width="wrap_content"
