@@ -94,13 +94,15 @@ public class SettingsActivity extends AppCompatActivity {
             aboutApp.setOnPreferenceClickListener(this);
             aboutApp.setSummary(getString(R.string.app_version, BuildConfig.VERSION_NAME));
 
-            // Dev (Dummy Data)
-            Preference dummyData = findPreference(getString(R.string.dummy_data_key));
-            dummyData.setOnPreferenceClickListener(this);
+            if (BuildConfig.FLAVOR.equals("dev")) {
+                // Dev (Dummy Data)
+                Preference dummyData = findPreference(getString(R.string.dummy_data_key));
+                dummyData.setOnPreferenceClickListener(this);
 
-            // Dev (Clear DB)
-            Preference clearDb = findPreference(getString(R.string.clear_db_key));
-            clearDb.setOnPreferenceClickListener(this);
+                // Dev (Clear DB)
+                Preference clearDb = findPreference(getString(R.string.clear_db_key));
+                clearDb.setOnPreferenceClickListener(this);
+            }
         }
 
         @Override
@@ -143,11 +145,6 @@ public class SettingsActivity extends AppCompatActivity {
             } else if (preference == findPreference(getString(R.string.about_app_key))) { // About App
                 // Inflate View
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
-
-                // Set HTML link for 'built by'
-                TextView builtBy = dialogView.findViewById(R.id.dialog_about_built_by_textview);
-                builtBy.setMovementMethod(LinkMovementMethod.getInstance());
-                builtBy.setText(Html.fromHtml(getString(R.string.about_built_by)));
 
                 // Set HTML link for 'libraries'
                 TextView libraries = dialogView.findViewById(R.id.dialog_about_libraries_textview);
