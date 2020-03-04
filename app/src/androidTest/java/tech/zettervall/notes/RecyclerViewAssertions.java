@@ -1,0 +1,58 @@
+package tech.zettervall.notes;
+
+import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.ViewAssertion;
+
+import org.hamcrest.Matcher;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+public class RecyclerViewAssertions {
+
+    /**
+     * Assertion for specified view in select RecyclerView Adapter position.
+     *
+     * @param position    Position in RecyclerView Adapter
+     * @param viewID      ID of view to match.
+     * @param viewMatcher Espresso ViewMatcher for a descendant of any row in the recycler
+     * @return Espresso ViewAssertion to check against a RecyclerView
+     */
+    public static ViewAssertion itemViewMatches(int position,
+                                                int viewID,
+                                                final Matcher<View> viewMatcher) {
+        assertNotNull(viewMatcher);
+
+        return (view, noViewException) -> {
+            if (noViewException != null) {
+                throw noViewException;
+            }
+
+            assertTrue(view instanceof RecyclerView);
+
+            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+
+            // Fail if position out of bounds
+            if (position < 0 || position > (adapter.getItemCount() - 1)) {
+                fail("Position [" + position + "] doesn't exist in Adapter");
+                return;
+            }
+
+            int itemType = adapter.getItemViewType(position);
+            RecyclerView.ViewHolder viewHolder = adapter.createViewHolder(recyclerView, itemType);
+            adapter.bindViewHolder(viewHolder, position);
+
+            View targetView = viewHolder.itemView.findViewById(viewID);
+
+            if (viewMatcher.matches(targetView)) {
+                return; // Found match
+            }
+
+            fail("No match found");
+        };
+    }
+}
