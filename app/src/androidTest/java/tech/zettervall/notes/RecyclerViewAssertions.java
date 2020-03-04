@@ -18,7 +18,7 @@ public class RecyclerViewAssertions {
      *
      * @param position    Position in RecyclerView Adapter
      * @param viewID      ID of view to match.
-     * @param viewMatcher Espresso ViewMatcher for a descendant of any row in the recycler
+     * @param viewMatcher Espresso ViewMatcher for a descendant of any row in the Adapter
      * @return Espresso ViewAssertion to check against a RecyclerView
      */
     public static ViewAssertion itemViewMatches(int position,
@@ -32,7 +32,6 @@ public class RecyclerViewAssertions {
             }
 
             assertTrue(view instanceof RecyclerView);
-
             RecyclerView recyclerView = (RecyclerView) view;
             RecyclerView.Adapter adapter = recyclerView.getAdapter();
 
@@ -53,6 +52,30 @@ public class RecyclerViewAssertions {
             }
 
             fail("No match found");
+        };
+    }
+
+    /**
+     * Count items in RecyclerView Adapter and compare to expected count.
+     *
+     * @param expectedItemCount What the count is expected to be
+     * @return Espresso ViewAssertion to check against a RecyclerView
+     */
+    public static ViewAssertion itemCountMatches(int expectedItemCount) {
+        return (view, noViewException) -> {
+            if (noViewException != null) {
+                throw noViewException;
+            }
+
+            assertTrue(view instanceof RecyclerView);
+            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+
+            if (adapter.getItemCount() == expectedItemCount) {
+                return; // Item count matches
+            }
+
+            fail("Item count does not match");
         };
     }
 }
