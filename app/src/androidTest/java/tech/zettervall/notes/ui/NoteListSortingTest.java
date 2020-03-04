@@ -1,9 +1,5 @@
 package tech.zettervall.notes.ui;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -14,115 +10,195 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import tech.zettervall.mNotes.R;
-import tech.zettervall.notes.Constants;
 import tech.zettervall.notes.MainActivity;
 import tech.zettervall.notes.TestHelper;
 import tech.zettervall.notes.repositories.NoteRepository;
-import tech.zettervall.notes.utils.StringUtil;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.is;
+import static tech.zettervall.notes.RecyclerViewAssertions.itemViewMatches;
 
 @RunWith(AndroidJUnit4.class)
 public class NoteListSortingTest {
 
-    public static final String NOTE_1_TITLE = "espresso";
-    public static final String NOTE_1_TEXT = "testing is great!";
-    public static final String NOTE_2_TITLE = "apartment";
-    public static final String NOTE_2_TEXT = "complex";
-    public static final String NOTE_3_TITLE = "balls of steel";
-    public static final String NOTE_3_TEXT = "no comment";
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-    private SharedPreferences mSharedPreferences;
     private NoteRepository mNoteRepository;
 
     @Before
     public void init() {
-        // Get SharedPreferences
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(TestHelper.getContext());
-        // Get NoteRepository
         mNoteRepository = NoteRepository.getInstance(mActivityTestRule.getActivity().getApplication());
-        // Populate db with mock Notes
+        mNoteRepository.deleteAllNotes();
         mNoteRepository.insertNotes(TestHelper.getMockNotes());
+        TestHelper.sleepThread(250);
     }
 
     @After
     public void release() {
-        // Clear db
         mNoteRepository.deleteAllNotes();
     }
 
     /**
-     * Sort alphabetically (Ascending, A,B,C).
+     * Sort Notes.
      */
     @Test
-    public void sortAlphabeticallyASC_ReturnTrue() {
-        // Set SharedPreferences (Sort alphabetically, ASC)
-        mSharedPreferences.edit()
-                .putInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_ALPHABETICALLY)
-                .putBoolean(Constants.SORT_FAVORITES_ON_TOP_KEY, false)
-                .putInt(Constants.SORT_DIRECTION_KEY, Constants.SORT_DIRECTION_ASC)
-                .commit();
+    public void sort() {
 
-        // Click first position in RecyclerView
+        /*
+         * Sort Alphabetically, ASC
+         */
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withId(R.id.dialog_sort_type_alphabetically_radiobutton)).perform(click());
+        onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
+
+        // Check that first position is Note Alpha
         onView(withId(R.id.fragment_notelist_recyclerview))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+                .check(itemViewMatches(
+                        0,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_ALPHA_TITLE)));
 
-        // Check that clicked Note matches Note (2) title/text
-        onView(withId(R.id.fragment_note_title_edittext))
-                .check(matches(withText(StringUtil.setFirstCharUpperCase(TestHelper.NOTE_2_TITLE))));
-        onView(withId(R.id.fragment_note_text_edittext))
-                .check(matches(withText(StringUtil.setFirstCharUpperCase(TestHelper.NOTE_2_TEXT))));
-    }
-
-    /**
-     * Sort alphabetically (Descending, C,B,A).
-     */
-    @Test
-    public void sortAlphabeticallyDESC_ReturnTrue() {
-        // Set SharedPreferences (Sort alphabetically, DESC)
-        mSharedPreferences.edit()
-                .putInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_ALPHABETICALLY)
-                .putBoolean(Constants.SORT_FAVORITES_ON_TOP_KEY, false)
-                .putInt(Constants.SORT_DIRECTION_KEY, Constants.SORT_DIRECTION_DESC)
-                .commit();
-
-        // Click first position in RecyclerView
+        // Check that third position is Note Charlie
         onView(withId(R.id.fragment_notelist_recyclerview))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+                .check(itemViewMatches(
+                        2,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
 
-        // Check that clicked Note matches Note (1) title/text
-        onView(withId(R.id.fragment_note_title_edittext))
-                .check(matches(withText(StringUtil.setFirstCharUpperCase(TestHelper.NOTE_1_TITLE))));
-        onView(withId(R.id.fragment_note_text_edittext))
-                .check(matches(withText(StringUtil.setFirstCharUpperCase(TestHelper.NOTE_1_TEXT))));
-    }
+        /*
+         * Sort Alphabetically, DESC
+         */
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withId(R.id.dialog_sort_type_alphabetically_radiobutton)).perform(click());
+        onView(withText(TestHelper.getContext().getString(R.string.sort_by_descending))).perform(click());
 
-    /**
-     * Sort by creation date (Ascending).
-     */
-    @Test
-    public void sortByCreationDateASC_ReturnTrue() {
-        // Set SharedPreferences (Sort by Creation Date, ASC)
-        mSharedPreferences.edit()
-                .putInt(Constants.SORT_TYPE_KEY, Constants.SORT_TYPE_CREATION_DATE)
-                .putBoolean(Constants.SORT_FAVORITES_ON_TOP_KEY, false)
-                .putInt(Constants.SORT_DIRECTION_KEY, Constants.SORT_DIRECTION_ASC)
-                .commit();
-
-        // Click first position in RecyclerView
+        // Check that first position is Note Charlie
         onView(withId(R.id.fragment_notelist_recyclerview))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+                .check(itemViewMatches(
+                        0,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
 
-        // Check that clicked Note matches Note (3) title/text
-        onView(withId(R.id.fragment_note_title_edittext))
-                .check(matches(withText(is(StringUtil.setFirstCharUpperCase(TestHelper.NOTE_3_TITLE)))));
-//        onView(withId(R.id.fragment_note_text_textview))
-//                .check(matches(withText(is(StringUtil.setFirstCharUpperCase(TestHelper.NOTE_3_TEXT)))));
+        // Check that third position is Note Alpha
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        2,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_ALPHA_TITLE)));
+
+        /*
+         * Sort by Creation Date, ASC
+         */
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withId(R.id.dialog_sort_type_creation_date_radiobutton)).perform(click());
+        onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
+
+        // Check that first position is Note Alpha
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        0,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_ALPHA_TITLE)));
+
+        // Check that third position is Note Charlie
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        2,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
+
+        /*
+         * Sort by Creation Date, DESC
+         */
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withId(R.id.dialog_sort_type_creation_date_radiobutton)).perform(click());
+        onView(withText(TestHelper.getContext().getString(R.string.sort_by_descending))).perform(click());
+
+        // Check that first position is Note Charlie
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        0,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
+
+        // Check that third position is Note Alpha
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        2,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_ALPHA_TITLE)));
+
+        /*
+         * Sort by Modified Date, ASC
+         */
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withId(R.id.dialog_sort_type_modified_date_radiobutton)).perform(click());
+        onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
+
+        // Check that first position is Note Alpha
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        0,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_ALPHA_TITLE)));
+
+        // Check that third position is Note Charlie
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        2,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
+
+        /*
+         * Sort by Modified Date, DESC
+         */
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withId(R.id.dialog_sort_type_modified_date_radiobutton)).perform(click());
+        onView(withText(TestHelper.getContext().getString(R.string.sort_by_descending))).perform(click());
+
+        // Check that first position is Note Charlie
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        0,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
+
+        // Check that third position is Note Alpha
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        2,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_ALPHA_TITLE)));
+
+        /*
+         * Sort Alphabetically, ASC (Favorites on top)
+         */
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withId(R.id.dialog_sort_type_alphabetically_radiobutton)).perform(click());
+        onView(withId(R.id.dialog_sort_favorites_on_top_checkbox)).perform(click());
+        onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
+
+        // Check that first position is Note Beta
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        0,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_BETA_TITLE)));
+
+        // Check that second position is Note Alpha
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        1,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_ALPHA_TITLE)));
+
+        // Check that third position is Note Charlie
+        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemViewMatches(
+                        2,
+                        R.id.list_note_title_textview,
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
     }
 }
