@@ -52,8 +52,7 @@ public class NoteListSearchTest {
 
         // Check that only Note Beta is displayed
         onView(withId(R.id.fragment_notelist_recyclerview))
-                .check(itemCountMatches(1));
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                .check(itemCountMatches(1))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,

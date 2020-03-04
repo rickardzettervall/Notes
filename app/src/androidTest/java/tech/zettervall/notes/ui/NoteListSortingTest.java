@@ -53,15 +53,12 @@ public class NoteListSortingTest {
         onView(withId(R.id.dialog_sort_type_alphabetically_radiobutton)).perform(click());
         onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
 
-        // Check that first position is Note Alpha
+        // Check that first position is Note Alpha and third position is Note Charlie
         onView(withId(R.id.fragment_notelist_recyclerview))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_ALPHA_TITLE)));
-
-        // Check that third position is Note Charlie
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_ALPHA_TITLE)))
                 .check(itemViewMatches(
                         2,
                         R.id.list_note_title_textview,
@@ -74,15 +71,12 @@ public class NoteListSortingTest {
         onView(withId(R.id.dialog_sort_type_alphabetically_radiobutton)).perform(click());
         onView(withText(TestHelper.getContext().getString(R.string.sort_by_descending))).perform(click());
 
-        // Check that first position is Note Charlie
+        // Check that first position is Note Charlie and third position is Note Alpha
         onView(withId(R.id.fragment_notelist_recyclerview))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
-
-        // Check that third position is Note Alpha
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)))
                 .check(itemViewMatches(
                         2,
                         R.id.list_note_title_textview,
@@ -95,15 +89,12 @@ public class NoteListSortingTest {
         onView(withId(R.id.dialog_sort_type_creation_date_radiobutton)).perform(click());
         onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
 
-        // Check that first position is Note Alpha
+        // Check that first position is Note Alpha and third position is Note Charlie
         onView(withId(R.id.fragment_notelist_recyclerview))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_ALPHA_TITLE)));
-
-        // Check that third position is Note Charlie
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_ALPHA_TITLE)))
                 .check(itemViewMatches(
                         2,
                         R.id.list_note_title_textview,
@@ -116,15 +107,12 @@ public class NoteListSortingTest {
         onView(withId(R.id.dialog_sort_type_creation_date_radiobutton)).perform(click());
         onView(withText(TestHelper.getContext().getString(R.string.sort_by_descending))).perform(click());
 
-        // Check that first position is Note Charlie
+        // Check that first position is Note Charlie and third position is Note Alpha
         onView(withId(R.id.fragment_notelist_recyclerview))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
-
-        // Check that third position is Note Alpha
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)))
                 .check(itemViewMatches(
                         2,
                         R.id.list_note_title_textview,
@@ -137,15 +125,12 @@ public class NoteListSortingTest {
         onView(withId(R.id.dialog_sort_type_modified_date_radiobutton)).perform(click());
         onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
 
-        // Check that first position is Note Alpha
+        // Check that first position is Note Alpha and third position is Note Charlie
         onView(withId(R.id.fragment_notelist_recyclerview))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_ALPHA_TITLE)));
-
-        // Check that third position is Note Charlie
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_ALPHA_TITLE)))
                 .check(itemViewMatches(
                         2,
                         R.id.list_note_title_textview,
@@ -158,15 +143,12 @@ public class NoteListSortingTest {
         onView(withId(R.id.dialog_sort_type_modified_date_radiobutton)).perform(click());
         onView(withText(TestHelper.getContext().getString(R.string.sort_by_descending))).perform(click());
 
-        // Check that first position is Note Charlie
+        // Check that first position is Note Charlie and third position is Note Alpha
         onView(withId(R.id.fragment_notelist_recyclerview))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_CHARLIE_TITLE)));
-
-        // Check that third position is Note Alpha
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_CHARLIE_TITLE)))
                 .check(itemViewMatches(
                         2,
                         R.id.list_note_title_textview,
@@ -180,22 +162,17 @@ public class NoteListSortingTest {
         onView(withId(R.id.dialog_sort_favorites_on_top_checkbox)).perform(click());
         onView(withText(TestHelper.getContext().getString(R.string.sort_by_ascending))).perform(click());
 
-        // Check that first position is Note Beta
+        /* Check that first position is Note Beta, second position is Note Alpha
+         * and that third position is Note Charlie */
         onView(withId(R.id.fragment_notelist_recyclerview))
                 .check(itemViewMatches(
                         0,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_BETA_TITLE)));
-
-        // Check that second position is Note Alpha
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_BETA_TITLE)))
                 .check(itemViewMatches(
                         1,
                         R.id.list_note_title_textview,
-                        withText(TestHelper.NOTE_ALPHA_TITLE)));
-
-        // Check that third position is Note Charlie
-        onView(withId(R.id.fragment_notelist_recyclerview))
+                        withText(TestHelper.NOTE_ALPHA_TITLE)))
                 .check(itemViewMatches(
                         2,
                         R.id.list_note_title_textview,
