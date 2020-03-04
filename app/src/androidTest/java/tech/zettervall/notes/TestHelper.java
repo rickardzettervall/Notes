@@ -7,6 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.repositories.NoteRepository;
@@ -37,17 +38,15 @@ public abstract class TestHelper {
 
     /**
      * Note Alpha is the oldest and Note Charlie the most recently modified.
+     * Modifying these Notes will result in failed tests!!
      */
     public static Note[] getMockNotes() {
         Note[] notes = new Note[3];
-        List<Integer> tagIDs = new ArrayList<>();
-        tagIDs.add(1);
-        tagIDs.add(2);
         Note alpha = new Note(
                 NOTE_ALPHA_TITLE,
                 NOTE_ALPHA_TEXT,
                 null,
-                tagIDs,
+                getTagIDsList(1, 2),
                 DateTimeUtil.getCurrentEpoch() - 10000L,
                 DateTimeUtil.getCurrentEpoch() - 10000L,
                 -1L,
@@ -57,7 +56,7 @@ public abstract class TestHelper {
                 NOTE_BETA_TITLE,
                 NOTE_BETA_TEXT,
                 null,
-                tagIDs,
+                getTagIDsList(1),
                 DateTimeUtil.getCurrentEpoch() - 5000L,
                 DateTimeUtil.getCurrentEpoch() - 5000L,
                 -1L,
@@ -67,10 +66,10 @@ public abstract class TestHelper {
                 NOTE_CHARLIE_TITLE,
                 NOTE_CHARLIE_TEXT,
                 null,
-                new ArrayList<>(),
+                getTagIDsList(),
                 DateTimeUtil.getCurrentEpoch(),
                 DateTimeUtil.getCurrentEpoch(),
-                -1L,
+                DateTimeUtil.getCurrentEpoch() + 1000000L,
                 false,
                 false);
         notes[0] = alpha;
@@ -104,5 +103,17 @@ public abstract class TestHelper {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Essentially converts input of ints to a List.
+     * Use only default Tag IDs here, so 1 and/or 2.
+     * Tag ID 1 = Personal
+     * Tag ID 2 = Work
+     */
+    private static List<Integer> getTagIDsList(int... tagIDs) {
+        List<Integer> tagIDsList = new ArrayList<>();
+        IntStream.of(tagIDs).forEach(tagIDsList::add);
+        return tagIDsList;
     }
 }
