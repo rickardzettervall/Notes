@@ -43,7 +43,7 @@ public class NoteListSearchTest {
     }
 
     /**
-     * Sort Notes.
+     * Search Notes.
      */
     @Test
     public void search() {
