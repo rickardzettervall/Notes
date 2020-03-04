@@ -1,5 +1,6 @@
 package tech.zettervall.notes;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -8,64 +9,73 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.zettervall.notes.models.Note;
+import tech.zettervall.notes.repositories.NoteRepository;
 import tech.zettervall.notes.utils.DateTimeUtil;
 
 public abstract class TestHelper {
 
-    public static final String NOTE_1_TITLE = "espresso (n1)";
-    public static final String NOTE_1_TEXT = "testing is great!";
-    public static final String NOTE_2_TITLE = "apartment (n2)";
-    public static final String NOTE_2_TEXT = "complex";
-    public static final String NOTE_3_TITLE = "balls of steel (n3)";
-    public static final String NOTE_3_TEXT = "no comment";
-    public static final String NOTE_TRASHED_TITLE = "trashed title";
-    public static final String NOTE_TRASHED_TEXT = "trashed_text";
+    public static final String NOTE_ALPHA_TITLE = "Alpha";
+    public static final String NOTE_ALPHA_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
+            " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    public static final String NOTE_BETA_TITLE = "Beta";
+    public static final String NOTE_BETA_TEXT = "Ut enim ad minim veniam, quis nostrud exercitation ullamco" +
+            " laboris nisi ut aliquip ex ea commodo consequat.";
+    public static final String NOTE_CHARLIE_TITLE = "Charlie";
+    public static final String NOTE_CHARLIE_TEXT = "Duis aute irure dolor in reprehenderit in voluptate velit" +
+            " esse cillum dolore eu fugiat nulla pariatur.";
+    public static final String NOTE_DELTA_TITLE = "Delta";
+    public static final String NOTE_DELTA_TEXT = "Excepteur sint occaecat cupidatat non proident, sunt" +
+            " in culpa qui officia deserunt mollit anim id est laborum.";
 
     public static Context getContext() {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    public static void ClearDb(Activity activity) {
+        NoteRepository.getInstance(activity.getApplication()).deleteAllNotes();
+    }
+
     /**
-     * Note 1 is the most recently modified and Note 3 the oldest.
+     * Note Alpha is the oldest and Note Charlie the most recently modified.
      */
     public static Note[] getMockNotes() {
         Note[] notes = new Note[3];
         List<Integer> tagIDs = new ArrayList<>();
         tagIDs.add(1);
         tagIDs.add(2);
-        Note note1 = new Note(
-                NOTE_1_TITLE,
-                NOTE_1_TEXT,
+        Note alpha = new Note(
+                NOTE_ALPHA_TITLE,
+                NOTE_ALPHA_TEXT,
                 null,
                 tagIDs,
-                DateTimeUtil.getCurrentEpoch(),
-                DateTimeUtil.getCurrentEpoch(),
-                -1L,
-                false,
-                false);
-        Note note2 = new Note(
-                NOTE_2_TITLE,
-                NOTE_2_TEXT,
-                null,
-                tagIDs,
-                DateTimeUtil.getCurrentEpoch(),
-                DateTimeUtil.getCurrentEpoch() - 5000L,
-                -1L,
-                false,
-                false);
-        Note note3 = new Note(
-                NOTE_3_TITLE,
-                NOTE_3_TEXT,
-                null,
-                new ArrayList<>(),
-                DateTimeUtil.getCurrentEpoch(),
+                DateTimeUtil.getCurrentEpoch() - 10000L,
                 DateTimeUtil.getCurrentEpoch() - 10000L,
                 -1L,
                 false,
                 false);
-        notes[0] = note1;
-        notes[1] = note2;
-        notes[2] = note3;
+        Note beta = new Note(
+                NOTE_BETA_TITLE,
+                NOTE_BETA_TEXT,
+                null,
+                tagIDs,
+                DateTimeUtil.getCurrentEpoch() - 5000L,
+                DateTimeUtil.getCurrentEpoch() - 5000L,
+                -1L,
+                false,
+                true);
+        Note charlie = new Note(
+                NOTE_CHARLIE_TITLE,
+                NOTE_CHARLIE_TEXT,
+                null,
+                new ArrayList<>(),
+                DateTimeUtil.getCurrentEpoch(),
+                DateTimeUtil.getCurrentEpoch(),
+                -1L,
+                false,
+                false);
+        notes[0] = alpha;
+        notes[1] = beta;
+        notes[2] = charlie;
         return notes;
     }
 
@@ -74,8 +84,8 @@ public abstract class TestHelper {
      */
     public static Note getTrashedNote() {
         return new Note(
-                NOTE_TRASHED_TITLE,
-                NOTE_TRASHED_TEXT,
+                NOTE_DELTA_TITLE,
+                NOTE_DELTA_TEXT,
                 null,
                 new ArrayList<>(),
                 DateTimeUtil.getCurrentEpoch(),
