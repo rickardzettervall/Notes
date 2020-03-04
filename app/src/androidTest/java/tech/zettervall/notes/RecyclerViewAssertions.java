@@ -11,14 +11,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class RecyclerViewAssertions {
+public abstract class RecyclerViewAssertions {
 
     /**
      * Assertion for specified view in select RecyclerView Adapter position.
      *
      * @param position    Position in RecyclerView Adapter
      * @param viewID      ID of view to match.
-     * @param viewMatcher Espresso ViewMatcher for a descendant of any row in the Adapter
+     * @param viewMatcher Espresso ViewMatcher for a descendant Adapter item
      * @return Espresso ViewAssertion to check against a RecyclerView
      */
     public static ViewAssertion itemViewMatches(int position,
@@ -49,6 +49,42 @@ public class RecyclerViewAssertions {
 
             if (viewMatcher.matches(targetView)) {
                 return; // Found match
+            }
+
+            fail("No match found");
+        };
+    }
+
+    /**
+     * Assertion for specified view in any RecyclerView Adapter position.
+     *
+     * @param viewID      ID of view to match.
+     * @param viewMatcher Espresso ViewMatcher for a descendant of any row in the Adapter
+     * @return Espresso ViewAssertion to check against a RecyclerView
+     */
+    public static ViewAssertion itemViewMatches(int viewID,
+                                                final Matcher<View> viewMatcher) {
+        assertNotNull(viewMatcher);
+
+        return (view, noViewException) -> {
+            if (noViewException != null) {
+                throw noViewException;
+            }
+
+            assertTrue(view instanceof RecyclerView);
+            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+
+            for (int i = 0; i < adapter.getItemCount(); i++) {
+                int itemType = adapter.getItemViewType(i);
+                RecyclerView.ViewHolder viewHolder = adapter.createViewHolder(recyclerView, itemType);
+                adapter.bindViewHolder(viewHolder, i);
+
+                View targetView = viewHolder.itemView.findViewById(viewID);
+
+                if (viewMatcher.matches(targetView)) {
+                    return; // Found match
+                }
             }
 
             fail("No match found");
