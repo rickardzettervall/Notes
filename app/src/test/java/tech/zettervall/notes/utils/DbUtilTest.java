@@ -14,12 +14,7 @@ public class DbUtilTest {
     @Test
     public void rawDB() {
         final long call = 2L;
-        long extracted = DbUtil.rawDB(new Callable<Long>() {
-            @Override
-            public Long call() throws Exception {
-                return call;
-            }
-        });
+        long extracted = DbUtil.rawDB(() -> call);
         assertEquals(call, extracted);
     }
 }
