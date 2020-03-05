@@ -13,6 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import tech.zettervall.mNotes.R;
 import tech.zettervall.notes.AppExecutor;
 import tech.zettervall.notes.data.typeconverters.IntegerListTypeConverter;
+import tech.zettervall.notes.data.typeconverters.StringListTypeConverter;
 import tech.zettervall.notes.models.Note;
 import tech.zettervall.notes.models.Tag;
 
@@ -20,8 +21,8 @@ import tech.zettervall.notes.models.Tag;
  * Room Database.
  * IMPORTANT!! Increment version number when changing any entity class.
  */
-@Database(entities = {Note.class, Tag.class}, version = 9)
-@TypeConverters(IntegerListTypeConverter.class)
+@Database(entities = {Note.class, Tag.class}, version = 10)
+@TypeConverters({IntegerListTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDb extends RoomDatabase {
 
     private static final String TAG = AppDb.class.getSimpleName();
@@ -56,7 +57,8 @@ public abstract class AppDb extends RoomDatabase {
                             .addMigrations(
                                     DbMigration.MIGRATION_5_7,
                                     DbMigration.MIGRATION_7_8,
-                                    DbMigration.MIGRATION_8_9)
+                                    DbMigration.MIGRATION_8_9,
+                                    DbMigration.MIGRATION_9_10)
                             .build();
                 }
             }
