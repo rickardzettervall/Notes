@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +27,7 @@ import static org.junit.Assert.assertThat;
  * Tests the DateTimeUtil class methods.
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(sdk = 28) // Fix for not using Java 9
 public class DateTimeUtilTest {
 
     private long mDayInMilliseconds, mTodayEpoch, mDayOldEpoch, mWeekOldEpoch, mYearOldEpoch,
