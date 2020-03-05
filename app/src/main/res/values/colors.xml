@@ -12,6 +12,6 @@
     <color name="list_item">#FAFAFA</color>
     <color name="list_selector">#EFEFEF</color>
     <color name="nav_selector">#DDEEFD</color>
-    <color name="nav_counter">#F1F1F1</color>
+    <color name="nav_counter">#EEEEEE</color>
     <color name="star">#FFDE3E</color>
 </resources>
