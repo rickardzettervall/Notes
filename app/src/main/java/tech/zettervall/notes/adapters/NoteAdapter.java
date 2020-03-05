@@ -87,10 +87,12 @@ public class NoteAdapter extends PagedListAdapter<Note, NoteAdapter.NoteViewHold
             }
 
             // Photo
-            if (BitmapUtil.doesFileExist(note.getPhotoPath())) {
-                holder.mPhotoImageView.setVisibility(View.VISIBLE);
-            } else {
-                holder.mPhotoImageView.setVisibility(View.GONE);
+            if (!note.getPhotoPaths().isEmpty()) {
+                if (BitmapUtil.doesFileExist(note.getPhotoPaths().get(0))) {
+                    holder.mPhotoImageView.setVisibility(View.VISIBLE);
+                } else {
+                    holder.mPhotoImageView.setVisibility(View.GONE);
+                }
             }
         }
     }
