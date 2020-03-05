@@ -58,6 +58,9 @@ public class NavigationDrawerTest {
         mNoteRepository.deleteAllNotes();
     }
 
+    /**
+     * Test that correct Fragment, List or Activity is loaded when a Navigation Drawer item is clicked.
+     */
     @Test
     public void navigation() {
         // All Notes
