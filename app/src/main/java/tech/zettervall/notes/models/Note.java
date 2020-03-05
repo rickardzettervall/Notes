@@ -30,7 +30,7 @@ public class Note {
     public static final String idColumnName = "_id";
     public static final String titleColumnName = "title";
     public static final String textColumnName = "text";
-    public static final String photoPathColumnName = "photo_path";
+    public static final String photoPathsColumnName = "photo_paths";
     public static final String tagsColumnName = "tags";
     public static final String creationEpochColumnName = "creation_epoch";
     public static final String modifiedEpochColumnName = "modified_epoch";
@@ -45,8 +45,8 @@ public class Note {
     public String title;
     @ColumnInfo(name = textColumnName)
     public String text;
-    @ColumnInfo(name = photoPathColumnName)
-    public String photoPath;
+    @ColumnInfo(name = photoPathsColumnName)
+    public List<String> photoPaths;
     @ColumnInfo(name = tagsColumnName)
     public List<Integer> tags;
     @ColumnInfo(name = creationEpochColumnName)
@@ -71,12 +71,12 @@ public class Note {
      * Constructor for new Note Objects.
      */
     @Ignore
-    public Note(String title, String text, String photoPath, @NonNull List<Integer> tags,
-                long creationEpoch, long modifiedEpoch, long notificationEpoch, boolean isTrash,
-                boolean isFavorite) {
+    public Note(String title, String text, @NonNull List<String> photoPaths,
+                @NonNull List<Integer> tags, long creationEpoch, long modifiedEpoch,
+                long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this.title = StringUtil.setFirstCharUpperCase(title);
         this.text = StringUtil.setFirstCharUpperCase(text);
-        this.photoPath = photoPath;
+        this.photoPaths = photoPaths;
         this.tags = tags;
         this.creationEpoch = creationEpoch;
         this.modifiedEpoch = modifiedEpoch;
@@ -88,13 +88,13 @@ public class Note {
     /**
      * Constructor for Room.
      */
-    public Note(int _id, String title, String text, String photoPath, @NonNull List<Integer> tags,
-                long creationEpoch, long modifiedEpoch, long notificationEpoch, boolean isTrash,
-                boolean isFavorite) {
+    public Note(int _id, String title, String text, @NonNull List<String> photoPaths,
+                @NonNull List<Integer> tags, long creationEpoch, long modifiedEpoch,
+                long notificationEpoch, boolean isTrash, boolean isFavorite) {
         this._id = _id;
         this.title = StringUtil.setFirstCharUpperCase(title);
         this.text = StringUtil.setFirstCharUpperCase(text);
-        this.photoPath = photoPath;
+        this.photoPaths = photoPaths;
         this.tags = tags;
         this.creationEpoch = creationEpoch;
         this.modifiedEpoch = modifiedEpoch;
@@ -127,12 +127,12 @@ public class Note {
         this.text = StringUtil.setFirstCharUpperCase(text);
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public List<String> getPhotoPaths() {
+        return new ArrayList<>(photoPaths);
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setPhotoPaths(List<String> photoPaths) {
+        this.photoPaths = photoPaths;
     }
 
     public List<Integer> getTagIDs() {
@@ -207,9 +207,9 @@ public class Note {
 
         boolean photoPathCheck;
         try {
-            photoPathCheck = photoPath.equals(note.getPhotoPath());
+            photoPathCheck = photoPaths.size() == note.getPhotoPaths().size();
         } catch (NullPointerException e) {
-            photoPathCheck = (photoPath == null && note.getPhotoPath() == null);
+            photoPathCheck = (photoPaths == null && note.getPhotoPaths() == null);
         }
 
         return _id == note.getId() &&
@@ -226,7 +226,7 @@ public class Note {
                 "_id=" + _id +
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
-                ", photoPath='" + photoPath + '\'' +
+                ", photoPaths='" + photoPaths + '\'' +
                 ", tags=" + tags +
                 ", creationEpoch=" + creationEpoch +
                 ", modifiedEpoch=" + modifiedEpoch +
