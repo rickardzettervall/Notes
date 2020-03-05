@@ -10,6 +10,48 @@ import java.util.List;
 public abstract class DbMigration {
 
     /**
+     * Migration of db version 9 -> 10.
+     */
+    public static Migration MIGRATION_9_10 = new Migration(9, 10) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.beginTransaction();
+            try {
+                database.execSQL("ALTER TABLE notes RENAME TO notes_tmp");
+                database.execSQL("CREATE TABLE notes(" +
+                        "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        "title TEXT," +
+                        "text TEXT," +
+                        "photo_paths TEXT," +
+                        "tags TEXT," +
+                        "creation_epoch INTEGER NOT NULL," +
+                        "modified_epoch INTEGER NOT NULL," +
+                        "notification_epoch INTEGER NOT NULL," +
+                        "trash INTEGER NOT NULL," +
+                        "favorite INTEGER NOT NULL)");
+                database.execSQL("INSERT INTO notes(" +
+                        "_id," +
+                        "title," +
+                        "text," +
+                        "photo_paths," +
+                        "tags," +
+                        "creation_epoch," +
+                        "modified_epoch," +
+                        "notification_epoch," +
+                        "trash," +
+                        "favorite)" +
+                        "SELECT _id, title, text, tags, photo_path, creation_epoch," +
+                        "modified_epoch, notification_epoch, trash, favorite " +
+                        "FROM notes_tmp");
+                database.execSQL("DROP TABLE notes_tmp");
+                database.setTransactionSuccessful();
+            } finally {
+                database.endTransaction();
+            }
+        }
+    };
+
+    /**
      * Migration of db version 8 -> 9.
      */
     public static Migration MIGRATION_8_9 = new Migration(8, 9) {
@@ -78,6 +120,16 @@ public abstract class DbMigration {
             }
         }
     };
+
+    /**
+     * Converts the old single photoPath to JSON.
+     */
+    public static String MIGRATION_9_10_FIX(String data) {
+        if (!data.startsWith("[\"") && data.contains("Android/data/tech.zettervall.notes/files")) { // DB version 9
+            return "[\"" + data + "\"]";
+        }
+        return data;
+    }
 
     /**
      * Converts the old Tags String to List.
