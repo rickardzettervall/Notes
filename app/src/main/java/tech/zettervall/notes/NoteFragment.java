@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,6 +80,7 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
     private JobScheduler mJobScheduler;
     private TagSelectAdapter mTagSelectAdapter;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private PackageManager mPackageManager;
 
     @Nullable
     @Override
@@ -91,6 +93,9 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
 
         // Setup Analytics
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext().getApplicationContext());
+
+        // Package Manager
+        mPackageManager = getActivity().getPackageManager();
 
         // Enable Toolbar MenuItem handling.
         setHasOptionsMenu(true);
@@ -437,6 +442,11 @@ public class NoteFragment extends Fragment implements TagSelectAdapter.OnTagClic
             if (mNote != null && mNote.isFavorite()) {
                 MenuItem favoritize = menu.findItem(R.id.action_favoritize);
                 setFavoritizedIcon(favoritize);
+            }
+            // Disable Camera action if there is no camera present
+            if (!mPackageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+                MenuItem photo = menu.findItem(R.id.action_photo);
+                photo.setVisible(false);
             }
         } else { // TRASHED
             inflater.inflate(R.menu.menu_note_trashed, menu);
