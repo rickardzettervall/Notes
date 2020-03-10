@@ -67,5 +67,5 @@ public abstract class Constants {
     public static final boolean NOTIFICATIONS_ENABLE_VIBRATION_DEFAULT = false;
 
     // Google Play Store Page
-    public static final String GOOGLE_PLAY_STORE_PAGE = "https://play.google.com/store/dev?id=5541068057061037845";
+    public static final String GOOGLE_PLAY_STORE = "http://play.google.com/store/search?q=zettervall.tech&c=apps";
 }

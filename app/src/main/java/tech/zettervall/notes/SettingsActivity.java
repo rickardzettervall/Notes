@@ -137,8 +137,9 @@ public class SettingsActivity extends AppCompatActivity {
                         .setMessage(getString(R.string.confirm_restore_db_message))
                         .show();
             } else if (preference == findPreference(getString(R.string.about_other_apps_key))) { // View other Apps
-                Uri devPages = Uri.parse(Constants.GOOGLE_PLAY_STORE_PAGE);
+                Uri devPages = Uri.parse(Constants.GOOGLE_PLAY_STORE);
                 Intent intent = new Intent(Intent.ACTION_VIEW, devPages);
+                intent.setPackage("com.android.vending");
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);
                 }
