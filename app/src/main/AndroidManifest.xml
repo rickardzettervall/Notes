@@ -9,7 +9,7 @@
     <!-- Features -->
     <uses-feature
         android:name="android.hardware.camera2"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:allowBackup="true"
