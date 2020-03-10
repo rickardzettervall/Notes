@@ -1,5 +1,7 @@
 # Android Notes App
 
+<a href="https://play.google.com/store/apps/details?id=tech.zettervall.notes" target="_blank"><img src="https://i.imgur.com/M7G9YcJ.png"></a>
+
 <p>Android app built with MVVM architecture for writing down notes and saving them locally.</p>
 
 <h3><strong>Features</strong></h3>
