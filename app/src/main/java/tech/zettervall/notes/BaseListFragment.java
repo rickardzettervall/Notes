@@ -127,6 +127,9 @@ public abstract class BaseListFragment extends Fragment
         }
 
         itemView.setBackgroundColor(context.getResources().getColor(R.color.list_item));
+        if(dX == 0) {
+            itemView.setBackground(context.getResources().getDrawable(R.color.selector_listitem));
+        }
     }
 
     /**
