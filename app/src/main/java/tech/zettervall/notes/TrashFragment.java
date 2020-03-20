@@ -73,11 +73,15 @@ public class TrashFragment extends BaseListFragment {
                                         getString(R.string.note_deleted);
 
                                 Snackbar.make(mRootView, deletedMessage, Snackbar.LENGTH_LONG)
-                                        .setAction(getString(R.string.undo), (View v) ->
-                                                mTrashFragmentViewModel.insertNote(note)
-                                        ).show();
+                                        .setAction(getString(R.string.undo), (View v) -> {
+                                            mTrashFragmentViewModel.insertNote(note);
 
-                                if(mIsTablet) {
+                                            // Restore selector
+                                            viewHolder.itemView.setBackground(
+                                                    getResources().getDrawable(R.color.selector_listitem));
+                                        }).show();
+
+                                if (mIsTablet) {
                                     reloadNoteFragmentOnSwipe(getActivity(), note, false);
                                 }
                                 break;
@@ -92,9 +96,13 @@ public class TrashFragment extends BaseListFragment {
                                         .setAction(getString(R.string.undo), (View v) -> {
                                             note.setTrash(true);
                                             mTrashFragmentViewModel.updateNote(note);
+
+                                            // Restore selector
+                                            viewHolder.itemView.setBackground(
+                                                    getResources().getDrawable(R.color.selector_listitem));
                                         }).show();
 
-                                if(mIsTablet) {
+                                if (mIsTablet) {
                                     reloadNoteFragmentOnSwipe(getActivity(), note, true);
                                 }
                                 break;

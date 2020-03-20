@@ -81,9 +81,13 @@ public class RemindersFragment extends BaseListFragment {
                                     .setAction(getString(R.string.undo), (View v) -> {
                                         note.setTrash(false);
                                         mRemindersFragmentViewModel.updateNote(note);
+
+                                        // Restore selector
+                                        viewHolder.itemView.setBackground(
+                                                getResources().getDrawable(R.color.selector_listitem));
                                     }).show();
 
-                            if(mIsTablet) {
+                            if (mIsTablet) {
                                 reloadNoteFragmentOnSwipe(getActivity(), note, false);
                             }
                         } catch (NullPointerException e) {
