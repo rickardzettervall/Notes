@@ -78,9 +78,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Set AllNotesFragment.
      */
-    public void setNoteListFragment(AllNotesFragment allNotesFragment) {
+    public void setAllNotesFragment(AllNotesFragment allNotesFragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_list, allNotesFragment, Constants.FRAGMENT_NOTELIST)
+                .replace(R.id.frame_list, allNotesFragment, Constants.FRAGMENT_ALL_NOTES)
                 .commit();
     }
 

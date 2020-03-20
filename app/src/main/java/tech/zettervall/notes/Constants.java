@@ -20,13 +20,13 @@ public abstract class Constants {
     public static final String PHOTO_PATH = "photo_path";
 
     // Fragment
-    public static final String FRAGMENT_NOTELIST = "fragment_notelist";
+    public static final String FRAGMENT_ALL_NOTES = "fragment_all_notes";
     public static final String FRAGMENT_FAVORITES = "fragment_favorites";
     public static final String FRAGMENT_REMINDERS = "fragment_reminders";
-    public static final String FRAGMENT_TAGS = "fragment_tags";
-    public static final String FRAGMENT_TRASH = "fragment_trash";
-    public static final String FRAGMENT_NOTE = "fragment_note";
     public static final String FRAGMENT_NOTES_BY_TAG = "fragment_notes_by_tag";
+    public static final String FRAGMENT_TRASH = "fragment_trash";
+    public static final String FRAGMENT_TAGS = "fragment_tags";
+    public static final String FRAGMENT_NOTE = "fragment_note";
 
     // Fragment (flag for swipe to trash fix)
     public static final String SET_TRASH_STATUS = "trash_status";

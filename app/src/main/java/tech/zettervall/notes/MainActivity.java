@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
 
@@ -93,7 +94,7 @@ public class MainActivity extends BaseActivity implements
 
         // Set Fragments
         if (savedInstanceState == null) {
-            setNoteListFragment(new AllNotesFragment());
+            setAllNotesFragment(new AllNotesFragment());
             if (mIsTablet) { // TABLET
                 setNoteFragment(new NoteFragment());
             }
@@ -293,36 +294,62 @@ public class MainActivity extends BaseActivity implements
                 break;
             }
         }
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
         switch (menuItem.getItemId()) {
             case R.id.nav_all_notes: // All Notes Fragment
                 menuItem.setChecked(true);
                 mMainActivityViewModel.setSelectedNavItemIndex(index);
                 mMainActivityViewModel.setSelectedNavItemTag(false);
-                setNoteListFragment(new AllNotesFragment());
+
+                // Set Fragment
+                Fragment allNotesFragment = getSupportFragmentManager()
+                        .findFragmentByTag(Constants.FRAGMENT_ALL_NOTES);
+                setAllNotesFragment(fragments.contains(allNotesFragment) ?
+                        (AllNotesFragment) allNotesFragment : new AllNotesFragment());
                 break;
             case R.id.nav_favorites: // Favorites Fragment
                 menuItem.setChecked(true);
                 mMainActivityViewModel.setSelectedNavItemIndex(index);
                 mMainActivityViewModel.setSelectedNavItemTag(false);
-                setFavoritesFragment(new FavoritesFragment());
+
+                // Set Fragment
+                Fragment favoritesFragment = getSupportFragmentManager()
+                        .findFragmentByTag(Constants.FRAGMENT_FAVORITES);
+                setFavoritesFragment(fragments.contains(favoritesFragment) ?
+                        (FavoritesFragment) favoritesFragment : new FavoritesFragment());
                 break;
             case R.id.nav_reminders: // Reminders Fragment
                 menuItem.setChecked(true);
                 mMainActivityViewModel.setSelectedNavItemIndex(index);
                 mMainActivityViewModel.setSelectedNavItemTag(false);
-                setRemindersFragment(new RemindersFragment());
+
+                // Set Fragment
+                Fragment remindersFragment = getSupportFragmentManager()
+                        .findFragmentByTag(Constants.FRAGMENT_REMINDERS);
+                setRemindersFragment(fragments.contains(remindersFragment) ?
+                        (RemindersFragment) remindersFragment : new RemindersFragment());
                 break;
             case R.id.nav_tags: // Tags Fragment
                 menuItem.setChecked(true);
                 mMainActivityViewModel.setSelectedNavItemIndex(index);
                 mMainActivityViewModel.setSelectedNavItemTag(false);
-                setTagsFragment(new TagsFragment());
+
+                // Set Fragment
+                Fragment tagsFragment = getSupportFragmentManager()
+                        .findFragmentByTag(Constants.FRAGMENT_TAGS);
+                setTagsFragment(fragments.contains(tagsFragment) ?
+                        (TagsFragment) tagsFragment : new TagsFragment());
                 break;
             case R.id.nav_trash: // Trash Fragment
                 menuItem.setChecked(true);
                 mMainActivityViewModel.setSelectedNavItemIndex(index);
                 mMainActivityViewModel.setSelectedNavItemTag(false);
-                setTrashFragment(new TrashFragment());
+
+                // Set Fragment
+                Fragment trashFragment = getSupportFragmentManager().
+                        findFragmentByTag(Constants.FRAGMENT_TRASH);
+                setTrashFragment(fragments.contains(trashFragment) ?
+                        (TrashFragment) trashFragment : new TrashFragment());
                 break;
             case R.id.nav_settings: // Settings Activity
                 startActivity(new Intent(this, SettingsActivity.class));
