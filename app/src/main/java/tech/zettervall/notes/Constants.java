@@ -1,7 +1,5 @@
 package tech.zettervall.notes;
 
-import android.graphics.Color;
-
 public abstract class Constants {
 
     // Note
@@ -19,7 +17,7 @@ public abstract class Constants {
     // Photo
     public static final String PHOTO_PATH = "photo_path";
 
-    // Fragment
+    // Fragments
     public static final String FRAGMENT_ALL_NOTES = "fragment_all_notes";
     public static final String FRAGMENT_FAVORITES = "fragment_favorites";
     public static final String FRAGMENT_REMINDERS = "fragment_reminders";
@@ -29,11 +27,6 @@ public abstract class Constants {
 
     // Fragment (flag for swipe to trash fix)
     public static final String SET_TRASH_STATUS = "trash_status";
-
-    // Time
-    public static final String TIME_SELECTOR = "time_selector";
-    public static final int TIME_12 = 12;
-    public static final int TIME_24 = 24;
 
     // List
     public static final int NOTE_LIST_PAGE_SIZE = 10;
@@ -55,15 +48,6 @@ public abstract class Constants {
     public static final int SORT_DIRECTION_DEFAULT = SORT_DIRECTION_DESC;
     public static final String SORT_FAVORITES_ON_TOP_KEY = "sort_favorites_on_top";
     public static final boolean SORT_FAVORITES_ON_TOP_DEFAULT = false;
-    public static final String NOTIFICATIONS_ENABLE_LIGHTS_KEY = "notifications_enable_lights";
-    public static final boolean NOTIFICATIONS_ENABLE_LIGHTS_DEFAULT = false;
-    public static final String NOTIFICATIONS_LIGHT_COLOR_KEY = "notifications_light_color";
-    public static final int NOTIFICATION_COLOR_RED = Color.RED;
-    public static final int NOTIFICATION_COLOR_GREEN = Color.GREEN;
-    public static final int NOTIFICATION_COLOR_BLUE = Color.BLUE;
-    public static final int NOTIFICATION_COLOR_DEFAULT = NOTIFICATION_COLOR_GREEN;
-    public static final String NOTIFICATIONS_ENABLE_VIBRATION_KEY = "notification_enable_vibration";
-    public static final boolean NOTIFICATIONS_ENABLE_VIBRATION_DEFAULT = false;
 
     // Google Play Store Page
     public static final String GOOGLE_PLAY_STORE = "http://play.google.com/store/search?q=zettervall.tech&c=apps";
