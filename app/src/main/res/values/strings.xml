@@ -163,7 +163,7 @@
     <string name="about_other_apps_title">Google Play</string>
     <string name="about_other_apps_summary">Try my other Apps</string>
     <string name="backup_key" translatable="false">backup</string>
-    <string name="backup_summary">Save database to local storage, files will be located in <xliff:g example="/storage/backup/" id="path">%s</xliff:g></string>
+    <string name="backup_summary">Save database to local storage, files will be located in <xliff:g example="/storage/backup/" id="path">%s</xliff:g>. Please note that this doesn\'t backup photos</string>
     <string name="restore_key" translatable="false">restore</string>
     <string name="restore_summary">Use latest backup to restore database</string>
     <string name="dummy_data_key" translatable="false">dummy_data</string>
