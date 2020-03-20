@@ -23,7 +23,6 @@ public abstract class Constants {
     public static final String FRAGMENT_ALL_NOTES = "fragment_all_notes";
     public static final String FRAGMENT_FAVORITES = "fragment_favorites";
     public static final String FRAGMENT_REMINDERS = "fragment_reminders";
-    public static final String FRAGMENT_NOTES_BY_TAG = "fragment_notes_by_tag";
     public static final String FRAGMENT_TRASH = "fragment_trash";
     public static final String FRAGMENT_TAGS = "fragment_tags";
     public static final String FRAGMENT_NOTE = "fragment_note";

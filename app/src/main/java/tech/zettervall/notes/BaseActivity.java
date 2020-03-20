@@ -132,9 +132,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Set NotesByTagFragment.
      */
-    public void setNotesByTagFragment(NotesByTagFragment notesByTagFragment) {
+    public void setNotesByTagFragment(NotesByTagFragment notesByTagFragment, String tag) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_list, notesByTagFragment, Constants.FRAGMENT_NOTES_BY_TAG)
+                .replace(R.id.frame_list, notesByTagFragment, tag)
                 .commit();
     }
 }

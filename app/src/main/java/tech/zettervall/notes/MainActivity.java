@@ -171,7 +171,15 @@ public class MainActivity extends BaseActivity implements
                 item.setChecked(true);
                 mMainActivityViewModel.setSelectedNavItemTag(true);
                 mMainActivityViewModel.setSelectedNavItemIndex(index);
-                setNotesByTagFragment(getNotesByTagFragment(tag));
+
+                // Set Fragment
+                List<Fragment> fragments = getSupportFragmentManager().getFragments();
+                Fragment notesByTagFragment = getSupportFragmentManager()
+                        .findFragmentByTag(String.valueOf(tag.getId()));
+                setNotesByTagFragment(fragments.contains(notesByTagFragment) ?
+                        (NotesByTagFragment) notesByTagFragment :
+                        getNotesByTagFragment(tag), String.valueOf(tag.getId()));
+
                 mNavDrawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             });
