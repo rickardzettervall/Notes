@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity implements
         mNavView.setNavigationItemSelectedListener(this);
 
         // Set Navigation Drawer item background/text/icon color (for currently checked item)
-        if (!mEnableDarkTheme) { // Light Theme
+        if (!mNightMode) { // Light Theme
             mNavView.setItemBackground(getResources().getDrawable(R.color.selector_navitem));
         } else { // Dark Theme
             mNavView.setItemTextColor(ColorStateListUtil.getNavigationDrawerNightColorStateList(this));

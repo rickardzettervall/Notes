@@ -108,13 +108,13 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public boolean onPreferenceClick(Preference preference) {
             if (preference == findPreference(getString(R.string.dark_theme_key))) { // Dark Theme
-                boolean setDarkTheme = mSharedPreferences.getBoolean(getString(R.string.dark_theme_key), false);
-                if (setDarkTheme) {
+                boolean nightMode = mSharedPreferences.getBoolean(getString(R.string.dark_theme_key),
+                        getResources().getBoolean(R.bool.defaultNightMode));
+                if (nightMode) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
-                getActivity().recreate();
             } else if (preference == findPreference(getString(R.string.backup_key))) { // Backup Db
                 String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
                 requestPermissions(permissions, BACKUP_DB_REQUEST_CODE);

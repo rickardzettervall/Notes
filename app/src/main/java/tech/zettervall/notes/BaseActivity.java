@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 
 import org.parceler.Parcels;
@@ -18,28 +17,15 @@ import tech.zettervall.notes.models.Tag;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected boolean mEnableDarkTheme, mIsTablet;
+    protected boolean mNightMode, mIsTablet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEnableDarkTheme = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(getString(R.string.dark_theme_key), false);
+        mNightMode = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(getString(R.string.dark_theme_key),
+                        getResources().getBoolean(R.bool.defaultNightMode));
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
-
-        // Set Theme
-        setTheme();
-    }
-
-    /**
-     * Set App theme.
-     */
-    public void setTheme() {
-        if (mEnableDarkTheme) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
     }
 
     /**
