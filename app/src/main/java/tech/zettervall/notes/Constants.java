@@ -49,6 +49,7 @@ public abstract class Constants {
     public static final String SORT_FAVORITES_ON_TOP_KEY = "sort_favorites_on_top";
     public static final boolean SORT_FAVORITES_ON_TOP_DEFAULT = false;
 
-    // Google Play Store Page
+    // Google Play Store
     public static final String GOOGLE_PLAY_STORE = "http://play.google.com/store/search?q=zettervall.tech&c=apps";
+    public static final String GOOGLE_PLAY_STORE_NOTES = "http://play.google.com/store/apps/details?id=tech.zettervall.notes";
 }

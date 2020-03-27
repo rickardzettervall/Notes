@@ -55,4 +55,11 @@
         android:title="@string/action_settings"
         android:checkable="false" />
 
+    <!-- Rate -->
+    <item
+        android:id="@+id/nav_rate"
+        android:icon="@drawable/ic_star"
+        android:title="@string/action_rate"
+        android:checkable="false" />
+
 </menu>

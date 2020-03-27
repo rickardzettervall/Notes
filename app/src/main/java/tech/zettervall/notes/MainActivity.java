@@ -1,6 +1,7 @@
 package tech.zettervall.notes;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.Menu;
@@ -361,6 +362,13 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.nav_settings: // Settings Activity
                 startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.nav_rate:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GOOGLE_PLAY_STORE_NOTES));
+                intent.setPackage("com.android.vending");
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
                 break;
         }
         mNavDrawerLayout.closeDrawer(GravityCompat.START);

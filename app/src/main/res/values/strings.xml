@@ -83,6 +83,7 @@
     <string name="action_search">Search</string>
     <string name="action_photo">Take Photo</string>
     <string name="action_share">Share</string>
+    <string name="action_rate">Rate</string>
 
     <!-- Swipe Messages -->
     <string name="swipe_delete">Delete</string>
