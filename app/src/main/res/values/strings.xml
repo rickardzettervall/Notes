@@ -20,6 +20,7 @@
     <string name="cancel">Cancel</string>
     <string name="tag">Tag</string>
     <string name="debug">Debug</string>
+    <string name="ok">OK</string>
 
     <!-- Errors -->
     <string name="error_missing_title_text">Write a title or text first..</string>

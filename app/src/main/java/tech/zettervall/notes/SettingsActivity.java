@@ -159,7 +159,7 @@ public class SettingsActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.app_name));
                 builder.setView(dialogView);
-                builder.setPositiveButton(R.string.done, null);
+                builder.setPositiveButton(R.string.ok, null);
                 builder.show();
             } else if (preference == findPreference(getString(R.string.dummy_data_key))) { // DEV TOOLS
                 DummyDataUtil.insertDummyData(NoteRepository.getInstance(getActivity().getApplication()));
