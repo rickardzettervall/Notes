@@ -8,6 +8,7 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
+
     signingConfigs {
         config {
             storeFile file(keystoreProperties['storeFile'])
@@ -16,6 +17,7 @@ android {
             keyPassword keystoreProperties['keyPassword']
         }
     }
+
     compileSdkVersion 29
     defaultConfig {
         applicationId "tech.zettervall.notes"
@@ -31,6 +33,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false // Enabling breaks Parceler
@@ -45,27 +48,33 @@ android {
             debuggable true
         }
     }
+
     flavorDimensions "version"
     productFlavors {
         dev {
             dimension "version"
             versionNameSuffix "-dev"
             applicationId "tech.zettervall.notes.dev"
+            resValue "string", "app_name", "Easy Notes (dev)"
         }
         full {
             dimension "version"
+            resValue "string", "app_name", "Easy Notes"
         }
     }
+
     testOptions {
         unitTests {
             returnDefaultValues = true // Required for testing because of Logging
             includeAndroidResources = true // Required for Robolectric
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     dataBinding.enabled true
 }
 

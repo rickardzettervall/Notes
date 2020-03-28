@@ -163,8 +163,12 @@ public class SettingsActivity extends AppCompatActivity {
                 builder.show();
             } else if (preference == findPreference(getString(R.string.dummy_data_key))) { // DEV TOOLS
                 DummyDataUtil.insertDummyData(NoteRepository.getInstance(getActivity().getApplication()));
+                Toast.makeText(getActivity(), getString(R.string.dev_dummy_data_inserted),
+                        Toast.LENGTH_SHORT).show();
             } else if (preference == findPreference(getString(R.string.clear_db_key))) { // DEV TOOLS
                 NoteRepository.getInstance(getActivity().getApplication()).deleteAllNotes();
+                Toast.makeText(getActivity(), getString(R.string.dev_database_cleared),
+                        Toast.LENGTH_SHORT).show();
             }
             return false;
         }

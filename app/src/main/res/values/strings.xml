@@ -1,7 +1,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- App -->
-    <string name="app_name">Easy Notes</string>
     <string name="app_version">Version <xliff:g example="1.0b">%s</xliff:g></string>
 
     <!-- Generic -->
@@ -190,5 +189,9 @@
     <string name="about_app_icon">The app launch icon is made by &lt;a href=\"https://www.freepik.com/\" title=\"Freepik\">Freepik&lt;/a> from &lt;a href=\"https://www.flaticon.com/\" title=\"Flaticon\">www.flaticon.com&lt;/a> and is licensed by &lt;a href=\"http://creativecommons.org/licenses/by/3.0/\" title=\"Creative
 Commons BY 3.0\">CC 3.0 BY&lt;/a>.</string>
     <string name="about_libraries">These external libraries were used when building this app: &lt;a href=\"https://firebase.google.com/\">Firebase&lt;/a>, &lt;a href=\"https://github.com/johncarl81/parceler/\">Parceler&lt;/a>, &lt;a href=\"http://robolectric.org/\">Robolectric&lt;/a>, &lt;a href=\"https://github.com/jsibbold/zoomage/\">Zoomage&lt;/a>.</string>
+
+    <!-- Dev -->
+    <string name="dev_dummy_data_inserted">Inserted dummy data</string>
+    <string name="dev_database_cleared">Database cleared</string>
 
 </resources>
