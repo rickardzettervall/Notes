@@ -158,8 +158,8 @@
     <string name="sort_favorites_on_top_summary">Places your favoritized notes on top of all lists.</string>
     <string name="sort_favorites_on_top_key" translatable="false">sort_favorites_on_top</string>
     <string name="time_24_key" translatable="false">time_24</string>
-    <string name="time_24_title">Military time (24H)</string>
-    <string name="time_24_summary">Override your locale settings and use the military time format</string>
+    <string name="time_24_title">24-hour format</string>
+    <string name="time_24_summary">Override your locale settings</string>
     <string name="about_other_apps_key" translatable="false">about_apps</string>
     <string name="about_other_apps_title">Google Play</string>
     <string name="about_other_apps_summary">Try my other Apps</string>
