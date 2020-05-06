@@ -114,7 +114,7 @@
     <!-- Empty Lists -->
     <string name="list_is_empty">You have no Notes in this section..</string>
     <string name="trash_is_empty">Trash is empty..</string>
-    <string name="search_is_empty">No Notes found matching your search..</string>
+    <string name="search_is_empty">No Note match the query..</string>
 
     <!-- Tools -->
     <string name="tools_headline" translatable="false">Important stuff</string>
